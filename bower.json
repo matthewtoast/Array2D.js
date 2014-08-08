@@ -1,0 +1,18 @@
+{
+  "name": "Array2D.js",
+  "main": "Array2D.js",
+  "version": "0.0.1",
+  "authors": [
+    "Matthew Trost <mrtrost@gmail.com>"
+  ],
+  "description": "Utility library for working with 2D arrays (arrays of arrays) in JavaScript",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
