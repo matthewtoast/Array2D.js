@@ -56,7 +56,7 @@ Return a clone of the grid.
 
 Initialize a new grid of the desired width `w` (columns) and height `h` (rows). If `value` is passed, set every cell to that value; otherwise set to `null`.
 
-**serialize(aa)**
+**serialize(grid)**
 
 Return a JSON string of the grid. (Note that `JSON.stringify` either omits or converts to `null` any functions, symbols, or `undefined` values.)
 
