@@ -374,44 +374,44 @@ The following constants / enums are provided for convenience and used throughout
 
 #### Axes
 
-`Array2D.AXES.X` = `1`
-`Array2D.AXES.Y` = `2`
+`Array2D.AXES.X` = `1`  
+`Array2D.AXES.Y` = `2`  
 
 #### Bearings
 
-`Array2D.BEARINGS.NORTH`     = `1`
-`Array2D.BEARINGS.NORTHWEST` = `2`
-`Array2D.BEARINGS.NORTHEAST` = `3`
-`Array2D.BEARINGS.SOUTH`     = `4`
-`Array2D.BEARINGS.SOUTHWEST` = `5`
-`Array2D.BEARINGS.SOUTHEAST` = `6`
-`Array2D.BEARINGS.EAST`      = `7`
-`Array2D.BEARINGS.WEST`      = `8`
+`Array2D.BEARINGS.NORTH`     = `1`  
+`Array2D.BEARINGS.NORTHWEST` = `2`  
+`Array2D.BEARINGS.NORTHEAST` = `3`  
+`Array2D.BEARINGS.SOUTH`     = `4`  
+`Array2D.BEARINGS.SOUTHWEST` = `5`  
+`Array2D.BEARINGS.SOUTHEAST` = `6`  
+`Array2D.BEARINGS.EAST`      = `7`  
+`Array2D.BEARINGS.WEST`      = `8`  
 
 #### Corners
 
-`Array2D.CORNERS.TOP_LEFT`     = `1`
-`Array2D.CORNERS.TOP_RIGHT`    = `2`
-`Array2D.CORNERS.BOTTOM_LEFT`  = `3`
-`Array2D.CORNERS.BOTTOM_RIGHT` = `4`
+`Array2D.CORNERS.TOP_LEFT`     = `1`  
+`Array2D.CORNERS.TOP_RIGHT`    = `2`  
+`Array2D.CORNERS.BOTTOM_LEFT`  = `3`  
+`Array2D.CORNERS.BOTTOM_RIGHT` = `4`  
 
 #### Directions
 
-`Array2D.DIRECTIONS.UP`    = `1`
-`Array2D.DIRECTIONS.DOWN`  = `2`
-`Array2D.DIRECTIONS.LEFT`  = `3`
-`Array2D.DIRECTIONS.RIGHT` = `4`
+`Array2D.DIRECTIONS.UP`    = `1`  
+`Array2D.DIRECTIONS.DOWN`  = `2`  
+`Array2D.DIRECTIONS.LEFT`  = `3`  
+`Array2D.DIRECTIONS.RIGHT` = `4`  
 
 #### Edges
 
-`Array2D.EDGES.TOP`    = `1`
-`Array2D.EDGES.BOTTOM` = `2`
-`Array2D.EDGES.LEFT`   = `3`
-`Array2D.EDGES.RIGHT`  = `4`
+`Array2D.EDGES.TOP`    = `1`  
+`Array2D.EDGES.BOTTOM` = `2`  
+`Array2D.EDGES.LEFT`   = `3`  
+`Array2D.EDGES.RIGHT`  = `4`  
 
 #### Quadrants
 
-`Array2D.QUADRANTS.I`   = `1`
-`Array2D.QUADRANTS.II`  = `2`
-`Array2D.QUADRANTS.III` = `3`
-`Array2D.QUADRANTS.IV`  = `4`
+`Array2D.QUADRANTS.I`   = `1`  
+`Array2D.QUADRANTS.II`  = `2`  
+`Array2D.QUADRANTS.III` = `3`  
+`Array2D.QUADRANTS.IV`  = `4`  
