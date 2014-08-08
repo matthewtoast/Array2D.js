@@ -7,15 +7,11 @@ Array2D.js is a utility library for working with 2D arrays (arrays of arrays) in
 You can install via npm:
 
     npm install Array2D  
-  
 
-  
 Or via Bower:
 
     bower install Array2D  
-  
-  
-  
+
 Or simply download the [minified source](dist/Array2D.min.js).
 
 ## Usage
