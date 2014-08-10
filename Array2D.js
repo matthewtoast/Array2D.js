@@ -4,8 +4,8 @@
 
 (function() {
 
-  // Baseline setup.
-  // ===============
+  // Baseline setup
+  // ==============
 
   // Establish the root object, `window` in the browser, or `exports` on the server.
   var root = this;
@@ -39,8 +39,8 @@
     return this;
   };  
 
-  // Private utilities.
-  // ==================
+  // Private utilities
+  // =================
 
   // Return T/F if the passed `thing` is an array.
   function isArray(thing) {
@@ -66,5 +66,891 @@
   function isPresent(thing) {
     return !isBlank(thing);
   }
+
+  // Return T/F if the passed thing is not `undefined`.
+  function isExistent(thing) {
+    return !isUndefined(thing);
+  }
+
+  // Clone the given (flat) array.
+  function cloneArray(array) {
+    var clone = [];
+
+    for (var i = 0, l = array.length; i < l; i++) {
+      clone[i] = array[i];
+    }
+
+    return clone;
+  }
+
+  // Constants / enums
+  // =================
+
+  Array2D.AXES = {
+    X: 1,
+    Y: 2
+  };
+
+  Array2D.BEARINGS = {
+    NORTH: 1,
+    NORTHWEST: 2,
+    NORTHEAST: 3,
+    SOUTH: 4,
+    SOUTHWEST: 5,
+    SOUTHEAST: 6,
+    EAST: 7,
+    WEST: 8
+  };
+
+  Array2D.CORNERS = {
+    TOP_LEFT: 1,
+    TOP_RIGHT: 2,
+    BOTTOM_LEFT: 3,
+    BOTTOM_RIGHT: 4
+  };
+
+  Array2D.DIRECTIONS = {
+    UP: 1,
+    DOWN: 2,
+    LEFT: 3,
+    RIGHT: 4
+  };
+
+  Array2D.EDGES = {
+    TOP: 1,
+    BOTTOM: 2,
+    LEFT: 3,
+    RIGHT: 4
+  };
+
+  Array2D.QUADRANTS = {
+    I: 1,
+    II: 2,
+    III: 3,
+    IV: 4
+  };
+
+  // Basic functions
+  // ===============
+
+  // Return the value of the cell at (`r`,`c`).
+  Array2D.get = function(grid, r, c) {
+    if (!isArray(grid[r])) {
+      return undefined;
+    }
+
+    return grid[r][c];
+  };
+
+  // Return a grid with the cell at (`r`,`c`) set to `value`.
+  Array2D.set = function(grid, r, c, value) {
+    var clone = Array2D.clone(grid);
+
+    if(!isArray(clone[r])) {
+      clone[r] = [];
+    }
+
+    clone[r][c] = value;
+
+    return clone;
+  };
+
+  // Return the width of the grid.
+  Array2D.width = function(grid) {
+    return Array2D.widest(grid).length;
+  };
+
+  // Return the height of the grid.
+  Array2D.height = function(grid) {
+    return Array2D.tallest(grid).length;
+  };
+
+  // Return the area of the grid.
+  Array2D.area = function(grid) {
+    var width = Array2D.width(grid);
+    var height = Array2D.height(grid);
+
+    return width * height;
+  };
+
+  // Return the number of present cells in the grid.
+  Array2D.cells = function(grid) {
+    var count = 0;
+
+    Array2D.eachCell(grid, function(cell) {
+      if (isExistent(cell)) {
+        count++;
+      }
+    });
+
+    return count;
+  };
+
+  // Construction / destruction
+  // ==========================
+
+  // Return a clone of the grid.
+  Array2D.clone = function(grid) {
+    var out = [];
+
+    Array2D.eachCell(grid, function(cell, r, c) {
+      if (!isArray(out[r])) {
+        out[r] = [];
+      }
+
+      out[r][c] = cell;
+    });
+
+    return out;
+  };
+
+  // Initialize a new grid of the given dimensions (w,h)
+  Array2D.build = function(w, h, value) {
+    var out = [];
+
+    if (isUndefined(value)) {
+      value = null;
+    }
+
+    for (var i = 0, l1 = h; i < l1; i++) {
+      out[i] = [];
+
+      for (var j = 0, l2 = w; j < l2; j++) {
+        out[i][j] = value;
+      }
+    }
+
+    return out;
+  };
+
+  // Serialize the grid to a string.
+  Array2D.serialize = function(grid) {
+    return JSON.stringify(grid);
+  };
+
+  // Convert all the cells of the grid to `null`.
+  Array2D.nullify = function(grid) {
+    var out = Array2D.clone(grid);
+
+    Array2D.eachCell(out, function(cell, r, c) {
+      if (!isArray(out[r])) {
+        out[r] = [];
+      }
+
+      if (isExistent(cell)) {
+        out[r][c] = null;
+      }
+    });
+
+    return out;
+  };
+
+  // Format
+  // ======
+
+  // Determine whether the passed object is a grid (an array of arrays).
+  Array2D.check = function(o) {
+    if (!isArray(o)) return false;
+    if (!isArray(o[0])) return false;
+    return true;
+  };
+
+  // Determine whether the grid is ragged (has rows of
+  // differing lengths).
+  Array2D.ragged = function(grid) {
+    var widest = Array2D.widest(grid);
+    var thinnest = Array2D.thinnest(grid);
+
+    return widest.length !== thinnest.length;
+  };
+
+  // Determine whether the grid is rectangular (all its rows
+  // have the same length).
+  Array2D.rectangular = function(grid) {
+    return !Array2D.ragged(grid);
+  };
+
+  // Determine whether the grid has only one cell.
+  Array2D.singular = function(grid) {
+    var width = Array2D.width(grid);
+    var height = Array2D.height(grid);
+
+    return width === 1 && height === 1;
+  };
+
+  // Determine whether the grid has more than one cell.
+  Array2D.multitudinous = function(grid) {
+    return !Array2D.singular(grid);
+  };
+
+  // Determine whether the grid has any `null` or `undefined` cells.
+  Array2D.sparse = function(grid) {
+    var sparse = false;
+
+    Array2D.eachCell(grid, function(cell) {
+      if (isBlank(cell)) {
+        sparse = true;
+      }
+    });
+
+    return sparse;
+  };
+
+  // Determine if the grid is dense, i.e., without any `null` or
+  // `undefined` cells.
+  Array2D.dense = function(grid) {
+    return !Array2D.sparse(grid);
+  };
+
+  // Return a new grid with the cells converted to integers,
+  // using `parseInt`.
+  Array2D.integerize = function(grid) {
+    var out = Array2D.clone(grid);
+
+    Array2D.eachCell(out, function(cell, r, c) {
+      out[r][c] = parseInt(cell);
+    });
+
+    return out;
+  };
+
+  // Return a new grid with the cells converted to strings, using
+  // the `String` constructor.
+  Array2D.stringize = function(grid) {
+    var out = Array2D.clone(grid);
+
+    Array2D.eachCell(out, function(cell, r, c) {
+      out[r][c] = String(cell);
+    });
+
+    return out;
+  };
+
+  // Return a tidied-up clone of the grid, that is, a rectangular
+  // grid with no `undefined` cells.
+  Array2D.tidy = function(grid) {
+    var out = [];
+
+    var width = Array2D.width(grid);
+    var height = Array2D.height(grid);
+
+    for (var i = 0, l1 = width; i < l1; i++) {
+      out[i] = [];
+
+      for (var j = 0, l2 = height; j < l2; j++) {
+        var previous = Array2D.get(grid, i, j);
+
+        if (isUndefined(previous)) {
+          out[i][j] = null;
+        }
+        else {
+          out[i][j] = previous;
+        }
+      }
+    }
+
+    return out;
+  };
+
+  // Comparison
+  // ==========
+
+  // Determine whether both grids' cells are all strictly equal.
+  Array2D.same = function(grid1, grid2) {
+    var w1 = Array2D.width(grid1);
+    var h1 = Array2D.height(grid1);
+
+    var w2 = Array2D.width(grid2);
+    var h2 = Array2D.height(grid2);
+
+    if (w1 !== w2) return false;
+    if (h1 !== h2) return false;
+
+    for (var i = 0; i < w1; i++) {
+      for (var j = 0; j < w2; j++) {
+        if (grid1[i][j] !== grid2[i][j]) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  };
+
+  // Determine whether both grids' cells are not strictly equal.
+  Array2D.different = function(grid1, grid2) {
+    return !Array2D.same(grid1, grid2);
+  };
+
+  // Inclusion
+  // =========
+
+  // Return true if the grid has no cells.
+  Array2D.empty = function(grid) {
+    if (grid.length < 1) return true;
+    if (grid.length === 1 && grid[0].length < 1) return true;
+    return false;
+  };
+
+  // Return true if all of the grid's cells are `null` or `undefined`.
+  Array2D.blank = function(grid) {
+    var blank = true;
+
+    var empty = Array2D.empty(grid);
+    if (empty) return true;
+
+    Array2D.eachCell(grid, function(cell) {
+      if (!isBlank(cell)) {
+        blank = false;
+      }
+    });
+
+    return blank;
+  };
+
+  // Return true if the grid contains the value.
+  Array2D.contains = function(grid, value) {
+    var contains = false;
+
+    Array2D.eachCell(grid, function(cell) {
+      if (cell === value) {
+        contains = true;
+      }
+    });
+
+    return contains;
+  };
+
+  // Iteration
+  // =========
+
+  // Iterate over each cell in the grid, passing the cell to the
+  // iterator function.
+  Array2D.eachCell = function(grid, iterator) {
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      var row = grid[i];
+
+      for (var j = 0, l2 = row.length; j < l2; j++) {
+        var cell = row[j];
+
+        iterator(cell, i, j, grid);
+      }
+    }
+  };
+
+  // Iterate over each row in the grid, passing the row-array to
+  // the iterator function.
+  Array2D.eachRow = function(grid, iterator) {
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      var row = grid[i];
+
+      iterator(cloneArray(row), i, grid);
+    }
+  };
+
+  // Iterate over each column in the grid, passing the column-array
+  // to the iterator function.
+  Array2D.eachColumn = function(grid, iterator) {
+    var transposed = Array2D.transpose(grid);
+
+    Array2D.eachRow(transposed, iterator);
+  };
+
+  // Retrieval
+  // =========
+
+  // Crop a subgrid of the given dimensions from the grid, but exclude
+  // anything that would fall outside of the grid's bounds.
+  Array2D.crop = function(grid, r, c, w, h) {
+    var out = [];
+
+    var width = Array2D.width(grid);
+    var height = Array2D.height(grid);    
+
+    for (var i = 0; i < h; i++) {
+      var ro = r + i; // Offset row
+
+      // Skip any out-of-bounds cells.
+      if (ro < height && ro >= 0) {
+        out.push([]);
+
+        for (var j = 0; j < w; j++) {
+          var co = c + j; // Offset column
+
+          // Skip any out-of-bounds cells.
+          if (co < width && co >= 0) {
+            var last = out[out.length - 1];
+            var cell = grid[ro][co];
+            last.push(cell);
+          }
+        }
+      }
+    }
+
+    return out;
+  };
+
+  // Harvest a subgrid of the given dimensions from the grid. If access
+  // goes outside of the grid's bounds, set those overlap cells to `null`.
+  Array2D.harvest = function(grid, r, c, w, h) {
+    var out = [];
+
+    var width = Array2D.width(grid);
+    var height = Array2D.height(grid);
+
+    for (var i = 0; i < h; i++) {
+      out[i] = [];
+
+      for (var j = 0; j < w; j++) {
+        var ro = r + i; // Offset row
+        var co = c + j; // Offset column
+
+        // Set to `null` any out-of-bounds cell.
+        if (ro >= height || ro < 0) {
+          out[i][j] = null;
+        }
+        // Set to `null` any out-of-bounds cell.
+        else if (co >= width || co < 0) {
+          out[i][j] = null;
+        }
+        else {
+          var cell = grid[ro][co];
+          out[i][j] = cell;
+        }
+      }
+    }
+
+    return out;
+  };
+
+  // Rows / columns
+  // ==============
+
+  // Return the row of the given row-coordinate.
+  Array2D.row = function(grid, r) {
+    return cloneArray(grid[r]);
+  };
+
+  // Return the column of the given column-coordinate.
+  Array2D.column = function(grid, c) {
+    var transposed = Array2D.transpose(grid);
+
+    return Array2D.row(transposed, c);
+  };
+
+  // Return the top row of the grid.
+  Array2D.top = function(grid) {
+    return cloneArray(grid[0]);
+  };
+
+  // Return the bottom row of the grid.
+  Array2D.bottom = function(grid) {
+    return cloneArray(grid[grid.length - 1]);
+  };
+
+  // Return the left column of the grid.
+  Array2D.left = function(grid) {
+    var transposed = Array2D.transpose(grid);
+
+    return Array2D.top(grid);
+  };
+
+  // Return the right column of the grid.
+  Array2D.right = function(grid) {
+    var transposed = Array2D.transpose(grid);
+
+    return Array2D.bottom(grid);
+  };
+
+  // Return the longest row of the grid.
+  Array2D.widest = function(grid) {
+    var widest = grid[0];
+
+    Array2D.eachRow(grid, function(row, r) {
+      if (row.length > widest.length) {
+        widest = row;
+      }
+    });
+
+    return cloneArray(widest);
+  };
+
+  // Return the shortest row of the grid.
+  Array2D.thinnest = function(grid) {
+    var thinnest = grid[0];
+
+    Array2D.eachRow(grid, function(row, r) {
+      if (row.length < thinnest.length) {
+        thinnest = row;
+      }
+    });
+
+    return cloneArray(thinnest);
+  };
+
+  // Return the tallest column of the grid.
+  Array2D.tallest = function(grid) {
+    var transposed = Array2D.transpose(grid);
+
+    return Array2D.widest(transposed);
+  };
+
+  // Return the shortest column of the grid.
+  Array2D.shortest = function(grid) {
+    var transposed = Array2D.transpose(grid);
+
+    return Array2D.thinnest(transposed);
+  };
+
+  // Cells
+  // =====
+
+  // Determine whether the coordinate cell exists (is not
+  // `undefined`).
+  Array2D.exists = function(grid, r, c) {
+    return !isUndefined(Array2D.get(grid, r, c));
+  };
+
+  // Determine whether the coordinate is occupied (not `null` or 
+  // `undefined`).
+  Array2D.occupied = function(grid, r, c) {
+    return isPresent(Array2D.get(grid, r, c));
+  };
+
+  // Determine whether the coordinate is on an edge.
+  Array2D.edge = function(grid, r, c) {
+    if (r === 0) return true;
+    if (c === 0) return true;
+
+    var width = Array2D.width(grid);
+    var height = Array2D.height(grid);
+
+    if (r === height - 1) return true;
+    if (c === width - 1) return true;
+
+    return false;
+  };
+
+  // Determine whether the coordinate is on a corner.
+  Array2D.corner = function(grid, r, c) {
+    if (r === 0 && c === 0) return true;
+
+    var width = Array2D.width(grid);
+    var height = Array2D.height(grid);
+
+    if (r === 0 && c === width - 1) return true;
+    if (r === height - 1 && c === width - 1) return true;
+    if (r === height - 1 && c === 0) return true;
+
+    return false;
+  };
+
+  // Return the list of edges that the coordinate is on.
+  Array2D.edges = function(grid, r, c) {
+    var edges = [];
+
+    if (r === 0) edges.push(Array2D.EDGES.TOP);
+    if (c === 0) edges.push(Array2D.EDGES.LEFT);
+
+    var width = Array2D.width(grid);
+    var height = Array2D.height(grid);
+
+    if (r === height - 1) edges.push(Array2D.EDGES.BOTTOM);
+    if (c === width - 1) edges.push(Array2D.EDGES.RIGHT);
+
+    return edges;
+  };
+
+  // Return the list of corners that the coordinate is on.
+  Array2D.corners = function(grid, r, c) {
+    var corners = [];
+
+    if (r === 0 && c === 0) corners.push(Array2D.CORNERS.TOP_LEFT);
+
+    var width = Array2D.width(grid);
+    var height = Array2D.height(grid);
+
+    if (r === 0 && c === width - 1) corners.push(Array2D.CORNERS.TOP_RIGHT);
+    if (r === height - 1 && c === width - 1) corners.push(Array2D.CORNERS.BOTTOM_RIGHT);
+    if (r === height - 1 && c === 0) corners.push(Array2D.CORNERS.BOTTOM_LEFT);
+
+    return corners;
+  };
+
+  // Determine whether the given coordinate is at the grid's center.
+  Array2D.center = function(grid, r, c) {
+    var width = Array2D.width(grid);
+    var height = Array2D.height(grid);
+
+    if (width % 2 === 0) return false;
+    if (height % 2 === 0) return false;
+
+    if (Math.floor(height / 2) !== r) return false;
+    if (Math.floor(width / 2) !== c) return false;
+
+    return true;
+  };
+
+  // Determine whether the given coordinate is interior (not on an
+  // edge or a corner).
+  Array2D.interior = function(grid, r, c) {
+    if (r === 0) return false;
+    if (c === 0) return false;
+
+    var width = Array2D.width(grid);
+    var height = Array2D.height(grid);
+
+    if (width < 3) return false; // 2xH grids have no interior
+    if (height < 3) return false; // Wx2 grids have no interior
+
+    if (r >= height - 1) return false;
+    if (c >= width - 1) return false;
+
+    return true;
+  };
+
+  // Return a list of all the quadrants the given cell is in.
+  Array2D.quadrants = function(grid, r, c) {
+    var quadrants = [];
+
+    var width = Array2D.width(grid);
+    var height = Array2D.height(grid);
+
+    var midcolumn = Math.floor(width / 2);
+    var midrow = Math.floor(height / 2);
+
+    if (r <= midrow && c > midcolumn) quadrants.push(Array2D.QUADRANTS.I);
+    if (r <= midrow && c <= midcolumn) quadrants.push(Array2D.QUADRANTS.II);
+    if (r > midrow && c <= midcolumn) quadrants.push(Array2D.QUADRANTS.III);
+    if (r > midrow && c > midcolumn) quadrants.push(Array2D.QUADRANTS.IV);
+
+    return quadrants;
+  };
+
+  // Return an array of all orthogonal cells to the coordinate.
+  Array2D.orthogonals = function(grid, r, c) {
+    var orthogonals = [];
+
+    orthogonals[0] = Array2D.get(grid, r - 1, c); // North
+    orthogonals[1] = Array2D.get(grid, r, c - 1); // West
+    orthogonals[2] = Array2D.get(grid, r, c + 1); // East
+    orthogonals[3] = Array2D.get(grid, r + 1, c); // South
+
+    return orthogonals;
+  };
+
+  // Return an array of all diagonal cells to the coordinate.
+  Array2D.diagonals = function(grid, r, c) {
+    var diagonals = [];
+
+    diagonals[0] = Array2D.get(grid, r - 1, c - 1); // Northwest
+    diagonals[1] = Array2D.get(grid, r - 1, c + 1); // Northeast
+    diagonals[2] = Array2D.get(grid, r + 1, c - 1); // Southwest
+    diagonals[3] = Array2D.get(grid, r + 1, c + 1); // Southeast
+
+    return diagonals;
+  };
+
+  // Return an array of all orthogonal and diagonal neighbors of the cell.
+  Array2D.neighbors = function(grid, r, c) {
+    var orthogonals = Array2D.orthogonals(grid, r, c);
+    var diagonals = Array2D.diagonals(grid, r, c);
+
+    var neighbors = [];
+    neighbors[0] = diagonals[0]; // Northwest
+    neighbors[1] = orthogonals[0]; // North
+    neighbors[2] = diagonals[1]; // Northeast
+    neighbors[3] = orthogonals[1]; // West
+    neighbors[4] = orthogonals[2]; // East
+    neighbors[5] = diagonals[2]; // Southwest
+    neighbors[6] = orthogonals[3]; // South
+    neighbors[7] = diagonals[3]; // Southeast
+
+    return neighbors;
+  };
+
+  // Return a subgrid representing all cells in the neighborhood of
+  // the given row-column coordinate.
+  Array2D.neighborhood = function(grid, r, c) {
+    var cell = Array2D.get(grid, r, c);
+    var neighbors = Array2D.neighbors(grid, r, c);
+
+    return [
+      [neighbors[0], neighbors[1], neighbors[2]],
+      [neighbors[3], cell, neighbors[4]],
+      [neighbors[5], neighbors[6], neighbors[7]]
+    ];
+  };
+
+  // Copy one cell value over another coordinate.
+  Array2D.copy = function(grid, r1, c1, r2, c2) {
+    var cell = Array2D.get(grid, r1, c1);
+    return Array2D.set(grid, r2, c2, cell);
+  };
+
+  // Move one cell value to another coordinate, nullifying the first.
+  Array2D.move = function(grid, r1, c1, r2, c2) {
+    var cell = Array2D.get(grid, r1, c1);
+    var copied = Array2D.set(grid, r2, c2, cell);
+    return Array2D.set(copied, r1, c1, null);
+  };
+
+  // Swap the contents of two cells.
+  Array2D.swap = function(grid, r1, c1, r2, c2) {
+    var cell1 = Array2D.get(grid, r1, c1);
+    var cell2 = Array2D.get(grid, r2, c2);
+    var first = Array2D.set(grid, r2, c2, cell1);
+    return Array2D.set(first, r1, c1, cell2);
+  };
+
+  // Return the Euclidean distance bewteen the two cell coordinates.
+  Array2D.euclidean = function(grid, r1, c1, r2, c2) {
+    return Math.sqrt(Math.pow(r2 - r1, 2) + Math.pow(c2 - c1, 2));
+  };
+
+  // Return the Chebyshev distance bewteen the two cell coordinates.
+  Array2D.chebyshev = function(grid, r1, c1, r2, c2) {
+    var v = Math.abs(r2 - r1);
+    var h = Math.abs(c2 - c1);
+    return (v > h) ? v : h;
+  };
+
+  // Return the Manhattan distance bewteen the two cell coordinates.
+  Array2D.manhattan = function(grid, r1, c1, r2, c2) {
+    return Math.abs(r2 - r1) + Math.abs(c2 - c1);
+  };
+
+  // Remap the grid to a new grid by returning a new value for each cell.
+  Array2D.map = function(grid, iterator) {
+    var out = [];
+
+    Array2D.eachCell(grid, function(cell, r, c, grid) {
+      if (!isArray(out[r])) {
+        out[r] = [];
+      }
+
+      var result = iterator(cell, r, c, grid);
+
+      out[r][c] = result;
+    });
+
+    return out;
+  };
+
+  // Modification
+  // ============
+
+  Array2D.rotate = function(grid, direction) {
+
+  };
+
+  Array2D.flip = function(grid, axis) {
+    if (axis === Array2D.AXES.X) return Array2D.vflip(grid);
+    if (axis === Array2D.AXES.Y) return Array2D.hflip(grid);
+    throw("`Array2D.flip` requires a valid `axis` parameter");
+  };
+
+  // Flip the grid vertically, i.e., about its x-axis.
+  Array2D.vflip = function(grid) {
+    var out = [];
+
+    for (var i = 0, l = grid.length; i < l; i++) {
+      var opp = i - l + 1;
+      out[i] = grid[Math.abs(opp)];
+    }
+
+    return out;
+  };
+
+  // Flip the grid horizontally, i.e., about its y-axis.
+  Array2D.hflip = function(grid) {
+    var out = [];
+
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      out[i] = [];
+      var row = grid[i];
+
+      for (var j = 0, l2 = row.length; j < l2; j++) {
+        var opp = j - l2 + 1;
+        out[i][j] = grid[i][Math.abs(opp)];
+      }
+    }
+
+    return out;
+  };
+
+  Array2D.pan = function(grid, direction, steps) {
+
+  };
+
+  Array2D.slide = function(grid, direction, steps) {
+
+  };
+
+  // Return a new grid with the elements transposed (flipped about
+  // their main diagonal).
+  Array2D.transpose = function(grid) {
+    var out = [];
+
+    Array2D.eachCell(grid, function(cell, r, c) {
+      if (!isArray(out[c])) {
+        out[c] = [];
+      }
+
+      out[c][r] = cell;
+    });
+
+    return out;
+  };
+
+  Array2D.antitranspose = function(grid) {
+
+  };
+
+  Array2D.pad = function(grid, side, value) {
+
+  };
+
+  Array2D.trim = function(grid, side, num) {
+
+  };
+
+  Array2D.paste = function(grid1, grid2, r, c) {
+
+  };
+
+  Array2D.glue = function(grid1, grid2, r, c) {
+
+  };
+
+  Array2D.stitch = function(grid1, grid2, edge) {
+
+  };
+
+  Array2D.shuffle = function(grid) {
+
+  };
+
+  // Conversion / reduction
+  // ======================
+
+  Array2D.flatten = function(grid) {
+
+  };
+
+  Array2D.squash = function(grid) {
+
+  };
+
+  Array2D.reduce = function(grid, iterator) {
+
+  };
+
+  // Analysis
+  // ========
+
+  Array2D.symmetrical = function(grid, axis) {
+
+  };
 
 }.call(this));
