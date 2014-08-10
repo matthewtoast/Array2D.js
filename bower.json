@@ -2,6 +2,10 @@
   "name": "Array2D.js",
   "main": "Array2D.js",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/matthewtoast/Array2D.js.git"
+  },
   "authors": [
     "Matthew Trost <mrtrost@gmail.com>"
   ],
