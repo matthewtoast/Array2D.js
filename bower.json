@@ -7,7 +7,7 @@
     "url": "https://github.com/matthewtoast/Array2D.js.git"
   },
   "authors": [
-    "Matthew Trost <mrtrost@gmail.com>"
+    "Matthew Trost"
   ],
   "description": "Utility library for working with 2D arrays (arrays of arrays) in JavaScript",
   "license": "MIT",
