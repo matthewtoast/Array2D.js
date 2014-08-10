@@ -840,10 +840,25 @@
   // Modification
   // ============
 
+  // Rotate the grid one quarter-turn in the given `direction`.
   Array2D.rotate = function(grid, direction) {
-
+    if (direction === Array2D.DIRECTIONS.LEFT) return Array2D.lrotate(grid);
+    if (direction === Array2D.DIRECTIONS.RIGHT) return Array2D.rrotate(grid);
   };
 
+  // Rotate the grid to the left one quarter-turn.
+  Array2D.lrotate = function(grid) {
+    var transposed = Array2D.transpose(grid);
+    return Array2D.vflip(transposed);
+  };
+
+  // Rotate the grid to the right one quarter-turn.
+  Array2D.rrotate = function(grid) {
+    var transposed = Array2D.transpose(grid);
+    return Array2D.hflip(transposed);
+  };
+
+  // Flip the grid about the given axis `axis`.
   Array2D.flip = function(grid, axis) {
     if (axis === Array2D.AXES.X) return Array2D.vflip(grid);
     if (axis === Array2D.AXES.Y) return Array2D.hflip(grid);
@@ -903,8 +918,11 @@
     return out;
   };
 
+  // Return a new grid with the elements transposed about their
+  // *secondary* diagonal.
   Array2D.antitranspose = function(grid) {
-
+    var rotated = Array2D.rrotate(grid);
+    return Array2D.vflip(rotated);
   };
 
   Array2D.pad = function(grid, side, value) {
