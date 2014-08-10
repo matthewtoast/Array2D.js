@@ -2,6 +2,21 @@
 
 Array2D.js is a utility library for working with 2D arrays (arrays of arrays) in JavaScript. It provides a suite of functions that make it simple to manipulate these grid-like data structures. Array2D.js is small, standalone (no external dependencies), fully tested, and ready for use in Node.js or the browser.
 
+## Example
+
+Here's a quick usage example, to give a sense of Array2D.js' style.
+
+    var grid = [[1,2,3], [4,5,6], [7,8,9]];
+    var result = Array2D.swap(Array2D.transpose(grid), 1,1, 2,2);
+    console.log(result);
+    // => [[1,4,7],[2,9,8],[3,6,5]]
+
+And here's an illustration of the above operations:
+
+    1 2 3                1 4 7                            1 4 7
+    4 5 6  transpose ~>  2 5 8  swap (1,1) with (2,2) ~>  2 9 8
+    7 8 9                3 6 9                            3 6 5
+
 ## Usage
 
 See [DOCUMENTATION.md](DOCUMENTATION.md).
