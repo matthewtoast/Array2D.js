@@ -6,6 +6,7 @@
   "author": "Matthew Trost",
   "license": "MIT",
   "devDependencies": {
+    "benchmark": "^1.0.0",
     "gulp": "^3.8.7",
     "gulp-concat": "^2.3.4",
     "gulp-rename": "^1.2.0",

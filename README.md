@@ -28,6 +28,14 @@ Run the tests with:
 
     $ mocha test
 
+## Benchmarks
+
+Run the benchmarks with:
+
+    $ node perf/general
+
+See previous results in `perf/RESULTS.md`.
+
 ## Author
 
 [Matthew Trost](http://trost.co)
