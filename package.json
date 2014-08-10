@@ -5,7 +5,7 @@
   "main": "Array2D.js",
   "author": "Matthew Trost",
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
     "gulp": "^3.8.7",
     "mocha": "^1.21.4"
   }
