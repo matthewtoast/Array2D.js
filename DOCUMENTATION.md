@@ -122,6 +122,12 @@ Initialize a new grid of the desired width `w` (columns) and height `h` (rows). 
     // =>  ['x','x','x'],
     // =>  ['x','x','x']]
 
+##### _buildWith(w, h, func)_
+
+Initialize a grid of the given dimensions, but instead of initializing from a single value, initialize each cell with the return value of the function `func`. The `func` signature should be `func(r, c, partial)`, where `r`, `c` are row-column coordinates and `partial` is the partially-constructed grid at that point. `null` is used if the `func` returns nothing.
+
+_Not yet implemented._
+
 ##### serialize(grid)
 
 Return a JSON string of the grid. (Note that `JSON.stringify` either omits or converts to `null` any functions, symbols, or `undefined` values it finds in the collection.)
@@ -598,13 +604,17 @@ Returns the list of corners that the cell at row-column coordinates `r`, `c` is 
 
     // => [Array2D.CORNERS.BOTTOM_RIGHT]
 
-##### boundary
+##### _boundary(grid, r, c)_
 
 Similar to `edge`, except for a ragged grid. Calculates with respect to individual row-length instead of grid width.
 
-##### boundaries
+_Not yet implemented!_
+
+##### _boundaries(grid, r, c)_
 
 Similar to `edges`, except for a ragged grid. Calculates with respect to individual row-length instead of grid width.
+
+_Not yet implemented!_
 
 ##### center(grid, r, c)
 
@@ -773,6 +783,8 @@ Return the Euclidean distance between two row-column coordinates.
 
     // => 2.82...
 
+Note: Eventually this function may use the `grid` dimensions and/or content to determine distance or validity of the coordinates.
+
 ##### chebyshev(grid, r1, c1, r2, c2)
 
 Return the Chebyshev distance between two row-column coordinates.
@@ -785,6 +797,8 @@ Return the Chebyshev distance between two row-column coordinates.
 
     // => 2
 
+Note: Eventually this function may use the `grid` dimensions and/or content to determine distance or validity of the coordinates.
+
 ##### manhattan(grid, r1, c1, r2, c2)
 
 Return the Manhattan distance between two row-column coordinates. 
@@ -796,6 +810,8 @@ Return the Manhattan distance between two row-column coordinates.
     ], 0, 0, 2, 2);
 
     // => 4
+
+Note: Eventually this function may use the `grid` dimensions and/or content to determine distance or validity of the coordinates.
 
 ##### map(grid, iterator)
 
@@ -817,27 +833,79 @@ Return a new grid that is a cell-by-cell mapping of the original. The iterator s
 
 ##### rotate(grid, direction)
 
-Return a new grid rotated in the given direction `direction` (left or right).
+Return a new grid rotated one quarter-turn in the given direction `direction` (left or right). (See `lrotate` and `rrotate`.)
+
+##### lrotate(grid)
+
+Rotate the grid one quarter-turn to the left.
+
+    Array2D.lrotate([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]);
+
+    // => [[3,6,9],
+    // =>  [2,5,8],
+    // =>  [1,4,7]]
+
+##### rrotate(grid)
+
+Rotate the grid one quarter-turn to the right.
+
+    Array2D.rrotate([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]);
+
+    // => [[7,4,1],
+    // =>  [8,5,2],
+    // =>  [9,6,3]]
 
 ##### flip(grid, axis)
 
-Return a new grid flipped over the given axis `axis`.
+Return a new grid flipped over the given axis `axis`. (See `vflip` and `hflip`.)
 
 ##### vflip(grid)
 
 Flip the grid vertically (over its horizontal axis).
 
+    Array2D.vflip([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]);
+
+    // => [[7,8,9],
+    // =>  [4,5,6],
+    // =>  [1,2,3]]
+
 ##### hflip(grid)
 
 Flip the grid horizontally (over its vertical axis).
 
-##### pan(grid, direction, [steps])
+    Array2D.transpose([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]);
+
+    // => [[3,2,1],
+    // =>  [6,5,4],
+    // =>  [9,8,7]]
+
+##### _pan(grid, direction, [steps])_
 
 Return a new grid, having "panned" over the given number of `steps` in the specified `direction`, and assuming that the edges of the grid should wrap around to the opposite side. That is, if we pan up one step, the bottom row of the grid would become the top row, pushing the remaining rows down. Likewise, if we panned left two steps, the leftmost columns would be replaced by the rightmost two, pushing the rest to the right. Note that the panning direction is the opposite of the direction that the rows/columns appear to move.
 
-##### slide(grid, direction, [steps])
+_Not yet implemented._
+
+##### _slide(grid, direction, [steps])_
 
 Similar to `pan`, except opposite: the _contents_ appear to move in the given direction.
+
+_Not yet implemented._
 
 ##### transpose(grid)
 
@@ -857,57 +925,111 @@ Return a new grid with the elements reflected over its _main diagonal_, i.e., wi
 
 Return a new grid with the elements reflected over its _secondary diagonal_. (Note the difference from `transpose`.)
 
-##### pad(grid, side, [value])
+    Array2D.antitranspose([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]);
+
+    // => [[9,6,3],
+    // =>  [8,5,2],
+    // =>  [7,4,1]]
+
+##### _pad(grid, side, [value])_
 
 Return a new grid with a new row or column shifted in on the given side `side`. If a `value` is given, initialize the cells to that value. Otherwise, initialize to `null`.
 
-##### trim(grid, side, [num])
+_Not yet implemented._
+
+##### _trim(grid, side, [num])_
 
 Return a new grid with the row or column of the given side trimmed off. If `num` is given, trim that many columns off of the given side, otherwise just trim one. If `num` exceeds the number of rows or columns, an empty grid is returned.
 
-##### paste(grid1, grid2, r, c)
+_Not yet implemented._
+
+##### _paste(grid1, grid2, r, c)_
 
 Return a new grid with contents of the first grid pasted over the contents of the second, starting at the row-column coordinates `r`, `c`. If the pasted grid exceeds the bounds of the pasted-to grid, the out-of-bounds cells will be ignored.
 
-##### glue(grid1, grid2, r, c)
+_Not yet implemented._
+
+##### _glue(grid1, grid2, r, c)_
 
 Like `paste`, except overlapping cells are included in the returned new grid, with additional `null` cells added to pad the grid so that the output grid is rectangular.
 
-##### stitch(grid1, grid2, edge)
+_Not yet implemented._
+
+##### _stitch(grid1, grid2, edge)_
 
 Return a new grid with the first grid stitched to the second grid, along the given edge `edge`.
 
-##### shuffle(grid)
+_Not yet implemented._
+
+##### _shuffle(grid)_
 
 Return a new grid with the cell elements shuffled (randomly rearranged).
 
+_Not yet implemented._
+
 ### Conversion / reduction
 
-##### flatten(grid)
+##### _flatten(grid)_
 
 Return a _flat array_ of all the grid's cell values, in row-major order.
 
-##### squash(grid)
+_Not yet implemented._
+
+##### _squash(grid)_
 
 Similar to _flatten_, except returning the values in column-major order.
 
-##### reduce(grid, iterator)
+_Not yet implemented._
+
+##### _reduce(grid, iterator)_
 
 Reduce the grid to a _flat array_ by reducing each row to a single value. Each row is passed to the `iterator`, with the return value of the iterator becoming the reduced value of the whole row. The iterator signature is `iterator(row, r, grid)`, with `row` being the row-array, and `r` being the row-index.
 
-##### boildown(grid, iterator)
+_Not yet implemented._
+
+##### _boildown(grid, iterator)_
 
 Similar to `reduce`, except iteration occurs in column-major order.
 
+_Not yet implemented._
+
 ### Analysis
 
-##### symmetrical(grid, axis)
+##### _symmetrical(grid, axis)_
 
 Returns `true` if the passed grid is symmetrical when reflected about the axis `axis`.
 
-##### includes(grid1, grid2)
+_Not yet implemeneted._
+
+##### _includes(grid1, grid2)_
 
 Returns `true` if the first grid contains the second grid.
+
+_Not yet implemeneted._
+
+### Import / export
+
+##### _fromCanvas(canvas)_ [browser-only]
+
+Produces a "grid" (array of arrays) from the given HTML `<canvas>` element.
+
+_Not yet implemeneted._
+
+##### _fromImageData(imageData)_ [browser-only]
+
+Produces a "grid" (array of arrays) from the given `ImageData` object.
+
+_Not yet implemeneted._
+
+##### _toImageData(grid, converter)_ [browser-only]
+
+Converts the given grid to an `ImageData` object, passing every cell through the `converter` function which is expected to convert the cell values into an array of four _rgba_ color integers, e.g. `[255, 255, 255, 255]`. Each value will be supplied (in order) when initializing the `ImageData` output.
+
+_Not yet implemeneted._
 
 ### "Constants" / "enums"
 
