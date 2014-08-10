@@ -815,11 +815,11 @@ Return a new grid rotated in the given direction `direction` (left or right).
 
 Return a new grid flipped over the given axis `axis`.
 
-#### vflip(grid)
+##### vflip(grid)
 
 Flip the grid vertically (over its horizontal axis).
 
-#### hflip(grid)
+##### hflip(grid)
 
 Flip the grid horizontally (over its vertical axis).
 
