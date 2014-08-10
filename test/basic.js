@@ -1,6 +1,16 @@
 var Array2D = require('./../Array2D');
 var assert = require('assert');
 
+describe('readme example', function() {
+  it('is accurate', function() {
+    // Keep the first example in the README honest. :-)
+    var grid = [[1,2,3], [4,5,6], [7,8,9]];
+    var result = Array2D.swap(Array2D.transpose(grid), 1,1, 2,2);
+    var str = Array2D.serialize(result);
+    assert.strictEqual(str, "[[1,4,7],[2,9,8],[3,6,5]]");
+  });
+});
+
 describe('#get', function() {
   it('can get a cell', function() {
     var result = Array2D.get([
