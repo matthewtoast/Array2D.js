@@ -1,6 +1,10 @@
 # Array2D.js
 
-Array2D.js is a utility library for working with 2D arrays (arrays of arrays) in JavaScript. It provides a suite of static functions that make it simple to manipulate these grid-like data structures. Array2D.js is small, fast, and standalone (no external dependencies), ready for use in Node.js or the browser.
+Array2D.js is a utility library for working with 2D arrays (arrays of arrays) in JavaScript. It provides a suite of functions that make it simple to manipulate these grid-like data structures. Array2D.js is small, standalone (no external dependencies), fully tested, and ready for use in Node.js or the browser.
+
+## Usage
+
+See [DOCUMENTATION.md](DOCUMENTATION.md).
 
 ## Installation
 
@@ -14,9 +18,19 @@ Or via Bower:
 
 Or simply download the [minified source](dist/Array2D.min.js).
 
-## Usage
+## Development
 
-See [DOCUMENTATION.md](DOCUMENTATION.md).
+Pull requests are welcome.
+
+## Testing
+
+Run the tests with:
+
+    $ mocha test
+
+## Author
+
+[Matthew Trost](http://trost.co)
 
 ## Copyright
 
