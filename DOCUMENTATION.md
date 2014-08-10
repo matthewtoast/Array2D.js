@@ -598,6 +598,14 @@ Returns the list of corners that the cell at row-column coordinates `r`, `c` is 
 
     // => [Array2D.CORNERS.BOTTOM_RIGHT]
 
+##### boundary
+
+Similar to `edge`, except for a ragged grid. Calculates with respect to individual row-length instead of grid width.
+
+##### boundaries
+
+Similar to `edges`, except for a ragged grid. Calculates with respect to individual row-length instead of grid width.
+
 ##### center(grid, r, c)
 
 Returns `true` if the cell at row-column coordinates `r`, `c` is the grid's center cell. Otherwise `false`.
@@ -887,11 +895,19 @@ Similar to _flatten_, except returning the values in column-major order.
 
 Reduce the grid to a _flat array_ by reducing each row to a single value. Each row is passed to the `iterator`, with the return value of the iterator becoming the reduced value of the whole row. The iterator signature is `iterator(row, r, grid)`, with `row` being the row-array, and `r` being the row-index.
 
+##### boildown(grid, iterator)
+
+Similar to `reduce`, except iteration occurs in column-major order.
+
 ### Analysis
 
 ##### symmetrical(grid, axis)
 
 Returns `true` if the passed grid is symmetrical when reflected about the axis `axis`.
+
+##### includes(grid1, grid2)
+
+Returns `true` if the first grid contains the second grid.
 
 ### "Constants" / "enums"
 
