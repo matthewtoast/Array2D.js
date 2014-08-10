@@ -25,7 +25,7 @@ See [DOCUMENTATION.md](DOCUMENTATION.md).
 
 You can install via npm:
 
-    npm install Array2D  
+    npm install array2d
 
 Or via Bower:
 

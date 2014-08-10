@@ -1,5 +1,5 @@
 {
-  "name": "Array2D.js",
+  "name": "array2d",
   "version": "0.0.1",
   "description": "Utility library for working with 2D arrays (arrays of arrays) in JavaScript",
   "main": "Array2D.js",
