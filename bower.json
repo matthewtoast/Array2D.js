@@ -11,7 +11,7 @@
   ],
   "description": "Utility library for working with 2D arrays (arrays of arrays) in JavaScript",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "ignore": [
     "**/.*",
     "node_modules",
