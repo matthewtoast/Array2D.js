@@ -1,0 +1,64 @@
+<html>
+<head>
+  <title>Array2D.js canvas demonstration</title>
+  <link rel="stylesheet" href="normalize.css">
+  <style>
+    #canvas {
+      border: 1px solid black;
+    }
+
+    #source {
+      border: 1px solid black;
+      width: 600px;
+      height: 320px;
+    }
+
+    #source {
+      font-family: Consolas, monospace;
+    }
+  </style>
+</head>
+<body>
+  <h1>Array2D.js canvas demonstration</h1>
+<textarea id="source">
+var canvas = document.getElementById('canvas');
+var w = canvas.width;
+var h = canvas.height;
+
+var grid = Array2D.buildWith(w, h, function(r, c) {
+  return r * c % 255;
+});
+
+// Try uncommenting one of these:
+// grid = Array2D.lpan(grid, 100);
+// grid = Array2D.paste(grid, grid, 78, 78);
+// grid = Array2D.shuffle(grid);
+
+Array2D.toCanvas(grid, canvas, function(cell) {
+  return [cell, cell, cell, 255]; // [r,g,b,a]
+});
+</textarea>
+  <br>
+  <div>
+    <button id="button">
+      Evaluate
+    </button>
+  </div>
+  <br>
+  <canvas id="canvas" width="256" height="256">
+  </canvas>
+  <p>Author - <a href="http://trost.co">Matthew Trost</a></p>
+  <p><a href="https://github.com/matthewtoast/Array2D.js">GitHub</p></p>
+  <script src="./../Array2D.js"></script>
+  <script>
+    var source = document.getElementById('source');
+    var button = document.getElementById('button');
+    var canvas = document.getElementById('canvas');
+
+    button.addEventListener('click', function(event) {
+      var code = source.value;
+      eval(code);
+    });
+  </script>
+</body>
+</html>
