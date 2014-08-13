@@ -947,17 +947,57 @@ See `upan`, `dpan`, `rpan`, and `lpan`.
 
 Pan up over the grid the given number of steps.
 
+    Array2D.upan([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]);
+
+    // => [[7,8,9],
+    // =>  [1,2,3],
+    // =>  [4,5,6]]
+
 ##### dpan(grid, [steps])
 
 Pan down over the grid the given number of steps.
+
+    Array2D.dpan([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]);
+
+    // => [[4,5,6],
+    // =>  [7,8,9],
+    // =>  [1,2,3]]
 
 ##### lpan(grid, [steps])
 
 Pan left over the grid the given number of steps.
 
+    Array2D.lpan([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]);
+
+    // => [[3,1,2],
+    // =>  [6,4,5],
+    // =>  [9,7,8]]
+
 ##### rpan(grid, [steps])
 
 Pan right over the grid the given number of steps.
+
+    Array2D.rpan([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]);
+
+    // => [[3,2,1],
+    // =>  [5,6,4],
+    // =>  [8,9,7]]
 
 ##### slide(grid, direction, [steps])
 
@@ -969,17 +1009,57 @@ See `uslide`, `dslide`, `rslide`, and `lslide`.
 
 Slide the grid up the given number of steps.
 
+    Array2D.uslide([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]);
+
+    // => [[4,5,6],
+    // =>  [7,8,9],
+    // =>  [1,2,3]]
+
 ##### dslide(grid, [steps])
 
 Slide the grid down the given number of steps.
+
+    Array2D.dslide([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]);
+
+    // => [[7,8,9],
+    // =>  [1,2,3],
+    // =>  [4,5,6]]
 
 ##### lslide(grid, [steps])
 
 Slide the grid left the given number of steps.
 
+    Array2D.lslide([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]);
+
+    // => [[3,2,1],
+    // =>  [5,6,4],
+    // =>  [8,9,7]]
+
 ##### rslide(grid, [steps])
 
 Slide the grid right the given number of steps.
+
+    Array2D.rslide([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]);
+
+    // => [[3,1,2],
+    // =>  [6,4,5],
+    // =>  [9,7,8]]
 
 ##### transpose(grid)
 
