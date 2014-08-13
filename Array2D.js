@@ -102,11 +102,25 @@
     WEST: 8
   };
 
+  Array2D.BOUNDARIES = {
+    UPPER: 1,
+    LOWER: 2,
+    LEFT: 3,
+    RIGHT: 4
+  };
+
   Array2D.CORNERS = {
     TOP_LEFT: 1,
     TOP_RIGHT: 2,
     BOTTOM_LEFT: 3,
     BOTTOM_RIGHT: 4
+  };
+
+  Array2D.CROOKS = {
+    UPPER_LEFT: 1,
+    UPPER_RIGHT: 2,
+    LOWER_LEFT: 3,
+    LOWER_RIGHT: 4
   };
 
   Array2D.DIRECTIONS = {
@@ -177,11 +191,17 @@
   Array2D.cells = function(grid) {
     var count = 0;
 
-    Array2D.eachCell(grid, function(cell) {
-      if (isExistent(cell)) {
-        count++;
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      var row = grid[i];
+
+      for (var j = 0, l2 = row.length; j < l2; j++) {
+        var cell = row[j];
+
+        if (isExistent(cell)) {
+          count++
+        }
       }
-    });
+    }
 
     return count;
   };
@@ -193,13 +213,16 @@
   Array2D.clone = function(grid) {
     var out = [];
 
-    Array2D.eachCell(grid, function(cell, r, c) {
-      if (!isArray(out[r])) {
-        out[r] = [];
-      }
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      out[i] = [];
+      var row = grid[i];
 
-      out[r][c] = cell;
-    });
+      for (var j = 0, l2 = row.length; j < l2; j++) {
+        var cell = row[j];
+
+        out[i][j] = cell;
+      }
+    }
 
     return out;
   };
@@ -223,6 +246,27 @@
     return out;
   };
 
+  // Initialize a new grid of the given dimensions (w,h),
+  // using the passed function to initialize each cell.
+  Array2D.buildWith = function(w, h, fn) {
+    var out = [];
+
+    for (var i = 0, l1 = h; i < l1; i++) {
+      out[i] = [];
+
+      for (var j = 0, l2 = w; j < l2; j++) {
+        if (fn) {
+          out[i][j] = fn(i, j, out);
+        }
+        else {
+          out[i][j] = null;
+        }
+      }
+    }
+
+    return out;
+  };
+
   // Serialize the grid to a string.
   Array2D.serialize = function(grid) {
     return JSON.stringify(grid);
@@ -230,17 +274,20 @@
 
   // Convert all the cells of the grid to `null`.
   Array2D.nullify = function(grid) {
-    var out = Array2D.clone(grid);
+    var out = [];
 
-    Array2D.eachCell(out, function(cell, r, c) {
-      if (!isArray(out[r])) {
-        out[r] = [];
-      }
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      out[i] = [];
+      var row = grid[i];
 
-      if (isExistent(cell)) {
-        out[r][c] = null;
+      for (var j = 0, l2 = row.length; j < l2; j++) {
+        var cell = row[j];
+
+        if (isExistent(cell)) {
+          out[i][j] = null;
+        }
       }
-    });
+    }
 
     return out;
   };
@@ -287,11 +334,17 @@
   Array2D.sparse = function(grid) {
     var sparse = false;
 
-    Array2D.eachCell(grid, function(cell) {
-      if (isBlank(cell)) {
-        sparse = true;
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      var row = grid[i];
+
+      for (var j = 0, l2 = row.length; j < l2; j++) {
+        var cell = row[j];
+
+        if (isBlank(cell)) {
+          sparse = true;
+        }
       }
-    });
+    }
 
     return sparse;
   };
@@ -305,11 +358,18 @@
   // Return a new grid with the cells converted to integers,
   // using `parseInt`.
   Array2D.integerize = function(grid) {
-    var out = Array2D.clone(grid);
+    var out = []
 
-    Array2D.eachCell(out, function(cell, r, c) {
-      out[r][c] = parseInt(cell);
-    });
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      out[i] = [];
+      var row = grid[i];
+
+      for (var j = 0, l2 = row.length; j < l2; j++) {
+        var cell = row[j];
+
+        out[i][j] = parseInt(cell);
+      }
+    }
 
     return out;
   };
@@ -317,11 +377,18 @@
   // Return a new grid with the cells converted to strings, using
   // the `String` constructor.
   Array2D.stringize = function(grid) {
-    var out = Array2D.clone(grid);
+    var out = [];
 
-    Array2D.eachCell(out, function(cell, r, c) {
-      out[r][c] = String(cell);
-    });
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      out[i] = [];
+      var row = grid[i];
+
+      for (var j = 0, l2 = row.length; j < l2; j++) {
+        var cell = row[j];
+
+        out[i][j] = String(cell);
+      }
+    }
 
     return out;
   };
@@ -399,11 +466,17 @@
     var empty = Array2D.empty(grid);
     if (empty) return true;
 
-    Array2D.eachCell(grid, function(cell) {
-      if (!isBlank(cell)) {
-        blank = false;
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      var row = grid[i];
+
+      for (var j = 0, l2 = row.length; j < l2; j++) {
+        var cell = row[j];
+
+        if (!isBlank(cell)) {
+          blank = false;
+        }
       }
-    });
+    }
 
     return blank;
   };
@@ -412,11 +485,17 @@
   Array2D.contains = function(grid, value) {
     var contains = false;
 
-    Array2D.eachCell(grid, function(cell) {
-      if (cell === value) {
-        contains = true;
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      var row = grid[i];
+
+      for (var j = 0, l2 = row.length; j < l2; j++) {
+        var cell = row[j];
+
+        if (cell === value) {
+          contains = true;
+        }
       }
-    });
+    }
 
     return contains;
   };
@@ -566,11 +645,13 @@
   Array2D.widest = function(grid) {
     var widest = grid[0];
 
-    Array2D.eachRow(grid, function(row, r) {
+    for (var i = 0, l = grid.length; i < l; i++) {
+      var row = grid[i];
+
       if (row.length > widest.length) {
         widest = row;
       }
-    });
+    }
 
     return cloneArray(widest);
   };
@@ -579,11 +660,13 @@
   Array2D.thinnest = function(grid) {
     var thinnest = grid[0];
 
-    Array2D.eachRow(grid, function(row, r) {
+    for (var i = 0, l = grid.length; i < l; i++) {
+      var row = grid[i];
+
       if (row.length < thinnest.length) {
         thinnest = row;
       }
-    });
+    }
 
     return cloneArray(thinnest);
   };
@@ -675,6 +758,79 @@
     if (r === height - 1 && c === 0) corners.push(Array2D.CORNERS.BOTTOM_LEFT);
 
     return corners;
+  };
+
+  // Determine whether the given cell is on a grid boundary, i.e.,
+  // the first/last cell in its row/column. If you need to detect
+  // edge-ness of a cell in a ragged grid, prefer this function.
+  Array2D.boundary = function(grid, r, c) {
+    if (r === 0) return true;
+    if (c === 0) return true;
+
+    var row = Array2D.row(grid, r);
+    var right = row.length - 1;
+    if (c === right) return true;
+
+    var col = Array2D.column(grid, c);
+    var bottom = col.length - 1;
+    if (r === bottom) return true;
+
+    return false;
+  };
+
+  // Return a list of boundaries that the cell is on. If you need to
+  // detect edges of a cell in a ragged grid, prefer this function.
+  Array2D.boundaries = function(grid, r, c) {
+    var boundaries = [];
+
+    if (r === 0) boundaries.push(Array2D.BOUNDARIES.UPPER);
+    if (c === 0) boundaries.push(Array2D.BOUNDARIES.LEFT);
+
+    var row = Array2D.row(grid, r);
+    var right = row.length - 1;
+    if (c === right) boundaries.push(Array2D.BOUNDARIES.RIGHT);
+
+    var col = Array2D.column(grid, c);
+    var bottom = col.length - 1;
+    if (r === bottom) boundaries.push(Array2D.BOUNDARIES.LOWER);
+
+    return boundaries;
+  };
+
+  // Detect whether the cell is on a 'crook', i.e. the first or last
+  // cell in a row *and* the first or last cell in a column. If you need to
+  // detect corner-ness of a cell in a ragged grid, prefer this function.
+  Array2D.crook = function(grid, r, c) {
+    if (r === 0 && c === 0) return true;
+
+    var row = Array2D.row(grid, r);
+    var right = row.length - 1;
+    var col = Array2D.column(grid, c);
+    var bottom = col.length - 1;
+
+    if (r === 0 && c === bottom) return true;
+    if (r === right && c === 0) return true;
+    if (r === right && c === bottom) return true;
+
+    return false;
+  };
+
+  // Return a list of 'crooks' that the cell is on. If you need to
+  // detect corners of a cell in a ragged grid, prefer this function.
+  Array2D.crooks = function(grid, r, c) {
+    var crooks = [];
+
+    var row = Array2D.row(grid, r);
+    var right = row.length - 1;
+    var col = Array2D.column(grid, c);
+    var bottom = col.length - 1;
+
+    if (r === 0 && c === 0) crooks.push(Array2D.CROOKS.UPPER_LEFT);
+    if (r === 0 && c === bottom) crooks.push(Array2D.CROOKS.LOWER_LEFt);
+    if (r === right && c === 0) crooks.push(Array2D.CROOKS.UPPER_RIGHT);
+    if (r === right && c === bottom) crooks.push(Array2D.CROOKS.LOWER_RIGHT);
+
+    return crooks;
   };
 
   // Determine whether the given coordinate is at the grid's center.
@@ -824,15 +980,24 @@
   Array2D.map = function(grid, iterator) {
     var out = [];
 
-    Array2D.eachCell(grid, function(cell, r, c, grid) {
-      if (!isArray(out[r])) {
-        out[r] = [];
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      out[i] = [];
+      var row = grid[i];
+
+      for (var j = 0, l2 = row.length; j < l2; j++) {
+        var cell = row[j];
+
+        var result;
+        if (iterator) {
+          result = iterator(cell, i, j, grid);
+        }
+        else {
+          result = cell;
+        }
+
+        out[i][j] = result;
       }
-
-      var result = iterator(cell, r, c, grid);
-
-      out[r][c] = result;
-    });
+    }
 
     return out;
   };
@@ -844,17 +1009,20 @@
   Array2D.rotate = function(grid, direction) {
     if (direction === Array2D.DIRECTIONS.LEFT) return Array2D.lrotate(grid);
     if (direction === Array2D.DIRECTIONS.RIGHT) return Array2D.rrotate(grid);
+    throw("Array2D.js: Invalid direction provided for `rotate`");
   };
 
   // Rotate the grid to the left one quarter-turn.
   Array2D.lrotate = function(grid) {
     var transposed = Array2D.transpose(grid);
+
     return Array2D.vflip(transposed);
   };
 
   // Rotate the grid to the right one quarter-turn.
   Array2D.rrotate = function(grid) {
     var transposed = Array2D.transpose(grid);
+
     return Array2D.hflip(transposed);
   };
 
@@ -862,7 +1030,7 @@
   Array2D.flip = function(grid, axis) {
     if (axis === Array2D.AXES.X) return Array2D.vflip(grid);
     if (axis === Array2D.AXES.Y) return Array2D.hflip(grid);
-    throw("`Array2D.flip` requires a valid `axis` parameter");
+    throw("Array2D.js: Invalid axis provided for `flip`");
   };
 
   // Flip the grid vertically, i.e., about its x-axis.
@@ -894,12 +1062,94 @@
     return out;
   };
 
+  // Pan the array in the given direction, the given number of steps.
   Array2D.pan = function(grid, direction, steps) {
-
+    switch (direction) {
+      case Array2D.DIRECTIONS.LEFT: return Array2D.lpan(grid, steps);
+      case Array2D.DIRECTIONS.RIGHT: return Array2D.rpan(grid, steps);
+      case Array2D.DIRECTIONS.UP: return Array2D.upan(grid, steps);
+      case Array2D.DIRECTIONS.DOWN: return Array2D.dpan(grid, steps);
+      default:
+        throw("Array2D.js: Invalid direction provided for `pan`");
+    }
   };
 
-  Array2D.slide = function(grid, direction, steps) {
+  // Pan the array up by the number of steps.
+  Array2D.upan = function(grid, steps) {
+    var panned = Array2D.clone(grid);
 
+    steps || (steps = 1);
+    while (steps > 0) {
+      var last = panned.pop();
+      panned.unshift(last);
+      steps--;
+    }
+
+    return panned;
+  };
+
+  // Pan the array left by the number of steps.
+  Array2D.lpan = function(grid, steps) {
+    var transposed = Array2D.transpose(grid);
+
+    var shifted = Array2D.upan(transposed, steps);
+
+    return Array2D.transpose(shifted);
+  };
+
+  // Pan the array down by the number of steps.
+  Array2D.dpan = function(grid, steps) {
+    var panned = Array2D.clone(grid);
+
+    steps || (steps = 1);
+    while (steps > 0) {
+      var first = panned.shift();
+      panned.push(first);
+      steps--;
+    }
+
+    return panned;
+  };
+
+  // Pan the array right by the number of steps.
+  Array2D.rpan = function(grid, steps) {
+    var transposed = Array2D.transpose(grid);
+
+    var shifted = Array2D.dpan(transposed, steps);
+
+    return Array2D.transpose(shifted);
+  };
+
+  // Slide performs a pan, but in the reverse direction specified.
+  Array2D.slide = function(grid, direction, steps) {
+    switch (direction) {
+      case Array2D.DIRECTIONS.LEFT: return Array2D.lslide(grid, steps);
+      case Array2D.DIRECTIONS.RIGHT: return Array2D.rslide(grid, steps);
+      case Array2D.DIRECTIONS.UP: return Array2D.uslide(grid, steps);
+      case Array2D.DIRECTIONS.DOWN: return Array2D.dslide(grid, steps);
+      default:
+        throw("Array2D.js: Invalid direction provided for `slide`");
+    }
+  };
+
+  // Slide the grid right, the number of steps.
+  Array2D.rslide = function(grid, steps) {
+    return Array2D.lpan(grid, steps);
+  };
+
+  // Slide the grid left, the number of steps.
+  Array2D.lslide = function(grid, steps) {
+    return Array2D.rpan(grid, steps);
+  };
+
+  // Slide the grid down, the number of steps.
+  Array2D.dslide = function(grid, steps) {
+    return Array2D.upan(grid, steps);
+  };
+
+  // Slide the grid up, the number of steps.
+  Array2D.uslide = function(grid, steps) {
+    return Array2D.dpan(grid, steps);
   };
 
   // Return a new grid with the elements transposed (flipped about
@@ -907,13 +1157,15 @@
   Array2D.transpose = function(grid) {
     var out = [];
 
-    Array2D.eachCell(grid, function(cell, r, c) {
-      if (!isArray(out[c])) {
-        out[c] = [];
-      }
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      var row = grid[i];
 
-      out[c][r] = cell;
-    });
+      for (var j = 0, l2 = row.length; j < l2; j++) {
+        if (!out[j]) out[j] = [];
+
+        out[j][i] = row[j];
+      }
+    }
 
     return out;
   };
@@ -922,53 +1174,213 @@
   // *secondary* diagonal.
   Array2D.antitranspose = function(grid) {
     var rotated = Array2D.rrotate(grid);
+
     return Array2D.vflip(rotated);
   };
 
   Array2D.pad = function(grid, side, value) {
-
+    throw("Array2D.js: Not yet implemented");
   };
 
   Array2D.trim = function(grid, side, num) {
-
+    throw("Array2D.js: Not yet implemented");
   };
 
-  Array2D.paste = function(grid1, grid2, r, c) {
+  // Paste the contents of the second grid onto the first.
+  Array2D.paste = function(grid1, grid2, sr, sc) {
+    var out = [];
 
+    for (var i = 0, l1 = grid1.length; i < l1; i++) {
+      out[i] = [];
+
+      var rlen = grid1[i].length;
+      var tr = i - sr;
+
+      for (var j = 0; j < rlen; j++) {
+        var tc = j - sc;
+
+        if (i >= sr && j >= sc && tr < l1 && tc < rlen) {
+          out[i][j] = grid2[tr][tc];
+        }
+        else {
+          out[i][j] = grid1[i][j];
+        }
+      }
+    }
+
+    return out;
   };
 
   Array2D.glue = function(grid1, grid2, r, c) {
-
+    throw("Array2D.js: Not yet implemented");
   };
 
   Array2D.stitch = function(grid1, grid2, edge) {
-
+    throw("Array2D.js: Not yet implemented");
   };
 
+  // Shuffle (randomize) the grid, preserving the dimensions.
   Array2D.shuffle = function(grid) {
+    // Ensure the row-lengths are preserved
+    var rowLens = [];
+    for (var i = 0, l = grid.length; i < l; i++) {
+      rowLens.push(grid[i].length);
+    }
 
+    // Fisher-Yates shuffle
+    var shuffled = Array2D.flatten(grid);
+    for (var i = shuffled.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = shuffled[i];
+      shuffled[i] = shuffled[j];
+      shuffled[j] = t;
+    }
+
+    // Push the shuffled elements into a new grid
+    var out = []
+    for (var i = 0, l = rowLens.length; i < l; i++) {
+      var row = [];
+      var rowLen = rowLens[i];
+      while (rowLen--) {
+        row.push(shuffled.pop());
+      }
+      out.push(row);
+    }
+
+    return out;
   };
 
   // Conversion / reduction
   // ======================
 
+  // Flatten the grid to an array in row-major order.
   Array2D.flatten = function(grid) {
+    var flattened = [];
 
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      var row = grid[i];
+
+      for (var j = 0, l2 = row.length; j < l2; j++) {
+        flattened.push(row[j]);
+      }
+    }
+
+    return flattened;
   };
 
+  // Same as flatten, but in column-major order.
   Array2D.squash = function(grid) {
+    var transposed = Array2D.transpose(grid);
 
+    return Array2D.flatten(transposed);
   };
 
+  // Reduce the grid to a flat array by reducing each
+  // row to a single value.
   Array2D.reduce = function(grid, iterator) {
+    var reduced = [];
 
+    for (var i = 0, l = grid.length; i < l; i++) {
+      reduced[i] = iterator(grid[i], i, grid);
+    }
+
+    return reduced;
+  };
+
+  // Similar to reduce, but column-by-column.
+  Array2D.boildown = function(grid, iterator) {
+    var transposed = Array2D.transpose(grid);
+
+    return Array2D.reduce(transposed, iterator);
   };
 
   // Analysis
   // ========
 
+  // Detect whether the grid is symmetrical, when reflected
+  // around the given axis.
   Array2D.symmetrical = function(grid, axis) {
+    throw("Array2D.js: Not yet implemented");
+  };
 
+  // Detect whether the first grid contains the second grid.
+  Array2D.includes = function(grid1, grid2) {
+    throw("Array2D.js: Not yet implemented");
+  };
+
+  // Import / export
+  // ===============
+
+  // Convert the canvas pixel data into an Array2D-formatted grid.
+  Array2D.fromCanvas = function(canvas) {
+    var context = canvas.getContext('2d');
+    var image = context.getImageData(0, 0, canvas.width, canvas.width);
+
+    var width = image.width;
+    var height = image.height;
+    var data = image.data;
+
+    var colors = [];
+
+    for (var i = 0, l = data.length; i < l; i += 4) {
+      var r = data[i]
+      var g = data[i+1];
+      var b = data[i+2];
+      var a = data[i+3];
+
+      var color = [r,g,b,a];
+
+      colors.push(color);
+    }
+
+    return Array2D.fromArray(colors, height, width);
+  };
+
+  // Paint the grid data to the given canvas, running each cell
+  // through a `converter` function to produce a _rgba_ color array.
+  // That is, on output, every cell needs to look something like this:
+  // `[255,255,255,255]`
+  Array2D.toCanvas = function(grid, canvas, converter) {
+    var context = canvas.getContext('2d');
+    var width = canvas.width;
+    var height = canvas.height;
+    var image = context.createImageData(width, height);
+    var data = image.data;
+    var colors;
+
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      var row = grid[i];
+
+      for (var j = 0, l2 = row.length; j < l2; j++) {
+        var cell = row[j];
+
+        colors = (converter) ? converter(cell, i, j, grid) : cell;
+
+        var idx = (i * width + j) * 4;
+
+        data[idx + 0] = colors[0];
+        data[idx + 1] = colors[1];
+        data[idx + 2] = colors[2];
+        data[idx + 3] = colors[3];
+      }
+    }
+
+    context.putImageData(image, 0, 0);
+  };
+
+  // Convert the given array (flat) into the standard grid format.
+  Array2D.fromArray = function(arr, rows, columns) {
+    var out = [];
+
+    for (var i = 0; i < rows; i++) {
+      out[i] = [];
+
+      for (var j = 0; j < columns; j++) {
+        out[i][j] = arr[i * columns + j];
+      }
+    }
+
+    return out;
   };
 
 }.call(this));

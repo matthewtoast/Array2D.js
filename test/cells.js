@@ -134,6 +134,87 @@ describe('#corners', function() {
   });
 });
 
+describe('#boundary', function() {
+  it('can detect if a cell is on an boundary', function() {
+    var result = Array2D.boundary([
+      [1,2,3],
+      [4,5],
+      [7]
+    ], 1, 1);
+
+    var expected = true;
+
+    assert.strictEqual(expected, result);
+  });
+
+  it('can detect if a cell is not on an boundary', function() {
+    var result = Array2D.boundary([
+      [1,2,3,4],
+      [4,5,6],
+      [7,8]
+    ], 1, 1);
+
+    var expected = false;
+
+    assert.strictEqual(expected, result);
+  });
+});
+
+describe('#crook', function() {
+  it('can detect if a cell is on a crook', function() {
+    var result = Array2D.crook([
+      [1,2,3],
+      [4,5],
+      [7]
+    ], 1, 1);
+
+    var expected = true;
+
+    assert.strictEqual(expected, result);
+  });
+
+  it('can detect if a cell is not on a crook', function() {
+    var result = Array2D.crook([
+      [1,2,3,4],
+      [4,5,6],
+      [7,8]
+    ], 1, 1);
+
+    var expected = false;
+
+    assert.strictEqual(expected, result);
+  });
+});
+
+describe('#boundaries', function() {
+  it('can return a list of boundaries', function() {
+    var result = Array2D.boundaries([
+      [1,2,3],
+      [4,5],
+      [9]
+    ], 1, 1);
+
+    var expected = [Array2D.BOUNDARIES.RIGHT, Array2D.BOUNDARIES.LOWER];
+
+    assert.strictEqual(expected[0], result[0]);
+    assert.strictEqual(expected[1], result[1]);
+  });
+});
+
+describe('#crooks', function() {
+  it('can return a list of crooks', function() {
+    var result = Array2D.crooks([
+      [1,2,3],
+      [4,5],
+      [7]
+    ], 1, 1);
+
+    var expected = [Array2D.CROOKS.LOWER_RIGHT];
+
+    assert.strictEqual(expected[0], result[0]);
+  });
+});
+
 describe('#center', function() {
   it('can determine if a cell is at the center', function() {
     var result = Array2D.center([

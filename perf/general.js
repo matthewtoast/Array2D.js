@@ -12,6 +12,15 @@ suite.add('#transpose', function() {
     [7,8,9]
   ]);
 })
+suite.add('#map', function() {
+  Array2D.transpose([
+    [1,2,3],
+    [4,5,6],
+    [7,8,9]
+  ], function(cell) {
+    return cell;
+  });
+})
 .on('cycle', function(event) {
   console.log(String(event.target), '(ran at ' + new Date() + ')');
 })

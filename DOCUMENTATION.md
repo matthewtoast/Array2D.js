@@ -122,11 +122,17 @@ Initialize a new grid of the desired width `w` (columns) and height `h` (rows). 
     // =>  ['x','x','x'],
     // =>  ['x','x','x']]
 
-##### _buildWith(w, h, func)_
+##### buildWith(w, h, func)
 
-Initialize a grid of the given dimensions, but instead of initializing from a single value, initialize each cell with the return value of the function `func`. The `func` signature should be `func(r, c, partial)`, where `r`, `c` are row-column coordinates and `partial` is the partially-constructed grid at that point. `null` is used if the `func` returns nothing.
+Initialize a grid of the given dimensions, but instead of initializing from a single value, initialize each cell with the return value of the function `func`. The `func` signature should be `func(r, c, partial)`, where `r`, `c` are row-column coordinates and `partial` is the partially-constructed grid at that point. `null` is used if the `func` returns nothing or if one is not supplied.
 
-_Not yet implemented._
+    Array2D.buildWith(3, 3, function(r, c) {
+      return r + c;
+    });
+
+    // => [[0,1,2],
+    // =>  [1,2,3],
+    // =>  [2,3,4]]
 
 ##### serialize(grid)
 
@@ -608,13 +614,49 @@ Returns the list of corners that the cell at row-column coordinates `r`, `c` is 
 
 Similar to `edge`, except for a ragged grid. Calculates with respect to individual row-length instead of grid width.
 
-_Not yet implemented!_
+    Array2D.boundary([
+      [1,2,3],
+      [4,5],
+      [7]
+    ], 1, 1);
+
+    // => true
 
 ##### _boundaries(grid, r, c)_
 
 Similar to `edges`, except for a ragged grid. Calculates with respect to individual row-length instead of grid width.
 
-_Not yet implemented!_
+    Array2D.boundary([
+      [1,2,3],
+      [4,5],
+      [7]
+    ], 1, 1);
+
+    // => [Array2D.BOUNDARIES.LOWER, Array2D.BOUNDARIES.RIGHT]
+
+##### _crook(grid, r, c)_
+
+Similar to `corner`, except for a ragged grid. Calculates with respect to individual row-length instead of grid width.
+
+    Array2D.crook([
+      [1,2,3],
+      [4,5],
+      [7]
+    ], 1, 1);
+
+    // => true
+
+##### _crooks(grid, r, c)_
+
+Similar to `corners`, except for a ragged grid. Calculates with respect to individual row-length instead of grid width.
+
+    Array2D.boundary([
+      [1,2,3],
+      [4,5],
+      [7]
+    ], 1, 1);
+
+    // => [Array2D.CROOKS.LOWER_RIGHT]
 
 ##### center(grid, r, c)
 
@@ -895,17 +937,49 @@ Flip the grid horizontally (over its vertical axis).
     // =>  [6,5,4],
     // =>  [9,8,7]]
 
-##### _pan(grid, direction, [steps])_
+##### pan(grid, direction, [steps])
 
 Return a new grid, having "panned" over the given number of `steps` in the specified `direction`, and assuming that the edges of the grid should wrap around to the opposite side. That is, if we pan up one step, the bottom row of the grid would become the top row, pushing the remaining rows down. Likewise, if we panned left two steps, the leftmost columns would be replaced by the rightmost two, pushing the rest to the right. Note that the panning direction is the opposite of the direction that the rows/columns appear to move.
 
-_Not yet implemented._
+See `upan`, `dpan`, `rpan`, and `lpan`.
 
-##### _slide(grid, direction, [steps])_
+##### upan(grid, [steps])
+
+Pan up over the grid the given number of steps.
+
+##### dpan(grid, [steps])
+
+Pan down over the grid the given number of steps.
+
+##### lpan(grid, [steps])
+
+Pan left over the grid the given number of steps.
+
+##### rpan(grid, [steps])
+
+Pan right over the grid the given number of steps.
+
+##### slide(grid, direction, [steps])
 
 Similar to `pan`, except opposite: the _contents_ appear to move in the given direction.
 
-_Not yet implemented._
+See `uslide`, `dslide`, `rslide`, and `lslide`.
+
+##### uslide(grid, [steps])
+
+Slide the grid up the given number of steps.
+
+##### dslide(grid, [steps])
+
+Slide the grid down the given number of steps.
+
+##### lslide(grid, [steps])
+
+Slide the grid left the given number of steps.
+
+##### rslide(grid, [steps])
+
+Slide the grid right the given number of steps.
 
 ##### transpose(grid)
 
@@ -947,11 +1021,23 @@ Return a new grid with the row or column of the given side trimmed off. If `num`
 
 _Not yet implemented._
 
-##### _paste(grid1, grid2, r, c)_
+##### paste(grid1, grid2, r, c)
 
 Return a new grid with contents of the first grid pasted over the contents of the second, starting at the row-column coordinates `r`, `c`. If the pasted grid exceeds the bounds of the pasted-to grid, the out-of-bounds cells will be ignored.
 
-_Not yet implemented._
+    Array2D.paste([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ],[
+      ['a','b','c'],
+      ['d','e','f'],
+      ['g','h','i']
+    ], 1, 1);
+
+    // => [[1,2,3],
+    // =>  [4,'a','b'],
+    // =>  [7,'d','e']]
 
 ##### _glue(grid1, grid2, r, c)_
 
@@ -965,37 +1051,73 @@ Return a new grid with the first grid stitched to the second grid, along the giv
 
 _Not yet implemented._
 
-##### _shuffle(grid)_
+##### shuffle(grid)
 
 Return a new grid with the cell elements shuffled (randomly rearranged).
 
-_Not yet implemented._
+    Array2D.antitranspose([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]);
+
+    // => [[3,2,8], // (For example)
+    // =>  [1,5,6],
+    // =>  [7,4,9]]
 
 ### Conversion / reduction
 
-##### _flatten(grid)_
+##### flatten(grid)
 
 Return a _flat array_ of all the grid's cell values, in row-major order.
 
-_Not yet implemented._
+    Array2D.flatten([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]);
 
-##### _squash(grid)_
+    // => [1,2,3,4,5,6,7,8,9]
+
+##### squash(grid)
 
 Similar to _flatten_, except returning the values in column-major order.
 
-_Not yet implemented._
+    Array2D.squash([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]);
 
-##### _reduce(grid, iterator)_
+    // => [1,4,7,2,5,8,3,6,9]
+
+##### reduce(grid, iterator)
 
 Reduce the grid to a _flat array_ by reducing each row to a single value. Each row is passed to the `iterator`, with the return value of the iterator becoming the reduced value of the whole row. The iterator signature is `iterator(row, r, grid)`, with `row` being the row-array, and `r` being the row-index.
 
-_Not yet implemented._
+    Array2D.reduce([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], function(row, r) {
+        return row[0] * r;
+    });
 
-##### _boildown(grid, iterator)_
+    // => [0,4,14]
+
+##### boildown(grid, iterator)
 
 Similar to `reduce`, except iteration occurs in column-major order.
 
-_Not yet implemented._
+    Array2D.squash([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], function(column, c) {
+        return column[0] * c;
+    });
+
+    // => [0,2,6]
 
 ### Analysis
 
@@ -1013,23 +1135,36 @@ _Not yet implemeneted._
 
 ### Import / export
 
-##### _fromCanvas(canvas)_ [browser-only]
+##### fromCanvas(canvas) [browser-only]
 
-Produces a "grid" (array of arrays) from the given HTML `<canvas>` element.
+Produces a "grid" (array of arrays) from the given HTML `<canvas>` element. Each pixel's four _rgba_ color values will be converted into an array of integers. The result is a grid like this:
 
-_Not yet implemeneted._
+    [[[255,255,255,255],[255,255,255,255]],
+     [[255,255,255,255],[255,255,255,255]]]
 
-##### _fromImageData(imageData)_ [browser-only]
+Example code:
 
-Produces a "grid" (array of arrays) from the given `ImageData` object.
+    var canvas = document.getElementById('mycanvas');
+    var grid = Array2D.fromCanvas(canvas);
 
-_Not yet implemeneted._
+##### toCanvas(grid, canvas, converter) [browser-only]
 
-##### _toImageData(grid, converter)_ [browser-only]
+Paints the given grid onto the given HTML `<canvas>` element by running each cell through the given `converter` function, which is expected to transform that cell into an array of four _rgba_ color values.
 
-Converts the given grid to an `ImageData` object, passing every cell through the `converter` function which is expected to convert the cell values into an array of four _rgba_ color integers, e.g. `[255, 255, 255, 255]`. Each value will be supplied (in order) when initializing the `ImageData` output.
+Example code:
 
-_Not yet implemeneted._
+    var canvas = document.getElementById('mycanvas');
+    Array2D.toCanvas(
+        [[1,2,3],
+         [4,5,6],
+         [7,8,9]],
+        canvas,
+        function(cell) {
+            return [cell, cell, cell, 255]; // [r,g,b,a]
+        }
+    );
+
+Note that this method has the side effect of modifying the canvas' content.
 
 ### "Constants" / "enums"
 

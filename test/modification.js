@@ -205,6 +205,602 @@ describe('#hflip', function() {
   });
 });
 
+describe('#pan', function() {
+  it('can pan a grid up', function() {
+    var result = Array2D.pan([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], Array2D.DIRECTIONS.UP);
+
+    var expected = [
+      [7,8,9],
+      [1,2,3],
+      [4,5,6]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+
+  it('can pan a grid down', function() {
+    var result = Array2D.pan([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], Array2D.DIRECTIONS.DOWN);
+
+    var expected = [
+      [4,5,6],
+      [7,8,9],
+      [1,2,3]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+
+  it('can pan a grid left', function() {
+    var result = Array2D.pan([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], Array2D.DIRECTIONS.LEFT);
+
+    var expected = [
+      [3,1,2],
+      [6,4,5],
+      [9,7,8]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+
+  it('can pan a grid right', function() {
+    var result = Array2D.pan([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], Array2D.DIRECTIONS.RIGHT);
+
+    var expected = [
+      [2,3,1],
+      [5,6,4],
+      [8,9,7]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+});
+
+describe('#upan', function() {
+  it('can pan a grid up once', function() {
+    var result = Array2D.upan([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ]);
+
+    var expected = [
+      [7,8,9],
+      [1,2,3],
+      [4,5,6]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+
+  it('can pan a grid up multiple times', function() {
+    var result = Array2D.upan([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], 2);
+
+    var expected = [
+      [4,5,6],
+      [7,8,9],
+      [1,2,3]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+});
+
+describe('#dpan', function() {
+  it('can pan a grid down once', function() {
+    var result = Array2D.dpan([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ]);
+
+    var expected = [
+      [4,5,6],
+      [7,8,9],
+      [1,2,3]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+
+  it('can pan a grid down multiple times', function() {
+    var result = Array2D.dpan([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], 2);
+
+    var expected = [
+      [7,8,9],
+      [1,2,3],
+      [4,5,6]      
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+});
+
+describe('#lpan', function() {
+  it('can pan a grid left once', function() {
+    var result = Array2D.lpan([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ]);
+
+    var expected = [
+      [3,1,2],
+      [6,4,5],
+      [9,7,8]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+
+  it('can pan a grid left multiple times', function() {
+    var result = Array2D.lpan([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], 2);
+
+    var expected = [
+      [2,3,1],
+      [5,6,4],
+      [8,9,7]  
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+});
+
+describe('#rpan', function() {
+  it('can pan a grid right once', function() {
+    var result = Array2D.rpan([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ]);
+
+    var expected = [
+      [2,3,1],
+      [5,6,4],
+      [8,9,7]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+
+  it('can pan a grid right multiple times', function() {
+    var result = Array2D.rpan([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], 2);
+
+    var expected = [
+      [3,1,2],
+      [6,4,5],
+      [9,7,8]  
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+});
+
+describe('#slide', function() {
+  it('can slide a grid up', function() {
+    var result = Array2D.slide([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], Array2D.DIRECTIONS.UP);
+
+    var expected = [
+      [4,5,6],
+      [7,8,9],
+      [1,2,3]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+
+  it('can slide a grid down', function() {
+    var result = Array2D.slide([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], Array2D.DIRECTIONS.DOWN);
+
+    var expected = [
+      [7,8,9],
+      [1,2,3],
+      [4,5,6]      
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+
+  it('can slide a grid left', function() {
+    var result = Array2D.slide([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], Array2D.DIRECTIONS.LEFT);
+
+    var expected = [
+      [2,3,1],
+      [5,6,4],
+      [8,9,7]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+
+  it('can slide a grid right', function() {
+    var result = Array2D.slide([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], Array2D.DIRECTIONS.RIGHT);
+
+    var expected = [
+      [3,1,2],
+      [6,4,5],
+      [9,7,8]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+});
+
+describe('#uslide', function() {
+  it('can slide a grid up once', function() {
+    var result = Array2D.uslide([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ]);
+
+    var expected = [
+      [4,5,6],
+      [7,8,9],
+      [1,2,3]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+
+  it('can slide a grid up multiple times', function() {
+    var result = Array2D.uslide([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], 2);
+
+    var expected = [
+      [7,8,9],
+      [1,2,3],
+      [4,5,6]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+});
+
+describe('#dslide', function() {
+  it('can slide a grid down once', function() {
+    var result = Array2D.dslide([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ]);
+
+    var expected = [
+      [7,8,9],
+      [1,2,3],
+      [4,5,6]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+
+  it('can slide a grid down multiple times', function() {
+    var result = Array2D.dslide([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], 2);
+
+    var expected = [
+      [4,5,6],
+      [7,8,9],
+      [1,2,3]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+});
+
+describe('#lslide', function() {
+  it('can slide a grid left once', function() {
+    var result = Array2D.lslide([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ]);
+
+    var expected = [
+      [2,3,1],
+      [5,6,4],
+      [8,9,7]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+
+  it('can slide a grid left multiple times', function() {
+    var result = Array2D.lslide([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], 2);
+
+    var expected = [
+      [3,1,2],
+      [6,4,5],
+      [9,7,8]  
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+});
+
+describe('#rslide', function() {
+  it('can slide a grid right once', function() {
+    var result = Array2D.rslide([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ]);
+
+    var expected = [
+      [3,1,2],
+      [6,4,5],
+      [9,7,8]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+
+  it('can slide a grid right multiple times', function() {
+    var result = Array2D.rslide([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], 2);
+
+    var expected = [
+      [2,3,1],
+      [5,6,4],
+      [8,9,7]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+});
+
 describe('#transpose', function() {
   it('can transpose a grid', function() {
     var result = Array2D.transpose([
@@ -286,5 +882,79 @@ describe('#antitranspose', function() {
     assert.strictEqual(expected[2][0], result[2][0]);
     assert.strictEqual(expected[2][1], result[2][1]);
     assert.strictEqual(expected[2][2], result[2][2]);
+  });
+});
+
+describe('#paste', function() {
+  it('can paste a grid onto another', function() {
+    var result = Array2D.paste([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ],[
+      ['a','b','c'],
+      ['d','e','f'],
+      ['g','h','i']
+    ], 1, 1);
+
+    var expected = [
+      [1,2,3],
+      [4,'a','b'],
+      [7,'d','e']
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+
+  it('can paste a grid onto another with negative start coords', function() {
+    var result = Array2D.paste([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ],[
+      ['a','b','c'],
+      ['d','e','f'],
+      ['g','h','i']
+    ], -1, -1);
+
+    var expected = [
+      ['e','f',3],
+      ['h','i',6],
+      [7,8,9]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+});
+
+
+describe('#shuffle', function() {
+  it('can shuffle a grid', function() {
+    var result = Array2D.shuffle([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ]);
+
+    // Not a great check for validity, but...
+    assert.strictEqual(result[0].length, 3);
+    assert.strictEqual(result[0].length, 3);
+    assert.strictEqual(result[0].length, 3);
   });
 });
