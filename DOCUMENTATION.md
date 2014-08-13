@@ -610,7 +610,7 @@ Returns the list of corners that the cell at row-column coordinates `r`, `c` is 
 
     // => [Array2D.CORNERS.BOTTOM_RIGHT]
 
-##### _boundary(grid, r, c)_
+##### boundary(grid, r, c)
 
 Similar to `edge`, except for a ragged grid. Calculates with respect to individual row-length instead of grid width.
 
@@ -622,7 +622,7 @@ Similar to `edge`, except for a ragged grid. Calculates with respect to individu
 
     // => true
 
-##### _boundaries(grid, r, c)_
+##### boundaries(grid, r, c)
 
 Similar to `edges`, except for a ragged grid. Calculates with respect to individual row-length instead of grid width.
 
@@ -634,7 +634,7 @@ Similar to `edges`, except for a ragged grid. Calculates with respect to individ
 
     // => [Array2D.BOUNDARIES.LOWER, Array2D.BOUNDARIES.RIGHT]
 
-##### _crook(grid, r, c)_
+##### crook(grid, r, c)
 
 Similar to `corner`, except for a ragged grid. Calculates with respect to individual row-length instead of grid width.
 
@@ -646,7 +646,7 @@ Similar to `corner`, except for a ragged grid. Calculates with respect to indivi
 
     // => true
 
-##### _crooks(grid, r, c)_
+#####  rooks(grid, r, c)
 
 Similar to `corners`, except for a ragged grid. Calculates with respect to individual row-length instead of grid width.
 
