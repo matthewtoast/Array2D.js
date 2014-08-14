@@ -1346,7 +1346,7 @@ Stitch the second grid onto the right of the first grid.
 
 Return a new grid with the cell elements shuffled (randomly rearranged).
 
-    Array2D.antitranspose([
+    Array2D.shuffle([
         [1,2,3],
         [4,5,6],
         [7,8,9]
