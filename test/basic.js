@@ -74,6 +74,23 @@ describe('#height', function() {
   });
 });
 
+describe('#dimensions', function() {
+  it('can calculate the dimensions', function() {
+    var result = Array2D.dimensions([
+      [1,2],
+      [3,4,5,6],
+      [7]
+    ]);
+
+    var expected = [4,3];
+
+    console.log(result);
+
+    assert.strictEqual(expected[0], result[0]);
+    assert.strictEqual(expected[1], result[1]);
+  });
+});
+
 describe('#area', function() {
   it('can calculate the area', function() {
     var result = Array2D.area([

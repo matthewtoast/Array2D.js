@@ -1119,11 +1119,24 @@ Return a new grid with contents of the first grid pasted over the contents of th
     // =>  [4,'a','b'],
     // =>  [7,'d','e']]
 
-##### _glue(grid1, grid2, r, c)_
+##### glue(grid1, grid2, r, c)
 
 Like `paste`, except overlapping cells are included in the returned new grid, with additional `null` cells added to pad the grid so that the output grid is rectangular.
 
-_Not yet implemented._
+    Array2D.glue([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ],[
+      ['a','b','c'],
+      ['d','e','f'],
+      ['g','h','i']
+    ], 1, 1);
+
+    // => [[1,2,3,null],
+    // =>  [4,'a','b','c'],
+    // =>  [7,'d','e','f'],
+    // =>  [null,'g','h','i']
 
 ##### _stitch(grid1, grid2, edge)_
 

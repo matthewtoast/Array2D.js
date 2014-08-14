@@ -179,6 +179,23 @@
     return Array2D.tallest(grid).length;
   };
 
+  // Return the dimensions of the grid (width and height),
+  // iterating over the grid in a single pass. Faster than
+  // calling `width` and `height` individually.
+  Array2D.dimensions = function(grid) {
+    var h = 0;
+    var w = 0;
+
+    for (var i = 0, rs = grid.length; i < rs; i++) {
+      var l = grid[i].length;
+
+      if (l > 0) h = i + 1; // The last row with any content is the longest
+      if (l > w) w = l; // Check if the previous max width is beaten
+    }
+
+    return [w, h];
+  }
+
   // Return the area of the grid.
   Array2D.area = function(grid) {
     var width = Array2D.width(grid);
@@ -1199,7 +1216,12 @@
       for (var j = 0; j < rlen; j++) {
         var tc = j - sc;
 
-        if (i >= sr && j >= sc && tr < l1 && tc < rlen) {
+        if (isArray(grid2[tr]) &&
+            !isUndefined(grid2[tr][tc]) &&
+            i >= sr &&
+            j >= sc &&
+            tr < l1 &&
+            tc < rlen) {
           out[i][j] = grid2[tr][tc];
         }
         else {
@@ -1211,8 +1233,30 @@
     return out;
   };
 
+  // Paste the contents of the second grid onto the first,
+  // but allow for overlap, and pad any extra cells with `null`
+  // so the resulting grid is rectangular.
   Array2D.glue = function(grid1, grid2, r, c) {
-    throw("Array2D.js: Not yet implemented");
+    var d1 = Array2D.dimensions(grid1);
+    var d2 = Array2D.dimensions(grid2);
+
+    var mw = (d1[0] > d2[0]) ? d1[0] : d2[0]; // Greater width
+    var mh = (d1[1] > d2[1]) ? d1[1] : d2[1]; // Greater height
+
+    var w = Math.abs(c) + mw; // Width of new grid
+    var h = Math.abs(r) + mh; // Height of new grid
+
+    var n = Array2D.build(w, h); // A blank array
+
+    var r1 = (r < 0) ? -r : 0;
+    var c1 = (c < 0) ? -c : 0;
+    var o = Array2D.paste(n, grid1, r1, c1);
+
+    var r2 = (r > 0) ? r : 0;
+    var c2 = (c > 0) ? r : 0;
+    var p = Array2D.paste(o, grid2, r2, c2);
+
+    return p;
   };
 
   Array2D.stitch = function(grid1, grid2, edge) {

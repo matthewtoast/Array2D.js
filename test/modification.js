@@ -943,6 +943,76 @@ describe('#paste', function() {
   });
 });
 
+describe('#glue', function() {
+  it('can glue a grid onto another', function() {
+    var result = Array2D.glue([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ],[
+      ['a','b','c'],
+      ['d','e','f'],
+      ['g','h','i']
+    ], -3, -3);
+
+    var expected = [
+      ['a','b','c',null,null,null],
+      ['d','e','f',null,null,null],
+      ['g','h','i',null,null,null],
+      [null,null,null,1,2,3],
+      [null,null,null,4,5,6],
+      [null,null,null,7,8,9]
+    ];
+
+    assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
+  });
+
+  it('can glue a grid onto another II', function() {
+    var result = Array2D.glue([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ],[
+      ['a','b','c'],
+      ['d','e','f'],
+      ['g','h','i']
+    ], -2, -2);
+
+    var expected = [
+      ['a','b','c',null,null],
+      ['d','e','f',null,null],
+      ['g','h','i',2,3],
+      [null,null,4,5,6],
+      [null,null,7,8,9]
+    ];
+
+    assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
+  });
+
+  it('can glue a grid onto another III', function() {
+    var result = Array2D.glue([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ],[
+      ['a','b','c'],
+      ['d','e','f'],
+      ['g','h','i']
+    ], 4, 4);
+
+    var expected = [
+      [1,2,3,null,null,null,null],
+      [4,5,6,null,null,null,null],
+      [7,8,9,null,null,null,null],
+      [null,null,null,null,null,null,null],
+      [null,null,null,null,'a','b','c'],
+      [null,null,null,null,'d','e','f'],
+      [null,null,null,null,'g','h','i'],
+    ];
+
+    assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
+  });
+});
 
 describe('#shuffle', function() {
   it('can shuffle a grid', function() {
