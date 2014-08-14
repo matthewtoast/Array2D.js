@@ -1089,17 +1089,137 @@ Return a new grid with the elements reflected over its _secondary diagonal_. (No
     // =>  [8,5,2],
     // =>  [7,4,1]]
 
-##### _pad(grid, side, [value])_
+##### pad(grid, side, times, [value])
 
-Return a new grid with a new row or column shifted in on the given side `side`. If a `value` is given, initialize the cells to that value. Otherwise, initialize to `null`.
+Return a new grid with a new row or column shifted in on the given side `side`, the given number of `times`. If a `value` is given, initialize the cells to that value. Otherwise, initialize to `null`.
 
-_Not yet implemented._
+See `upad`, `dpad`, `lpad`, `rpad`.
 
-##### _trim(grid, side, [num])_
+##### upad(grid, times, [value])
+
+Add padding to the upper side of the grid. Initialize the cells to the given `value`, else to `null`.
+
+    Array2D.upad([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 2, 'x');
+
+    // => [['x','x','x'],
+    // =>  ['x','x','x'],
+    // =>  [1,2,3],
+    // =>  [4,5,6],
+    // =>  [7,8,9]]
+
+##### dpad(grid, times, [value])
+
+Add padding to the bottom side of the grid. Initialize the cells to the given `value`, else to `null`.
+
+    Array2D.dpad([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 2, 'x');
+
+    // => [[1,2,3],
+    // =>  [4,5,6],
+    // =>  [7,8,9]],
+    // =>  ['x','x','x'],
+    // =>  ['x','x','x']]
+
+##### lpad(grid, times, [value])
+
+Add padding to the left side of the grid. Initialize the cells to the given `value`, else to `null`.
+
+    Array2D.lpad([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 2, 'x');
+
+    // => [['x','x',1,2,3],
+    // =>  ['x','x',4,5,6],
+    // =>  ['x','x',7,8,9]]
+
+##### rpad(grid, times, [value])
+
+Add padding to the right side of the grid. Initialize the cells to the given `value`, else to `null`.
+
+    Array2D.rpad([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 2, 'x');
+
+    // => [[1,2,3,'x','x'],
+    // =>  [4,5,6,'x','x'],
+    // =>  [7,8,9,'x','x']]
+
+##### trim(grid, side, [num])
 
 Return a new grid with the row or column of the given side trimmed off. If `num` is given, trim that many columns off of the given side, otherwise just trim one. If `num` exceeds the number of rows or columns, an empty grid is returned.
 
-_Not yet implemented._
+See `utrim`, `dtrim`, `rtrim`, `ltrim`.
+
+##### utrim(grid, [num])
+
+Trim the row off of the grid the given `num` times. If no `num` is given, trim just one.
+
+    Array2D.utrim([
+        [1,2,3,4],
+        [5,6,7,8],
+        [9,0,1,2],
+        [3,4,5,6]
+    ], 2);
+
+    // => [[9,0,1,2],
+    // =>  [3,4,5,6]]
+
+##### dtrim(grid, [num])
+
+Trim the row off of the grid the given `num` times. If no `num` is given, trim just one.
+
+    Array2D.dtrim([
+        [1,2,3,4],
+        [5,6,7,8],
+        [9,0,1,2],
+        [3,4,5,6]
+    ], 2);
+
+    // => [[1,2,3,4],
+    // =>  [5,6,7,8]]
+
+##### rtrim(grid, [num])
+
+Trim the row off of the grid the given `num` times. If no `num` is given, trim just one.
+
+    Array2D.rtrim([
+        [1,2,3,4],
+        [5,6,7,8],
+        [9,0,1,2],
+        [3,4,5,6]
+    ], 2);
+
+    // => [[1,2],
+    // =>  [5,6],
+    // =>  [9,0],
+    // =>  [3,4]]
+
+##### ltrim(grid, [num])
+
+Trim the row off of the grid the given `num` times. If no `num` is given, trim just one.
+
+    Array2D.ltrim([
+        [1,2,3,4],
+        [5,6,7,8],
+        [9,0,1,2],
+        [3,4,5,6]
+    ], 2);
+
+    // => [[3,4],
+    // =>  [7,8],
+    // =>  [1,2],
+    // =>  [5,6]]
 
 ##### paste(grid1, grid2, r, c)
 
@@ -1138,11 +1258,89 @@ Like `paste`, except overlapping cells are included in the returned new grid, wi
     // =>  [7,'d','e','f'],
     // =>  [null,'g','h','i']
 
-##### _stitch(grid1, grid2, edge)_
+##### stitch(grid1, grid2, edge)
 
 Return a new grid with the first grid stitched to the second grid, along the given edge `edge`.
 
-_Not yet implemented._
+See `ustitch`, `dstitch`, `lstitch`, `rstitch`.
+
+##### ustitch(grid1, grid2)
+
+Stitch the second grid to the top of the first grid.
+
+    Array2D.ustitch([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ],[
+        ['a','b','c'],
+        ['d','e','f'],
+        ['g','h','i']
+    ]);
+
+    // => [['a','b','c'],
+    // =>  ['d','e','f'],
+    // =>  ['g','h','i'],
+    // =>  [1,2,3],
+    // =>  [4,5,6],
+    // =>  [7,8,9]]
+
+##### dstitch(grid1, grid2)
+
+Stitch the second grid to the bottom of the first grid.
+
+    Array2D.dstitch([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ],[
+        ['a','b','c'],
+        ['d','e','f'],
+        ['g','h','i']
+    ]);
+
+    // => [[1,2,3],
+    // =>  [4,5,6],
+    // =>  [7,8,9],
+    // =>  ['a','b','c'],
+    // =>  ['d','e','f'],
+    // =>  ['g','h','i']]
+
+##### lstitch(grid1, grid2)
+
+Stitch the second grid onto the left of the first grid.
+
+    Array2D.lstitch([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ],[
+        ['a','b','c'],
+        ['d','e','f'],
+        ['g','h','i']
+    ]);
+
+    // => [['a','b','c',1,2,3],
+    // =>  ['d','e','f',4,5,6],
+    // =>  ['g','h','i',7,8,9]]
+
+##### rstitch(grid1, grid2)
+
+Stitch the second grid onto the right of the first grid.
+
+    Array2D.rstitch([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ],[
+        ['a','b','c'],
+        ['d','e','f'],
+        ['g','h','i']
+    ]);
+
+    // => [[1,2,3,'a','b','c'],
+    // =>  [4,5,6,'d','e','f'],
+    // =>  [7,8,9,'g','h','i']]
 
 ##### shuffle(grid)
 
@@ -1214,17 +1412,52 @@ Similar to `reduce`, except iteration occurs in column-major order.
 
 ### Analysis
 
-##### _symmetrical(grid, axis)_
+##### symmetrical(grid, axis)
 
 Returns `true` if the passed grid is symmetrical when reflected about the axis `axis`.
 
-_Not yet implemeneted._
+See `hsymmetrical`, `vsymmetrical`.
 
-##### _includes(grid1, grid2)_
+##### hsymmetrical(grid)
+
+Returns `true` if the grid is horizontally symmetrical (i.e., when reflected over the y-axis).
+
+    Array2D.hsymmetrical([
+        [1,2,2,1]
+        [2,4,4,2]
+        [5,6,6,5]
+    ]);
+
+    // => true
+
+##### vsymmetrical(grid)
+
+Returns `true` if the grid is vertically symmetrical (i.e., when reflected over the x-axis).
+
+    Array2D.vsymmetrical([
+        [1,2,3,4],
+        [5,6,7,8],
+        [5,6,7,8],
+        [1,2,3,4]
+    ]);
+
+    // => true
+
+##### includes(grid1, grid2)
 
 Returns `true` if the first grid contains the second grid.
 
-_Not yet implemeneted._
+    Array2D.includes([
+        [1,2,3,4],
+        [5,6,7,8],
+        [9,0,1,2],
+        [3,4,5,6]
+    ],[
+        [6,7],
+        [0,1]
+    ]);
+
+    // => true
 
 ### Import / export
 
