@@ -84,8 +84,6 @@ describe('#dimensions', function() {
 
     var expected = [4,3];
 
-    console.log(result);
-
     assert.strictEqual(expected[0], result[0]);
     assert.strictEqual(expected[1], result[1]);
   });
