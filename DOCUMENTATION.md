@@ -1259,6 +1259,16 @@ Example code:
 
 Note that this method has the side effect of modifying the canvas' content.
 
+##### fromArray(arr, width, height)
+
+Conver the given flat array into a grid of the specified `width` and `height`:
+
+    Array2D.fromArray([1,2,3,4,5,6,7,8,9], 3, 3);
+
+    // => [[1,2,3],
+    // =>  [4,5,6],
+    // =>  [7,8,9]]
+
 ### "Constants" / "enums"
 
 The following constants / enums are provided for convenience and used throughout the library internally:
