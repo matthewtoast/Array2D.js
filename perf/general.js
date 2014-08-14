@@ -21,6 +21,17 @@ suite.add('#map', function() {
     return cell;
   });
 })
+suite.add('#glue', function() {
+  Array2D.glue([
+    [0,0,0],
+    [0,0,0],
+    [0,0,0]
+  ],[
+    [1,1,1],
+    [1,1,1],
+    [1,1,1]
+  ], 1, 1);
+})
 .on('cycle', function(event) {
   console.log(String(event.target), '(ran at ' + new Date() + ')');
 })
