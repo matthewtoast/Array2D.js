@@ -1281,10 +1281,10 @@ The following constants / enums are provided for convenience and used throughout
 
 #### Boundaries
 
-`Array2D.BOUNDARIES.UPPER` = `1`
-`Array2D.BOUNDARIES.LOWER` = `2`
-`Array2D.BOUNDARIES.LEFT`  = `3`
-`Array2D.BOUNDARIES.RIGHT` = `4`
+`Array2D.BOUNDARIES.UPPER` = `1`  
+`Array2D.BOUNDARIES.LOWER` = `2`  
+`Array2D.BOUNDARIES.LEFT`  = `3`  
+`Array2D.BOUNDARIES.RIGHT` = `4`  
 
 #### Corners
 
@@ -1295,10 +1295,10 @@ The following constants / enums are provided for convenience and used throughout
 
 #### Crooks
 
-`Array2D.CROOKS.UPPER_LEFT`  = `1`
-`Array2D.CROOKS.UPPER_RIGHT` = `2`
-`Array2D.CROOKS.LOWER_LEFT`  = `3`
-`Array2D.CROOKS.LOWER_RIGHT` = `4`
+`Array2D.CROOKS.UPPER_LEFT`  = `1`  
+`Array2D.CROOKS.UPPER_RIGHT` = `2`  
+`Array2D.CROOKS.LOWER_LEFT`  = `3`  
+`Array2D.CROOKS.LOWER_RIGHT` = `4`  
 
 #### Directions
 
