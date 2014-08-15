@@ -1253,7 +1253,7 @@
     var o = Array2D.paste(n, grid1, r1, c1);
 
     var r2 = (r > 0) ? r : 0;
-    var c2 = (c > 0) ? r : 0;
+    var c2 = (c > 0) ? c : 0;
     var p = Array2D.paste(o, grid2, r2, c2);
 
     return p;
