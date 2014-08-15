@@ -1195,8 +1195,142 @@
     return Array2D.vflip(rotated);
   };
 
-  Array2D.pad = function(grid, side, value) {
-    throw("Array2D.js: Not yet implemented");
+  // Add padding to the given `side` of the grid, the specified
+  // number of `times`.
+  Array2D.pad = function(grid, side, times, value) {
+    switch (side) {
+      case Array2D.EDGES.TOP: return Array2D.upad(grid, times, value);
+      case Array2D.EDGES.BOTTOM: return Array2D.dpad(grid, times, value);
+      case Array2D.EDGES.LEFT: return Array2D.lpad(grid, times, value);
+      case Array2D.EDGES.RIGHT: return Array2D.rpad(grid, times, value);
+      default:
+        throw("Array2D.js: Invalid side provided");
+    }
+  };
+
+  // Add padding to the top of the grid.
+  Array2D.upad = function(grid, times, value) {
+    var out = [];
+
+    var d = Array2D.dimensions(grid);
+    var w = d[0];
+    var h = d[1];
+
+    for (var i = -times; i < h; i++) {
+      var r = i + times;
+      out[r] = [];
+
+      for (var j = 0; j < w; j++) {
+        // We're in the original grid.
+        if (i > -1) {
+          out[r][j] = grid[i][j];
+        }
+        // We're in the 'padding' zone.
+        else {
+          if (!isUndefined(value)) {
+            out[r][j] = value;
+          }
+          else {
+            out[r][j] = null;
+          }
+        }
+      }
+    }
+
+    return out;
+  };
+
+  // Add padding to the bottom of the grid.
+  Array2D.dpad = function(grid, times, value) {
+    var out = [];
+
+    var d = Array2D.dimensions(grid);
+    var w = d[0];
+    var h = d[1];
+
+    for (var i = 0; i < h + times; i++) {
+      out[i] = [];
+
+      for (var j = 0; j < w; j++) {
+        // We're in the original grid.
+        if (i < h) {
+          out[i][j] = grid[i][j];
+        }
+        // We're in the 'padding' zone.
+        else {
+          if (!isUndefined(value)) {
+            out[i][j] = value;
+          }
+          else {
+            out[i][j] = null;
+          }
+        }
+      }
+    }
+
+    return out;
+  };
+
+  Array2D.lpad = function(grid, times, value) {
+    var out = [];
+
+    var d = Array2D.dimensions(grid);
+    var w = d[0];
+    var h = d[1];
+
+    for (var i = 0; i < h; i++) {
+      out[i] = [];
+
+      for (var j = -times; j < w; j++) {
+        var c = j + times;
+
+        // We're in the original grid.
+        if (j > -1) {
+          out[i][c] = grid[i][j];
+        }
+        // We're in the 'padding' zone.
+        else {
+          if (!isUndefined(value)) {
+            out[i][c] = value;
+          }
+          else {
+            out[i][c] = null;
+          }
+        }
+      }
+    }
+
+    return out;
+  };
+
+  Array2D.rpad = function(grid, times, value) {
+    var out = [];
+
+    var d = Array2D.dimensions(grid);
+    var w = d[0];
+    var h = d[1];
+
+    for (var i = 0; i < h; i++) {
+      out[i] = [];
+
+      for (var j = 0; j < w + times; j++) {
+        // We're in the original grid.
+        if (j < w) {
+          out[i][j] = grid[i][j];
+        }
+        // We're in the 'padding' zone.
+        else {
+          if (!isUndefined(value)) {
+            out[i][j] = value;
+          }
+          else {
+            out[i][j] = null;
+          }
+        }
+      }
+    }
+
+    return out;
   };
 
   Array2D.trim = function(grid, side, num) {
@@ -1222,6 +1356,7 @@
             j >= sc &&
             tr < l1 &&
             tc < rlen) {
+
           out[i][j] = grid2[tr][tc];
         }
         else {
@@ -1259,8 +1394,44 @@
     return p;
   };
 
+  // Stitch the second grid to the given edge of the first.
   Array2D.stitch = function(grid1, grid2, edge) {
-    throw("Array2D.js: Not yet implemented");
+    switch (edge) {
+      case Array2D.EDGES.TOP: return Array2D.ustitch(grid1, grid2);
+      case Array2D.EDGES.BOTTOM: return Array2D.dstitch(grid1, grid2);
+      case Array2D.EDGES.LEFT: return Array2D.lstitch(grid1, grid2);
+      case Array2D.EDGES.RIGHT: return Array2D.rstitch(grid1, grid2);
+      default:
+        throw("Array2D.js: Invalid stitching edge provided");
+    }
+  };
+
+  // Stitch the second grid to the top of the first.
+  Array2D.ustitch = function(grid1, grid2) {
+    var h = Array2D.dimensions(grid2)[1];
+
+    return Array2D.glue(grid1, grid2, -h, 0);
+  };
+
+  // Stitch the second grid to the bottom of the first.
+  Array2D.dstitch = function(grid1, grid2) {
+    var h = Array2D.dimensions(grid1)[1];
+
+    return Array2D.glue(grid1, grid2, h, 0);
+  };
+
+  // Stitch the second grid to the left side of the first.
+  Array2D.lstitch = function(grid1, grid2) {
+    var w = Array2D.dimensions(grid2)[0];
+
+    return Array2D.glue(grid1, grid2, 0, -w);
+  };
+
+  // Sticth the second grid to the right side of the first.
+  Array2D.rstitch = function(grid1, grid2) {
+    var w = Array2D.dimensions(grid1)[0];
+
+    return Array2D.glue(grid1, grid2, 0, w);
   };
 
   // Shuffle (randomize) the grid, preserving the dimensions.

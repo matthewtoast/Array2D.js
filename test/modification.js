@@ -1028,3 +1028,328 @@ describe('#shuffle', function() {
     assert.strictEqual(result[0].length, 3);
   });
 });
+
+describe('#pad', function() {
+  it('can pad the top of a grid', function() {
+    var result = Array2D.upad([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], 2, 'x');
+
+    var expected = [
+      ['x','x','x'],
+      ['x','x','x'],
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ];
+
+    assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
+  });
+  it('can pad the bottom of a grid', function() {
+    var result = Array2D.dpad([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], 2, 'x');
+
+    var expected = [
+      [1,2,3],
+      [4,5,6],
+      [7,8,9],
+      ['x','x','x'],
+      ['x','x','x']
+    ];
+
+    assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
+  });
+  it('can pad the left of a grid', function() {
+    var result = Array2D.lpad([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], 2, 'x');
+
+    var expected = [
+      ['x','x',1,2,3],
+      ['x','x',4,5,6],
+      ['x','x',7,8,9]
+    ];
+
+    assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
+  });
+  it('can pad the right of a grid', function() {
+    var result = Array2D.rpad([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], 2, 'x');
+
+    var expected = [
+      [1,2,3,'x','x'],
+      [4,5,6,'x','x'],
+      [7,8,9,'x','x']
+    ];
+
+    assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
+  });
+});
+
+describe('#upad', function() {
+  it('can pad the top of a grid', function() {
+    var result = Array2D.upad([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], 2, 'x');
+
+    var expected = [
+      ['x','x','x'],
+      ['x','x','x'],
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ];
+
+    assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
+  });
+});
+
+describe('#dpad', function() {
+  it('can pad the bottom of a grid', function() {
+    var result = Array2D.dpad([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], 2, 'x');
+
+    var expected = [
+      [1,2,3],
+      [4,5,6],
+      [7,8,9],
+      ['x','x','x'],
+      ['x','x','x']
+    ];
+
+    assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
+  });
+});
+
+describe('#lpad', function() {
+  it('can pad the left of a grid', function() {
+    var result = Array2D.lpad([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], 2, 'x');
+
+    var expected = [
+      ['x','x',1,2,3],
+      ['x','x',4,5,6],
+      ['x','x',7,8,9]
+    ];
+
+    assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
+  });
+});
+
+describe('#rpad', function() {
+  it('can pad the left of a grid', function() {
+    var result = Array2D.rpad([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], 2, 'x');
+
+    var expected = [
+      [1,2,3,'x','x'],
+      [4,5,6,'x','x'],
+      [7,8,9,'x','x']
+    ];
+
+    assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
+  });
+});
+
+describe('#stitch', function() {
+  it('can stitch to top the of a grid', function() {
+    var result = Array2D.ustitch([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ],[
+      [0,0,0],
+      [0,0,0],
+      [0,0,0]
+    ], Array2D.EDGES.TOP);
+
+    var expected = [
+      [0,0,0],
+      [0,0,0],
+      [0,0,0],
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+  });
+
+  it('can stitch to bottom the of a grid', function() {
+    var result = Array2D.stitch([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ],[
+      [0,0,0],
+      [0,0,0],
+      [0,0,0]
+    ], Array2D.EDGES.BOTTOM);
+
+    var expected = [
+      [1,2,3],
+      [4,5,6],
+      [7,8,9],
+      [0,0,0],
+      [0,0,0],
+      [0,0,0]
+    ];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+  });
+
+  it('can stitch to the left side of a grid', function() {
+    var result = Array2D.stitch([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ],[
+      [0,0,0],
+      [0,0,0],
+      [0,0,0]
+    ], Array2D.EDGES.LEFT);
+
+    var expected = [
+      [0,0,0,1,2,3],
+      [0,0,0,4,5,6],
+      [0,0,0,7,8,9]
+    ];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+  });
+
+  it('can stitch to the right side of a grid', function() {
+    var result = Array2D.stitch([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ],[
+      [0,0,0],
+      [0,0,0],
+      [0,0,0]
+    ], Array2D.EDGES.RIGHT);
+
+    var expected = [
+      [1,2,3,0,0,0],
+      [4,5,6,0,0,0],
+      [7,8,9,0,0,0]
+    ];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+  });
+});
+
+describe('#ustitch', function() {
+  it('can stitch to top the of a grid', function() {
+    var result = Array2D.ustitch([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ],[
+      [0,0,0],
+      [0,0,0],
+      [0,0,0]
+    ]);
+
+    var expected = [
+      [0,0,0],
+      [0,0,0],
+      [0,0,0],
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+  });
+});
+
+describe('#dstitch', function() {
+  it('can stitch to bottom the of a grid', function() {
+    var result = Array2D.dstitch([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ],[
+      [0,0,0],
+      [0,0,0],
+      [0,0,0]
+    ]);
+
+    var expected = [
+      [1,2,3],
+      [4,5,6],
+      [7,8,9],
+      [0,0,0],
+      [0,0,0],
+      [0,0,0]
+    ];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+  });
+});
+
+describe('#lstitch', function() {
+  it('can stitch to the left side of a grid', function() {
+    var result = Array2D.lstitch([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ],[
+      [0,0,0],
+      [0,0,0],
+      [0,0,0]
+    ]);
+
+    var expected = [
+      [0,0,0,1,2,3],
+      [0,0,0,4,5,6],
+      [0,0,0,7,8,9]
+    ];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+  });
+});
+
+describe('#rstitch', function() {
+  it('can stitch to the right side of a grid', function() {
+    var result = Array2D.rstitch([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ],[
+      [0,0,0],
+      [0,0,0],
+      [0,0,0]
+    ]);
+
+    var expected = [
+      [1,2,3,0,0,0],
+      [4,5,6,0,0,0],
+      [7,8,9,0,0,0]
+    ];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+  });
+});
