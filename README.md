@@ -123,9 +123,9 @@ Array2D.js provides the following functions. In general, each accepts an array o
 
 #### Coordinates
 
-_**find:** get a list of the coordinates of all matching cells  _  
-_**contiguous:** get a list of groups of coordinates of contiguous cells  _  
-_**touching:** get a list of groups of coordinates of touching cells  _  
+_**find:** get a list of the coordinates of all matching cells_  
+_**contiguous:** get a list of groups of coordinates of contiguous cells_  
+_**touching:** get a list of groups of coordinates of touching cells_  
 
 #### Modification
 
@@ -152,7 +152,7 @@ _**touching:** get a list of groups of coordinates of touching cells  _
 #### Analysis
 
 **symmetrical:** T/F whether the grid is symmetrical (over the y- or x-axis)  
-_**includes:** T/F whether the grid contains another grid  _  
+_**includes:** T/F whether the grid contains another grid_  
 
 ##### Import / export
 
