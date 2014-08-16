@@ -871,7 +871,7 @@ Return a new grid that is a cell-by-cell mapping of the original. The iterator s
     // =>  [8,10,12],
     // =>  [14,16,18]]
 
-### Cells
+### Coordinates
 
 Note: Coordinates are represented by an array `[r, c]`, where `r` is the row index and `c` is the column index.
 
