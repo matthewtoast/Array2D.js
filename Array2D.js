@@ -1271,6 +1271,7 @@
     return out;
   };
 
+  // Add padding to the grid's left side
   Array2D.lpad = function(grid, times, value) {
     var out = [];
 
@@ -1303,6 +1304,7 @@
     return out;
   };
 
+  // Add padding to the grid's right side
   Array2D.rpad = function(grid, times, value) {
     var out = [];
 
