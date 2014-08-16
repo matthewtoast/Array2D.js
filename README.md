@@ -17,9 +17,9 @@ And here's an illustration of the above operations:
     4 5 6  transpose ~>  2 5 8  swap (1,1) with (2,2) ~>  2 9 8
     7 8 9                3 6 9                            3 6 5
 
-## Usage
+## Reference
 
-See [DOCUMENTATION.md](DOCUMENTATION.md).
+For complete documentation, please see the [API reference](REFERENCE.md).
 
 ## Installation
 

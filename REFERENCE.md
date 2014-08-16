@@ -1,4 +1,4 @@
-# Array2D.js Documentation
+# Array2D.js API Reference
 
 Array2D.js is a utility library for working with two-dimensional arrays (arrays of arrays) in JavaScript. It's useful when manipulating data that represents a two-dimensional grid -- that is, a collection of rows, where the rows are arrays whose elements are the "cells" of the grid.
 
@@ -18,7 +18,7 @@ Note that the only qualification for being a grid is that the object be an array
 
 All functions are provided on the `Array2D` namespace. Unless specified otherwise, each accepts a grid as the first argument and returns a new grid as the result, without modifying the original. Where possible, the functions are referentially transparent.
 
-## Reference
+## API Reference
 
 ### Basic
 
