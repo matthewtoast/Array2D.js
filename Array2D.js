@@ -1019,6 +1019,29 @@
     return out;
   };
 
+  // Coordinates
+  // ===========
+
+  // Return the coordinates of every cell that the `finder` function
+  // returns truthy.
+  Array2D.find = function(grid, finder) {
+    throw("Not yet implemented!");
+  };
+
+  // Return groups of coordinates, where groups are coordinates of
+  // all _orthogonally_ adjacent cells that return truthy for the `finder`
+  // function.
+  Array2D.contiguous = function(grid, finder) {
+    throw("Not yet implemented!");
+  };
+
+  // Return groups of coordinates, where groups are coordinates of
+  // all adjacent cells that return truthy for the `finder`
+  // function.
+  Array2D.touching = function(grid, finder) {
+    throw("Not yet implemented!");
+  };
+
   // Modification
   // ============
 
