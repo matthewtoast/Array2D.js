@@ -1587,7 +1587,38 @@
   // Detect whether the grid is symmetrical, when reflected
   // around the given axis.
   Array2D.symmetrical = function(grid, axis) {
-    throw("Array2D.js: Not yet implemented");
+    switch (axis) {
+      case Array2D.AXES.Y: return Array2D.hsymmetrical(grid);
+      case Array2D.AXES.X: return Array2D.vsymmetrical(grid);
+      default:
+        throw("Array2D.js: Invalid axis given for symmetry");
+    }
+  };
+
+  // Determine whether the grid is horizontally symmetrical
+  Array2D.hsymmetrical = function(grid) {
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      var row = grid[i];
+
+      for (var j = 0, l2 = row.length; j < l2; j++) {
+        var cell = row[j];
+        var opposite = row[l2 - 1 - j];
+
+        if (cell !== opposite) {
+
+          return false;
+        }
+      }
+    }
+
+    return true;
+  };
+
+  // Determine whether the grid is vertically symmetrical
+  Array2D.vsymmetrical = function(grid) {
+    var transposed = Array2D.transpose(grid);
+
+    return Array2D.hsymmetrical(transposed);
   };
 
   // Detect whether the first grid contains the second grid.
