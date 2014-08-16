@@ -154,7 +154,7 @@ _**touching:** get a list of groups of coordinates of touching cells_
 **symmetrical:** T/F whether the grid is symmetrical (over the y- or x-axis)  
 _**includes:** T/F whether the grid contains another grid_  
 
-##### Import / export
+#### Import / export
 
 **fromArray:** build a grid of the given dimensions from a flat array  
 **fromCanvas:** convert a `<canvas>` pixel data into a grid  
