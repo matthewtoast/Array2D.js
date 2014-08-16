@@ -871,6 +871,69 @@ Return a new grid that is a cell-by-cell mapping of the original. The iterator s
     // =>  [8,10,12],
     // =>  [14,16,18]]
 
+### Cells
+
+Note: Coordinates are represented by an array `[r, c]`, where `r` is the row index and `c` is the column index.
+
+##### find(grid, finder)
+
+Return a list of coordinates for every cell in the grid that the finder function `finder` returns truthy.
+
+    Array2D.find([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], function(cell) {
+        return cell % 2 === 0;
+    });
+
+    // => [[0,1],[1,0],[1,2],[2,1]]
+
+##### contiguous(grid, finder)
+
+Return a list of groups of coordinates, where each group is an array of coordinates that are detected to be contiguous, and each coordinate in the group is the coordinate of a cell matched by the `finder` function.
+
+A group is considered continuous if all members are orthogonally adjacent to at least one other member of the group. To qualify, every cell in the group needs to return truthy for the `finder` function.
+
+The search begins at the top-left cell and iterates over the grid in row-major order.
+
+    Array2D.contiguous([
+        [0,0,1,1,0],
+        [1,0,1,0,1],
+        [1,0,1,1,0],
+        [0,1,0,0,1],
+        [1,0,1,1,1]
+    ], function(cell) {
+        return cell === 1;
+    });
+
+    // => [
+    // =>     [  [0,2],[0,3],[1,2],[2,2],[2,3]  ],
+    // =>     [  [1,0],[2,0]  ],
+    // =>     [  [1,4]  ],
+    // =>     [  [3,1]  ],
+    // =>     [  [3,4],[4,2],[4,3],[4,4]  ],
+    // =>     [  [4,0] ]
+    // => ]
+
+##### touching(grid, finder)
+
+Similar to `contiguous`, except groups are composed of cells that are orthogonally _or_ diagonally adjacent.
+
+    Array2D.touching([
+        [0,0,1,1,0],
+        [1,0,1,0,1],
+        [1,0,1,1,0],
+        [0,1,0,0,1],
+        [1,0,1,1,1]
+    ], function(cell) {
+        return cell === 1;
+    });
+
+    [
+        [    ]
+    ]
+
 ### Modification
 
 ##### rotate(grid, direction)
