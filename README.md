@@ -104,9 +104,9 @@ Array2D.js provides the following functions. In general, each accepts an array o
 **corner:** T/F whether the cell is on a corner  
 **corners:** get the list of corners the cell is on  
 **boundary:** T/F whether the cell is on a boundary (ragged edge)  
-**boundaries:** get the list of boundaries the cell is on  
+**boundaries:** get the list of (ragged) boundaries the cell is on  
 **crook:** T/F whether the cell is on a crook (ragged corner)  
-**crooks:** get the list of corners the cell is on  
+**crooks:** get the list of (ragged) corners the cell is on  
 **center:** T/F whether the cell is the center cell  
 **interior:** T/F whether the cell is in the interior of the grid  
 **quadrants:** get the list of coordinate-plane quadrants the cell is within  
@@ -137,7 +137,7 @@ _**touching:** get a list of groups of coordinates of touching cells_
 **antitranspose:** flip the grid over its secondary diagonal  
 **pad:** add padding to the grid on the top/bottom/left/right (also `upad`, `dpad`, `lpad`, `rpad`)  
 **trim:** trim off from the grid's top/bottom/left/right (also `utrim`, `dtrim`, `ltrim`, `rtrim`)  
-**stitch:** stitch two grids together on the top/bottom/left/right (also `ustitch`, `dstitch`, `lstitch`, `rstitch`)  
+**stitch:** stitch two grids together (also `ustitch`, `dstitch`, `lstitch`, `rstitch`)  
 **paste:** paste a grid within another grid, at the given coordinates  
 **glue:** glue two grids together, at the given coordinates  
 **shuffle:** rearrange the grid's cells randomly  
