@@ -1353,3 +1353,137 @@ describe('#rstitch', function() {
     assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
   });
 });
+
+describe('#trim', function() {
+  it('can trim off the top side of the grid', function() {
+    var result = Array2D.trim([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], Array2D.EDGES.TOP);
+
+    var expected = [
+      [4,5,6],
+      [7,8,9]
+    ];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+  });
+
+  it('can trim off bottom the side of the grid', function() {
+    var result = Array2D.trim([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], Array2D.EDGES.BOTTOM);
+
+    var expected = [
+      [1,2,3],
+      [4,5,6]
+    ];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+  });
+
+  it('can trim off the left side of the grid', function() {
+    var result = Array2D.trim([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], Array2D.EDGES.LEFT);
+
+    var expected = [
+      [2,3],
+      [5,6],
+      [8,9]
+    ];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+  });
+
+  it('can trim off the right side of the grid', function() {
+    var result = Array2D.trim([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], Array2D.EDGES.RIGHT);
+
+    var expected = [
+      [1,2],
+      [4,5],
+      [7,8]
+    ];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+  });
+});
+
+describe('#utrim', function() {
+  it('can trim off the top side of the grid', function() {
+    var result = Array2D.utrim([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ]);
+
+    var expected = [
+      [4,5,6],
+      [7,8,9]
+    ];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+  });
+});
+
+describe('#utrim', function() {
+  it('can trim off bottom the side of the grid', function() {
+    var result = Array2D.dtrim([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ]);
+
+    var expected = [
+      [1,2,3],
+      [4,5,6]
+    ];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+  });
+});
+
+describe('#utrim', function() {
+  it('can trim off the left side of the grid', function() {
+    var result = Array2D.ltrim([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ]);
+
+    var expected = [
+      [2,3],
+      [5,6],
+      [8,9]
+    ];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+  });
+});
+
+describe('#utrim', function() {
+  it('can trim off the right side of the grid', function() {
+    var result = Array2D.rtrim([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ]);
+
+    var expected = [
+      [1,2],
+      [4,5],
+      [7,8]
+    ];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+  });
+});

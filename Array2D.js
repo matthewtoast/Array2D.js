@@ -1333,8 +1333,78 @@
     return out;
   };
 
+  // Trim rows/columns off the specified side of the grid.
   Array2D.trim = function(grid, side, num) {
-    throw("Array2D.js: Not yet implemented");
+    switch (side) {
+      case Array2D.EDGES.TOP: return Array2D.utrim(grid, num);
+      case Array2D.EDGES.BOTTOM: return Array2D.dtrim(grid, num);
+      case Array2D.EDGES.LEFT: return Array2D.ltrim(grid, num);
+      case Array2D.EDGES.RIGHT: return Array2D.rtrim(grid, num);
+      default:
+        throw("Array2D.js: Invalid edge provided for trim");
+    }
+  };
+
+  // Trim rows off the top of the grid.
+  Array2D.utrim = function(grid, num) {
+    var out = [];
+
+    num || (num = 1);
+
+    for (var i = num, l = grid.length; i < l; i++) {
+      out[i - num] = cloneArray(grid[i]);
+    }
+
+    return out;
+  };
+
+  // Trim rows off the bottom of the grid.
+  Array2D.dtrim = function(grid, num) {
+    var out = [];
+
+    num || (num = 1);
+
+    for (var i = 0, l = grid.length - num; i < l; i++) {
+      out[i] = cloneArray(grid[i]);
+    }
+
+    return out;
+  };
+
+  // Trim columns off the left side of the grid.
+  Array2D.ltrim = function(grid, num) {
+    var out = [];
+
+    num || (num = 1);
+
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      out[i] = [];
+      var row = grid[i];
+
+      for (var j = num, l2 = row.length; j < l2; j++) {
+        out[i][j - num] = row[j];
+      }
+    }
+
+    return out;
+  };
+
+  // Trim columns off the right side of the grid.
+  Array2D.rtrim = function(grid, num) {
+    var out = [];
+
+    num || (num = 1);
+
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      out[i] = [];
+      var row = grid[i];
+
+      for (var j = 0, l2 = row.length - num; j < l2; j++) {
+        out[i][j] = row[j];
+      }
+    }
+
+    return out;
   };
 
   // Paste the contents of the second grid onto the first.
