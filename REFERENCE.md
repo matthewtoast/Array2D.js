@@ -697,7 +697,7 @@ Similar to `corner`, except for a ragged grid. Calculates with respect to indivi
 
     // => true
 
-#####  rooks(grid, r, c)
+#####  crooks(grid, r, c)
 
 Similar to `corners`, except for a ragged grid. Calculates with respect to individual row-length instead of grid width.
 
