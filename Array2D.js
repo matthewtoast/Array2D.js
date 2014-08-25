@@ -575,18 +575,28 @@
   };
 
   // Iterate over every cell in the given area.
-  Array2D.forArea = function(grid, r, c, width, height, iterator) {
+  Array2D.forArea = function(grid, r, c, w, h, iterator) {
+    var cropped = Array2D.crop(grid, r, c, w, h);
 
+    Array2D.eachCell(cropped, iterator);
   };
 
   // Iterate over every cell in the given row.
   Array2D.forRow = function(grid, r, iterator) {
+    var row = Array2D.row(grid, r);
 
+    for (var i = 0, l = row.length; i < l; i++) {
+      iterator(row[i], r, i, grid);
+    }
   };
 
   // Iterate over every cell in the given column.
   Array2D.forColumn = function(grid, c, iterator) {
+    var column = Array2D.column(grid, c);
 
+    for (var i = 0, l = column.length; i < l; i++) {
+      iterator(column[i], i, c, grid);
+    }
   };
 
   // Retrieval
