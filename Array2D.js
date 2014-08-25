@@ -1945,7 +1945,6 @@
         var opposite = row[l2 - 1 - j];
 
         if (cell !== opposite) {
-
           return false;
         }
       }
