@@ -534,6 +534,28 @@
     }
   };
 
+  // Iterate over every nth cell in the grid.
+  Array2D.nthCell = function(grid, n, s, iterator) {
+    var x = 0;
+
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      var row = grid[i];
+
+      for (var j = 0, l2 = row.length; j < l2; j++) {
+        var cell = row[j];
+
+        var isPastStart = x >= s;
+        var isAtNth = ((x - s) % n) === 0
+
+        if (isPastStart && isAtNth) {
+          iterator(cell, i, j, grid);
+        }
+
+        x += 1;
+      }
+    }
+  };
+
   // Iterate over each row in the grid, passing the row-array to
   // the iterator function.
   Array2D.eachRow = function(grid, iterator) {
