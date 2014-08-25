@@ -1458,7 +1458,7 @@
       case Array2D.EDGES.LEFT: return Array2D.lpad(grid, times, value);
       case Array2D.EDGES.RIGHT: return Array2D.rpad(grid, times, value);
       default:
-        throw("Array2D.js: Invalid side provided");
+        throw("Array2D.js: Invalid side provided for `pad`");
     }
   };
 
@@ -1597,7 +1597,7 @@
       case Array2D.EDGES.LEFT: return Array2D.ltrim(grid, num);
       case Array2D.EDGES.RIGHT: return Array2D.rtrim(grid, num);
       default:
-        throw("Array2D.js: Invalid edge provided for trim");
+        throw("Array2D.js: Invalid edge provided for `trim`");
     }
   };
 
@@ -1728,7 +1728,7 @@
       case Array2D.EDGES.LEFT: return Array2D.lstitch(grid1, grid2);
       case Array2D.EDGES.RIGHT: return Array2D.rstitch(grid1, grid2);
       default:
-        throw("Array2D.js: Invalid stitching edge provided");
+        throw("Array2D.js: Invalid edge provided for `stitch`");
     }
   };
 
@@ -1845,7 +1845,7 @@
       case Array2D.AXES.Y: return Array2D.hsymmetrical(grid);
       case Array2D.AXES.X: return Array2D.vsymmetrical(grid);
       default:
-        throw("Array2D.js: Invalid axis given for symmetry");
+        throw("Array2D.js: Invalid axis given for `symmetrical`");
     }
   };
 
