@@ -911,7 +911,10 @@
 
   // Return T/F whether the given cell is within the grid's area.
   Array2D.inBounds = function(grid, r, c) {
-
+    if (r < 0 || c < 0) return false;
+    if (!isArray(grid[r])) return false;
+    if (c > grid[r].length - 1) return false;
+    return true;
   };
 
   // Determine whether the coordinate is on an edge.
