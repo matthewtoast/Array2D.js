@@ -1,0 +1,110 @@
+<html>
+<head>
+  <title>Array2D.js canvas demonstration</title>
+  <link rel="stylesheet" href="bootstrap.css">
+  <style>
+    #canvas {
+      border: 1px solid #ccc;
+      width: 100%;
+      height: 340px;
+      border-radius: 2px;
+    }
+
+    #source {
+      font-family: Consolas, monospace;
+      border: 1px solid #ccc;
+      width: 100%;
+      height: 340px;
+      margin-bottom: 20px;
+      border-radius: 2px;
+    }
+
+    #button {
+      margin-bottom: 40px;
+    }
+
+    .head {
+      margin-bottom: 40px;
+    }
+
+    .foot {
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="head">Array2D.js canvas demonstration</h1>
+
+    <div class="grid">
+      <div class="row">
+        <div class="col-md-6">
+          <textarea id="source" wrap="off">
+var canvas = demo.canvas;
+var w = demo.width;
+var h = demo.height;
+
+// Convert a row-column coordinate to a value.
+function coordinateToCell(r, c) {
+  return r * c % 255;
+}
+
+// Convert a cell's value to a color array.
+function cellToPixel(cell) {
+  return [cell, cell, cell, 255]; // [r,g,b,a]
+}
+
+var grid = Array2D.buildWith(w, h, coordinateToCell);
+Array2D.toCanvas(grid, canvas, cellToPixel);
+</textarea>
+          <button id="button" class="btn btn-info">
+            Evaluate
+          </button>
+        </div>
+        <div class="col-md-6">
+          <canvas id="canvas"></canvas>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <p class="foot">
+            <a href="https://github.com/matthewtoast/Array2D.js/blob/master/REFERENCE.md" target="_blank">API reference &rarr;</a>
+          </p>
+          <p class="copy">
+            <a href="https://github.com/matthewtoast/Array2D.js">Source code on GitHub &rarr;</a>
+          </p>
+          <p class="copy">
+            Copyright &copy; 2014 Matthew Trost
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./../Array2D.js"></script>
+  <script>
+    // Add some properties to a global `demo` object for convenience.
+    window.demo = {};
+
+    demo.source = document.getElementById('source');
+    demo.button = document.getElementById('button');
+    demo.canvas = document.getElementById('canvas');
+
+    button.addEventListener('click', function(event) {
+      var style = window.getComputedStyle(canvas);
+      var styleWidth = style.getPropertyValue('width');
+      var styleHeight = style.getPropertyValue('height');
+
+      demo.width = parseInt(styleWidth.replace('px', ''));
+      demo.height = parseInt(styleHeight.replace('px', ''));
+
+      // Need to re-set the canvas' dimensions for correct scaling.
+      canvas.width = demo.width;
+      canvas.height = demo.height;
+
+      var code = source.value;
+      eval(code);
+    });
+  </script>
+</body>
+</html>
