@@ -571,7 +571,11 @@
   Array2D.eachColumn = function(grid, iterator) {
     var transposed = Array2D.transpose(grid);
 
-    Array2D.eachRow(transposed, iterator);
+    for (var i = 0, l1 = transposed.length; i < l1; i++) {
+      var row = transposed[i];
+
+      iterator(cloneArray(row), i, grid);
+    }
   };
 
   // Iterate over every cell in the given area.
