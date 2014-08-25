@@ -17,6 +17,10 @@ And here's an illustration of the above operations:
     4 5 6  transpose ~>  2 5 8  swap (1,1) with (2,2) ~>  2 9 8
     7 8 9                3 6 9                            3 6 5
 
+## Demo
+
+See the [unsophisticated demo page](http://matthewtoast.github.io/Array2D.js/demo/).
+
 ## Features / Quick reference
 
 Array2D.js provides the following functions. In general, each accepts an array of arrays (colloquially, a "grid") as the first argument. Arguments that take coordinate parameters receive them in _row, column_ order (i.e., _y, x_). The input array is never modified; all functions whose purpose is to set/change the grid actually return a _new_ grid.
