@@ -1420,7 +1420,18 @@
 
   // Fill the entire grid with a value.
   Array2D.fill = function(grid, value) {
+    var out = [];
 
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      var row = grid[i];
+      out[i] = [];
+
+      for (var j = 0, l2 = row.length; j < l2; j++) {
+        out[i][j] = value;
+      }
+    }
+
+    return out;
   };
 
   // Fill an area within the grid with a value.
