@@ -1257,16 +1257,84 @@
   // Return groups of coordinates, where groups are coordinates of
   // all _orthogonally_ adjacent cells that return truthy for the `finder`
   // function.
-  Array2D.contiguous = function(grid, finder) {
-    throw("Not yet implemented!");
+  Array2D.contiguous = function(grid, finder, countDiagonals) {
+    var contiguous = [];
+    var checked = [];
+
+    // Dimensions are used for bounds-checking below.
+    var dimensions = Array2D.dimensions(grid);
+    var w = dimensions[0];
+    var h = dimensions[1];
+
+    // Iterate over the whole grid, checking for contiguous groups.
+    for (var i = 0; i < h; i++) {
+      for (var j = 0; j < w; j++) {
+        _findContiguous(grid[i][j], i, j, grid, w, h, contiguous, checked, finder, countDiagonals);
+      }
+    }
+
+    return contiguous;
   };
+
+  // PRIVATE - RECURSIVE check for contiguous cells
+  function _findContiguous(cell, r, c, grid, w, h, contiguous, checked, finder, countDiagonals, group) {
+    if (!_hasChecked(checked, r, c)) {
+      checked[r] || (checked[r] = []);
+      checked[r][c] = true; // Avoid repeat checks
+
+      // No need to check out-of-bounds cells
+      if (c > -1 && c < w && r > -1 && r < h) {
+
+        // A truthy return value is a match
+        if (finder(cell, r, c, grid)) {
+
+          // Spawn a new group
+          if (!group) {
+            group = [];
+
+            // Push group into the collection
+            contiguous.push(group);
+          }
+
+          // Add cell's coordinate to the group
+          group.push([r, c]);
+
+          // Direction cache
+          var up = r - 1;
+          var down = r + 1;
+          var left = c - 1;
+          var right = c + 1;
+
+          // Orthogonal neighbors
+          if (up > -1 && up < h)       _findContiguous(grid[up][c], up, c, grid, w, h, contiguous, checked, finder, countDiagonals, group);
+          if (down > -1 && down < h)   _findContiguous(grid[down][c], down, c, grid, w, h, contiguous, checked, finder, countDiagonals, group);
+          if (left > -1 && left < w)   _findContiguous(grid[r][left], r, left, grid, w, h, contiguous, checked, finder, countDiagonals, group);
+          if (right > -1 && right < w) _findContiguous(grid[r][right], r, right, grid, w, h, contiguous, checked, finder, countDiagonals, group);
+
+          // Diagonal neighbors (if desired)
+          if (countDiagonals) {
+            if (up > -1 && up < h && left > -1 && left < w)       _findContiguous(grid[up][left], up, left, grid, w, h, contiguous, checked, finder, countDiagonals, group);
+            if (up > -1 && up < h && right > -1 && right < w)     _findContiguous(grid[up][right], up, right, grid, w, h, contiguous, checked, finder, countDiagonals, group);
+            if (down > -1 && down < h && left > -1 && left < w)   _findContiguous(grid[down][left], down, left, grid, w, h, contiguous, checked, finder, countDiagonals, group);
+            if (down > -1 && down < h && right > -1 && right < w) _findContiguous(grid[down][right], down, right, grid, w, h, contiguous, checked, finder, countDiagonals, group);
+          }
+
+        } else { /* The cell did not match; skip. */ }
+      } else { /* The cell was out-of-bounds; skip. */ }
+    } else { /* The cell was already checked; skip. */ }
+  }
 
   // Return groups of coordinates, where groups are coordinates of
   // all adjacent cells that return truthy for the `finder`
   // function.
   Array2D.touching = function(grid, finder) {
-    throw("Not yet implemented!");
+    return Array2D.contiguous(grid, finder, true);
   };
+
+  // PRIVATE - T/F if a coordinate has been checked.
+  function _hasChecked(checked, r, c) {
+    return checked[r] && checked[r][c] === true;
+  }
 
   // Modification
   // ============
