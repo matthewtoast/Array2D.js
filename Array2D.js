@@ -749,12 +749,33 @@
 
   // Delete a row.
   Array2D.deleteRow = function(grid, r) {
+    var out = [];
 
+    for (var i = 0, l = grid.length; i < l; i++) {
+      if (i !== r) {
+        out.push(grid[i]);
+      }
+    }
+
+    return out;
   };
 
   // Delete a column.
   Array2D.deleteColumn = function(grid, c) {
+    var out = [];
 
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      var row = grid[i];
+      out[i] = [];
+
+      for (var j = 0, l2 = row.length; j < l2; j++) {
+        if (j !== c) {
+          out[i].push(row[j]);
+        }
+      }
+    }
+
+    return out;
   };
 
   // Cells
