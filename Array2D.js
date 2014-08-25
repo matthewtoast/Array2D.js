@@ -1,4 +1,4 @@
-// Array2D.js 0.0.3
+// Array2D.js 0.0.4
 // Copyright (c) 2014 Matthew Trost
 // Array2D.js may be freely distributed under the MIT license.
 
@@ -30,7 +30,7 @@
   }
 
   // Current version.
-  Array2D.VERSION = '0.0.3';
+  Array2D.VERSION = '0.0.4';
 
   // Run Array2D.js in *noConflict* mode, returning the `Array2D` variable to its
   // previous owner. Returns a reference to the Array2D object.

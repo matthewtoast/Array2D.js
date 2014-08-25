@@ -1,6 +1,6 @@
 {
   "name": "array2d",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Utility library for working with 2D arrays (arrays of arrays) in JavaScript",
   "main": "Array2D.js",
   "repository": {
