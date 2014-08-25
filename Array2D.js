@@ -552,6 +552,21 @@
     Array2D.eachRow(transposed, iterator);
   };
 
+  // Iterate over every cell in the given area.
+  Array2D.forArea = function(grid, r, c, width, height, iterator) {
+
+  };
+
+  // Iterate over every cell in the given row.
+  Array2D.forRow = function(grid, r, iterator) {
+
+  };
+
+  // Iterate over every cell in the given column.
+  Array2D.forColumn = function(grid, c, iterator) {
+
+  };
+
   // Retrieval
   // =========
 
@@ -702,6 +717,46 @@
     return Array2D.thinnest(transposed);
   };
 
+  // Set a row to the given array.
+  Array2D.setRow = function(grid, r, array) {
+
+  };
+
+  // Set a column to the given array.
+  Array2D.setColumn = function(grid, c, array) {
+
+  };
+
+  // Fill a row with the given value.
+  Array2D.fillRow = function(grid, r, value) {
+
+  };
+
+  // Fill a column with the given value.
+  Array2D.fillColumn = function(grid, c, value) {
+
+  };
+
+  // Insert a row (array).
+  Array2D.spliceRow = function(grid, r, array) {
+
+  };
+
+  // Insert a column (array).
+  Array2D.spliceColumn = function(grid, c, array) {
+
+  };
+
+  // Delete a row.
+  Array2D.deleteRow = function(grid, r) {
+
+  };
+
+  // Delete a column.
+  Array2D.deleteColumn = function(grid, c) {
+
+  };
+
   // Cells
   // =====
 
@@ -715,6 +770,11 @@
   // `undefined`).
   Array2D.occupied = function(grid, r, c) {
     return isPresent(Array2D.get(grid, r, c));
+  };
+
+  // Return T/F whether the given cell is within the grid's area.
+  Array2D.inBounds = function(grid, r, c) {
+
   };
 
   // Determine whether the coordinate is on an edge.
@@ -1216,6 +1276,16 @@
     var rotated = Array2D.rrotate(grid);
 
     return Array2D.vflip(rotated);
+  };
+
+  // Fill the entire grid with a value.
+  Array2D.fill = function(grid, value) {
+
+  };
+
+  // Fill an area within the grid with a value.
+  Array2D.fillArea = function(grid, r, c, width, height, value) {
+
   };
 
   // Add padding to the given `side` of the grid, the specified
