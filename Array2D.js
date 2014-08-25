@@ -719,12 +719,39 @@
 
   // Set a row to the given array.
   Array2D.setRow = function(grid, r, array) {
+    var out = [];
 
+    for (var i = 0, l = grid.length; i < l; i++) {
+      if (i === r) {
+        out[i] = cloneArray(array);
+      }
+      else {
+        out[i] = cloneArray(grid[i]);
+      }
+    }
+
+    return out;
   };
 
   // Set a column to the given array.
   Array2D.setColumn = function(grid, c, array) {
+    var out = [];
 
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      var row = grid[i];
+      out[i] = [];
+
+      for (var j = 0, l2 = row.length; j < l2; j++) {
+        if (j === c) {
+          out[i][j] = array[j];
+        }
+        else {
+          out[i][j] = row[j];
+        }
+      }
+    }
+
+    return out;
   };
 
   // Fill a row with the given value.
