@@ -95,7 +95,7 @@ describe('#vsymmetrical', function() {
 });
 
 describe('#includes', function() {
-  it('can detect if a grid includes another', function() {
+  it('can detect if a grid includes another I', function() {
     var result = Array2D.includes([
       [1,2,3,4,5],
       [6,7,8,9,0],
@@ -108,6 +108,131 @@ describe('#includes', function() {
     ]);
 
     var expected = true;
+
+    assert.strictEqual(result, expected);
+  });
+
+  it('can detect if a grid includes another II (ragged)', function() {
+    var result = Array2D.includes([
+      [1,2,3,4,5],
+      [6,7,8,9,0],
+      [1,2,3,4,5],
+      [6,7,8,9,0],
+      [1,2,3,4,5]
+    ],[
+      [7,8,9,0],
+      [2,3]
+    ]);
+
+    var expected = true;
+
+    assert.strictEqual(result, expected);
+  });
+
+  it('can detect if a grid includes another III', function() {
+    var result = Array2D.includes([
+      [1,2,3,4,5],
+      [6,7,8,9,0],
+      [1,2,3,4,5],
+      [6,7,8,9,0],
+      [1,2,3,4,5]
+    ],[
+      [9,0],
+      [4,5]
+    ]);
+
+    var expected = true;
+
+    assert.strictEqual(result, expected);
+  });
+
+  it('can detect if a grid includes another IV', function() {
+    var result = Array2D.includes([
+      [1,2,3,4,5],
+      [6,7,8,9,0],
+      [1,2,3,4,5],
+      [6,7,8,9,0],
+      [1,2,3,4,5]
+    ],[
+      [7,8,9,0],
+      [2,3,4,5],
+      [7,8,9,0],
+      [2,3,4,5]
+    ]);
+
+    var expected = true;
+
+    assert.strictEqual(result, expected);
+  });
+
+  it('can detect if a grid includes another V (ragged)', function() {
+    var result = Array2D.includes([
+      [1,2,3,4,5],
+      [6,7,8,9,0],
+      [1,2,3,4,5],
+      [6,7,8,9,0],
+      [1,2,3,4,5]
+    ],[
+      [7,8,9,0],
+      [2,3,4,5],
+      [7,8,9,0],
+      [2,3,4]
+    ]);
+
+    var expected = true;
+
+    assert.strictEqual(result, expected);
+  });
+
+  it('can detect if a grid includes another VI (ragged)', function() {
+    var result = Array2D.includes([
+      [1,2,3,4,5],
+      [6,7,8,9],
+      [1,2,3],
+      [6,7],
+      [1]
+    ],[
+      [7,8,9],
+      [2],
+      [7]
+    ]);
+
+    var expected = true;
+
+    assert.strictEqual(result, expected);
+  });
+
+  it('can detect if a grid does not include another I', function() {
+    var result = Array2D.includes([
+      [1,2,3,4,5],
+      [6,7,8,9,0],
+      [1,2,3,4,5],
+      [6,7,8,9,0],
+      [1,2,3,4,5]
+    ],[
+      [9,0,1],
+      [4,5,1],
+      [1,1,1],
+    ]);
+
+    var expected = false;
+
+    assert.strictEqual(result, expected);
+  });
+
+  it('can detect if a grid does not include another II', function() {
+    var result = Array2D.includes([
+      [1,2,3,4,5],
+      [6,7,8,9,0],
+      [1,2,3,4,5],
+      [6,7,8,9,0],
+      [1,2,3,4,5]
+    ],[
+      [7,9],
+      [2,3]
+    ]);
+
+    var expected = false;
 
     assert.strictEqual(result, expected);
   });

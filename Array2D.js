@@ -1962,7 +1962,73 @@
 
   // Detect whether the first grid contains the second grid.
   Array2D.includes = function(grid1, grid2) {
-    throw("Array2D.js: Not yet implemented");
+    // Dimensions cache.
+    var d1 = Array2D.dimensions(grid1);
+    var d2 = Array2D.dimensions(grid2);
+    var w1 = d1[0];
+    var h1 = d1[1];
+    var w2 = d2[0];
+    var h2 = d2[1];
+
+    // Size conditions under which we don't bother checking.
+    if (w2 < 1) return false;
+    if (h2 < 1) return false;
+    if (w2 > w1) return false;
+    if (h2 > h1) return false;
+
+    var first = grid2[0][0];
+    var starters = [];
+
+    // Start by checking each cell of the outer grid.
+    for (var i = 0; i < grid1.length; i++) {
+      for (var j = 0; j < grid1[i].length; j++) {
+        var cell1 = grid1[i][j];
+
+        // If the first cell is a match, proceed.
+        if (cell1 === first) {
+          starters.push([i, j]);
+        }
+      }
+    }
+
+    // If no initial matches, no point checking the rest.
+    var startersLen = starters.length;
+    if (startersLen < 1) return false;
+
+    // Check whether the comparee is present in the grid.
+    for (var x = 0; x < startersLen; x++) {
+      // Starting coordinates in the *outer* grid.
+      var sr = starters[x][0];
+      var sc = starters[x][1];
+
+      // Assume a match for this starting point, then invalidate.
+      var match = true;
+
+      // Loop over the inner grid, comparing each cell.
+      for (var i = 0; i < grid2.length; i++) {
+        var row1 = grid1[i + sr];
+        var row2 = grid2[i];
+
+        // Fail early if we've already overstepped the bounds.
+        if (!isArray(row1)) break;
+        if (!isArray(row2)) break;
+
+        for (var j = 0; j < grid2[i].length; j++) {
+          var cell1 = row1[j + sc];
+          var cell2 = row2[j];
+
+          if (cell1 !== cell2) match = false;
+        }
+      }
+
+      // Return as soon as we find our first match.
+      if (match === true) {
+        return true;
+      }
+    }
+
+    // If we got this far, we never found a match.
+    return false;
   };
 
   // Import / export
