@@ -1487,3 +1487,39 @@ describe('#utrim', function() {
     assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
   });
 });
+
+describe('#fill', function() {
+  it('can fill a grid', function() {
+    var result = Array2D.fill([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], 'x');
+
+    var expected = [
+      ['x','x','x'],
+      ['x','x','x'],
+      ['x','x','x']
+    ];
+
+    assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
+  });
+});
+
+describe('#fillArea', function() {
+  it('can fill an area', function() {
+    var result = Array2D.fillArea([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], 0, 0, 2, 2, 'x');
+
+    var expected = [
+      ['x','x',3],
+      ['x','x',6],
+      [7,8,9]
+    ];
+
+    assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
+  });
+});

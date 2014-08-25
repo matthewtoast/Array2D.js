@@ -510,3 +510,29 @@ describe('#map', function() {
     assert.strictEqual(expected[2][2], result[2][2]);
   });
 });
+
+describe('#inBounds', function() {
+  it('can determine if a cell is in-bounds', function() {
+    var result = Array2D.inBounds([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], 1, 1);
+
+    var expected = true;
+
+    assert.strictEqual(expected, result);
+  });
+
+  it('can determine if a cell is not in-bounds', function() {
+    var result = Array2D.inBounds([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], 5, 5);
+
+    var expected = false;
+
+    assert.strictEqual(expected, result);
+  });
+});
