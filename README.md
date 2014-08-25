@@ -69,6 +69,9 @@ Array2D.js provides the following functions. In general, each accepts an array o
 **nthCell:** iterate over every nth cell (row-major)  
 **eachRow:** iterate over every row (row-major)  
 **eachColumn:** iterate over every column (column-major)  
+**forArea:** iterate over an area within the grid  
+**forRow:** iterate over the cells in a row  
+**forColumn:** iterate over the cells in a column  
 
 #### Retrieval
 
@@ -87,11 +90,20 @@ Array2D.js provides the following functions. In general, each accepts an array o
 **thinnest:** get the thinnest row  
 **tallest:** get the tallest column  
 **shortest:** get the shortest column  
+**fillRow:** fill a row with a given value  
+**fillColumn:** fill a column with a given value  
+**setRow:** set a row to a given array  
+**setColumn**  set a column to a given array  
+**spliceRow:**  insert a row  
+**spliceColumn:**  insert a column  
+**deleteRow:** delete a row  
+**deleteColumn:** delete a column  
 
 #### Cells
 
 **exists:** T/F whether the cell at coordinates exists (is not `undefined`)  
 **occupied:** T/F whether the cell at coordinates has content (is not `null`)  
+**inBounds:** T/F/ whether the cell is within the grid's area  
 **copy:** copy a cell from one coordinate to another  
 **move:** move a cell from one coordinate to another  
 **swap:** swap two cells  
@@ -134,6 +146,8 @@ _**touching:** get a list of groups of coordinates of touching cells_
 **pan:** pan over the grid up/down/left/right (also `upan`, `dpan`, `lpan`, `rpan`)  
 **slide:** slide the grid up/down/left/right (also `uslide`, `dslide`, `lslide`, `rslide`)  
 **transpose:** transpose the grid (flip over its main diagonal)  
+**fill:** fill all the grid's cells with a value  
+**fillArea:** fill an area within the grid with a value  
 **antitranspose:** flip the grid over its secondary diagonal  
 **pad:** add padding to the grid on the top/bottom/left/right (also `upad`, `dpad`, `lpad`, `rpad`)  
 **trim:** trim off from the grid's top/bottom/left/right (also `utrim`, `dtrim`, `ltrim`, `rtrim`)  

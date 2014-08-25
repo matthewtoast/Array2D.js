@@ -409,6 +409,45 @@ Iterate over every column in the grid, with the column-array elements presented 
         // ...
     });
 
+##### forArea(grid, r, c, width, height, iterator)
+
+Iterate over every cell in the area specified by the given dimensions. Passes each cell value to the `iterator`, a function with signature `iterator(value, r, c, grid)`, where `value` is the cell value, `r` and `c` are row-column coordinates, and `grid` is the original grid.
+
+    Array2D.forArea([
+        [1,2,3,4,5],
+        [6,7,8,9,0],
+        [1,2,3,4,5],
+        [6,7,8,9,0]
+    ], 1, 1, 2, 2, function(cell, r, c, grid) {
+        // ...
+    });
+
+##### forRow(grid, r, iterator)
+
+Iterate over every cell in the row for the given row-coordinate. Passes each cell value to the `iterator`, a function with signature `iterator(value, r, c, grid)`, where `value` is the cell value, `r` and `c` are row-column coordinates, and `grid` is the original grid.
+
+    Array2D.forRow([
+        [1,2,3,4,5],
+        [6,7,8,9,0],
+        [1,2,3,4,5],
+        [6,7,8,9,0]
+    ], 1, function(cell, r, c, grid) {
+        // ...
+    });
+
+##### forColumn(grid, c, iterator)
+
+Iterate over every cell in the column for the given column-coordinate. Passes each cell value to the `iterator`, a function with signature `iterator(value, r, c, grid)`, where `value` is the cell value, `r` and `c` are row-column coordinates, and `grid` is the original grid.
+
+    Array2D.forColumn([
+        [1,2,3,4,5],
+        [6,7,8,9,0],
+        [1,2,3,4,5],
+        [6,7,8,9,0]
+    ], 1, function(cell, r, c, grid) {
+        // ...
+    });
+
 ### Retrieval
 
 ##### crop(grid, r, c, width, height)
@@ -555,6 +594,18 @@ Returns `true` if the cell at row-column coordinates `r`, `c` exists, i.e. is no
 Returns `true` if the cell  at row-column coordinates `r`, `c` is occupied, i.e. has any value other than `null` or `undefined`. Otherwise returns `false`. Note that cells with the value `[]`, `""`, `{}`, `0`, or `false` would all be considered "occupied" and return `true`.
 
     Array2D.occupied([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1, 1);
+
+    // => true
+
+##### inBounds(grid, r, c)
+
+Returns `true` if the cell  at row-column coordinates `r`, `c` is within the grid's area.
+
+    Array2D.inBounds([
         [1,2,3],
         [4,5,6],
         [7,8,9]
@@ -1283,6 +1334,144 @@ Trim the row off of the grid the given `num` times. If no `num` is given, trim j
     // =>  [7,8],
     // =>  [1,2],
     // =>  [5,6]]
+
+##### fill(grid, value)
+
+Fill the entire grid with the given value.
+
+    Array2D.fill([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 'x');
+
+    // => [['x','x','x'],
+    // =>  ['x','x','x'],
+    // =>  ['x','x','x']]
+
+##### fillArea(grid, r, c, width, height, value)
+
+Fill an area of the grid, specified by the given starting coordinate and dimensinos, with the given value.
+
+    Array2D.fillArea([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1, 1, 2, 2, 'x');
+
+    // => [[1,2,3],
+    // =>  [4,'x','x'],
+    // =>  [7,'x','x']]
+
+##### fillRow(grid, r, value)
+
+Fill the row at the given row-coordinate with the given value.
+
+    Array2D.fillRow([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1, 'x');
+
+    // => [[1,2,3],
+    // =>  ['x','x','x'],
+    // =>  [7,8,9]]
+
+##### fillColumn(grid, c, value)
+
+Fill the column at the given column-coordinate with the given value.
+
+    Array2D.fillColumn([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1, 'x');
+
+    // => [[1,'x',3],
+    // =>  [4,'x',6],
+    // =>  [7,'x',9]]
+
+##### setRow
+
+Set the row at the given row-coordinate to the given array.
+
+    Array2D.setRow([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1, ['x', 'x', 'x']);
+
+    // => [[1,2,3],
+    // =>  ['x','x','x'],
+    // =>  [7,8,9]]
+
+##### setColumn
+
+Set the column at the given column-coordinate to the given array.
+
+    Array2D.setColumn([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1, ['x', 'x', 'x']);
+
+    // => [[1,'x',3],
+    // =>  [4,'x',6],
+    // =>  [7,'x',9]]
+
+##### spliceRow
+
+Insert a row-array at the given row-coordinate (index), pushing the other rows forward ahead.
+
+    Array2D.spliceRow([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1, ['x','x','x']);
+
+    // => [[1,2,3],
+    // =>  ['x','x','x'],
+    // =>  [4,5,6],
+    // =>  [7,8,9]]
+
+##### spliceColumn
+
+Insert a column-array at the given column-coordinate (index), pushing the other columns ahead.
+
+    Array2D.spliceColumn([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1, ['x','x','x']);
+
+    // => [[1,'x',2,3],
+    // =>  [4,'x',5,6],
+    // =>  [7,'x',8,9]]
+
+##### deleteRow
+
+Delete the row at the row-coordinate (index).
+
+    Array2D.deleteRow([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1);
+
+    // => [[1,2,3],
+    // =>  [7,8,9]]
+
+##### deleteColumn
+
+    Array2D.deleteColumn([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1);
+
+    // => [[1,3],
+    // =>  [4,6],
+    // =>  [7,9]]
 
 ##### paste(grid1, grid2, r, c)
 
