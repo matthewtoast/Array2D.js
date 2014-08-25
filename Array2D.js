@@ -729,12 +729,44 @@
 
   // Fill a row with the given value.
   Array2D.fillRow = function(grid, r, value) {
+    var out = [];
 
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      var row = grid[i];
+      out[i] = [];
+
+      for (var j = 0, l2 = row.length; j < l2; j++) {
+        if (i === r) {
+          out[i][j] = value;
+        }
+        else {
+          out[i][j] = row[j];
+        }
+      }
+    }
+
+    return out;
   };
 
   // Fill a column with the given value.
   Array2D.fillColumn = function(grid, c, value) {
+    var out = [];
 
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      var row = grid[i];
+      out[i] = [];
+
+      for (var j = 0, l2 = row.length; j < l2; j++) {
+        if (j === c) {
+          out[i][j] = value;
+        }
+        else {
+          out[i][j] = row[j];
+        }
+      }
+    }
+
+    return out;
   };
 
   // Insert a row (array).
