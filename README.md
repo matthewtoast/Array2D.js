@@ -186,7 +186,7 @@ You can install via npm:
 
 Or via Bower:
 
-    bower install Array2D  
+    bower install array2d
 
 Or simply download the [minified source](dist/Array2D.min.js).
 
