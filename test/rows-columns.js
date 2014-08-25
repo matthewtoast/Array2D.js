@@ -211,7 +211,7 @@ describe('#fillColumn', function() {
 
 describe('#spliceRow', function() {
   it('can insert a row', function() {
-    var result = Array2D.insertRow([
+    var result = Array2D.spliceRow([
       [1,2,3],
       [4,5,6],
       [7,8,9]

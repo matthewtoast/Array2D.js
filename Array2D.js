@@ -739,12 +739,37 @@
 
   // Insert a row (array).
   Array2D.spliceRow = function(grid, r, array) {
+    var out = [];
 
+    for (var i = 0, l = grid.length; i < l; i++) {
+      if (i === r) {
+        out.push(array);
+      }
+
+      out.push(grid[i]);
+    }
+
+    return out;
   };
 
   // Insert a column (array).
   Array2D.spliceColumn = function(grid, c, array) {
+    var out = [];
 
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      var row = grid[i];
+      out[i] = [];
+
+      for (var j = 0, l2 = row.length; j < l2; j++) {
+        if (j === c) {
+          out[i].push(array[j]);
+        }
+
+        out[i].push(row[j]);
+      }
+    }
+
+    return out;
   };
 
   // Delete a row.
