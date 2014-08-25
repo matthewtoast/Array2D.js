@@ -1443,8 +1443,10 @@
   };
 
   // Fill an area within the grid with a value.
-  Array2D.fillArea = function(grid, r, c, width, height, value) {
+  Array2D.fillArea = function(grid, r, c, w, h, value) {
+    var built = Array2D.build(w, h, value);
 
+    return Array2D.paste(grid, built, r, c);
   };
 
   // Add padding to the given `side` of the grid, the specified
