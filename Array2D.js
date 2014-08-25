@@ -1237,7 +1237,21 @@
   // Return the coordinates of every cell that the `finder` function
   // returns truthy.
   Array2D.find = function(grid, finder) {
-    throw("Not yet implemented!");
+    var found = [];
+
+    for (var i = 0, l1 = grid.length; i < l1; i++) {
+      var row = grid[i];
+
+      for (var j = 0, l2 = row.length; j < l2; j++) {
+        var cell = row[j];
+
+        if (finder(cell, i, j, grid)) {
+          found.push([i, j]);
+        }
+      }
+    }
+
+    return found;
   };
 
   // Return groups of coordinates, where groups are coordinates of
