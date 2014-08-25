@@ -578,7 +578,15 @@
   Array2D.forArea = function(grid, r, c, w, h, iterator) {
     var cropped = Array2D.crop(grid, r, c, w, h);
 
-    Array2D.eachCell(cropped, iterator);
+    for (var i = 0, l1 = cropped.length; i < l1; i++) {
+      var row = cropped[i];
+
+      for (var j = 0, l2 = row.length; j < l2; j++) {
+        var cell = row[j];
+
+        iterator(cell, i, j, grid);
+      }
+    }
   };
 
   // Iterate over every cell in the given row.
