@@ -93,3 +93,22 @@ describe('#vsymmetrical', function() {
     assert.strictEqual(result, expected);
   });
 });
+
+describe('#includes', function() {
+  it('can detect if a grid includes another', function() {
+    var result = Array2D.includes([
+      [1,2,3,4,5],
+      [6,7,8,9,0],
+      [1,2,3,4,5],
+      [6,7,8,9,0],
+      [1,2,3,4,5]
+    ],[
+      [7,8],
+      [2,3]
+    ]);
+
+    var expected = true;
+
+    assert.strictEqual(result, expected);
+  });
+});
