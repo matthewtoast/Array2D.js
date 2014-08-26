@@ -96,7 +96,640 @@ Return the total number of cells in the grid. (Note the difference between this 
 
     // => 6
 
-### Construction / destruction
+### Essentials
+
+##### crop(grid, r, c, width, height)
+
+Return a subsection of the grid, going from the row-column coordinates `r`, `c` outward to the specified `width` and `height`. If the specified dimensions go outside of the grid's bounds, only the in-bounds part of the original grid will be returned.
+
+    Array2D.crop([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1, 1, 3, 3); // <~ Note out-of-bounds access
+
+    // => [[5,6],
+    // =>  [8,9]]
+
+##### harvest(grid, r, c, width, height)
+
+Similar to `crop`, except that if the selected region goes beyond the grid's bounds, the returned grid will be the full dimensions specified, padded with `null` cells to make up for any overlap. This function also supports negative row-column indices.
+
+    Array2D.harvest([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1, 1, 3, 3); // <~ Note out-of-bounds access
+
+    // => [[5,6,null],
+    // =>  [8,9,null],
+    // =>  [null,null,null]]
+
+##### rotate(grid, direction)
+
+Return a new grid rotated one quarter-turn in the given direction `direction` (left or right). (See `lrotate` and `rrotate`.)
+
+    Array2D.rotate([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], Array2D.DIRECTIONS.LEFT);
+
+    // => [[3,6,9],
+    // =>  [2,5,8],
+    // =>  [1,4,7]]
+
+##### lrotate(grid)
+
+Rotate the grid one quarter-turn to the left.
+
+    Array2D.lrotate([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]);
+
+    // => [[3,6,9],
+    // =>  [2,5,8],
+    // =>  [1,4,7]]
+
+##### rrotate(grid)
+
+Rotate the grid one quarter-turn to the right.
+
+    Array2D.rrotate([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]);
+
+    // => [[7,4,1],
+    // =>  [8,5,2],
+    // =>  [9,6,3]]
+
+##### flip(grid, axis)
+
+Return a new grid flipped over the given axis `axis`. (See `vflip` and `hflip`.)
+
+    Array2D.flip([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], Array2D.AXES.X); // <~ Flip over this axis
+
+    // => [[7,8,9],
+    // =>  [4,5,6],
+    // =>  [1,2,3]]
+
+##### vflip(grid)
+
+Flip the grid vertically (over its horizontal axis).
+
+    Array2D.vflip([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]);
+
+    // => [[7,8,9],
+    // =>  [4,5,6],
+    // =>  [1,2,3]]
+
+##### hflip(grid)
+
+Flip the grid horizontally (over its vertical axis).
+
+    Array2D.transpose([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]);
+
+    // => [[3,2,1],
+    // =>  [6,5,4],
+    // =>  [9,8,7]]
+
+##### pan(grid, direction, [steps])
+
+Return a new grid, having "panned" over the given number of `steps` in the specified `direction`, and assuming that the edges of the grid should wrap around to the opposite side. That is, if we pan up one step, the bottom row of the grid would become the top row, pushing the remaining rows down. Likewise, if we panned left two steps, the leftmost columns would be replaced by the rightmost two, pushing the rest to the right. Note that the panning direction is the opposite of the direction that the rows/columns appear to move.
+
+    Array2D.pan([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], Array2D.DIRECTIONS.UP, 1);
+
+    // => [[7,8,9],
+    // =>  [1,2,3],
+    // =>  [4,5,6]]
+
+See `upan`, `dpan`, `rpan`, and `lpan`.
+
+##### upan(grid, [steps])
+
+Pan up over the grid the given number of steps.
+
+    Array2D.upan([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1);
+
+    // => [[7,8,9],
+    // =>  [1,2,3],
+    // =>  [4,5,6]]
+
+##### dpan(grid, [steps])
+
+Pan down over the grid the given number of steps.
+
+    Array2D.dpan([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1);
+
+    // => [[4,5,6],
+    // =>  [7,8,9],
+    // =>  [1,2,3]]
+
+##### lpan(grid, [steps])
+
+Pan left over the grid the given number of steps.
+
+    Array2D.lpan([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1);
+
+    // => [[3,1,2],
+    // =>  [6,4,5],
+    // =>  [9,7,8]]
+
+##### rpan(grid, [steps])
+
+Pan right over the grid the given number of steps.
+
+    Array2D.rpan([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1);
+
+    // => [[3,2,1],
+    // =>  [5,6,4],
+    // =>  [8,9,7]]
+
+##### slide(grid, direction, [steps])
+
+Similar to `pan`, except opposite: the _contents_ appear to move in the given direction.
+
+    Array2D.slide([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], Array2D.DIRECTIONS.UP, 1);
+
+    // => [[4,5,6],
+    // =>  [7,8,9],
+    // =>  [1,2,3]]
+
+See `uslide`, `dslide`, `rslide`, and `lslide`.
+
+##### uslide(grid, [steps])
+
+Slide the grid up the given number of steps.
+
+    Array2D.uslide([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1);
+
+    // => [[4,5,6],
+    // =>  [7,8,9],
+    // =>  [1,2,3]]
+
+##### dslide(grid, [steps])
+
+Slide the grid down the given number of steps.
+
+    Array2D.dslide([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1);
+
+    // => [[7,8,9],
+    // =>  [1,2,3],
+    // =>  [4,5,6]]
+
+##### lslide(grid, [steps])
+
+Slide the grid left the given number of steps.
+
+    Array2D.lslide([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1);
+
+    // => [[3,2,1],
+    // =>  [5,6,4],
+    // =>  [8,9,7]]
+
+##### rslide(grid, [steps])
+
+Slide the grid right the given number of steps.
+
+    Array2D.rslide([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1);
+
+    // => [[3,1,2],
+    // =>  [6,4,5],
+    // =>  [9,7,8]]
+
+##### transpose(grid)
+
+Return a new grid with the elements reflected over its _main diagonal_, i.e., with its rows written as its columns.
+
+    Array2D.transpose([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]);
+
+    // => [[1,4,7],
+    // =>  [2,5,8],
+    // =>  [3,6,9]]
+
+##### antitranspose(grid)
+
+Return a new grid with the elements reflected over its _secondary diagonal_. (Note the difference from `transpose`.)
+
+    Array2D.antitranspose([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]);
+
+    // => [[9,6,3],
+    // =>  [8,5,2],
+    // =>  [7,4,1]]
+
+##### fill(grid, value)
+
+Fill the entire grid with the given value.
+
+    Array2D.fill([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 'x');
+
+    // => [['x','x','x'],
+    // =>  ['x','x','x'],
+    // =>  ['x','x','x']]
+
+##### fillArea(grid, r, c, width, height, value)
+
+Fill an area of the grid, specified by the given starting coordinate and dimensinos, with the given value.
+
+    Array2D.fillArea([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1, 1, 2, 2, 'x');
+
+    // => [[1,2,3],
+    // =>  [4,'x','x'],
+    // =>  [7,'x','x']]
+
+##### pad(grid, side, times, [value])
+
+Return a new grid with a new row or column shifted in on the given side `side`, the given number of `times`. If a `value` is given, initialize the cells to that value. Otherwise, initialize to `null`.
+
+    Array2D.pad([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], Array2D.EDGES.TOP, 2, 'x');
+
+    // => [['x','x','x'],
+    // =>  ['x','x','x'],
+    // =>  [1,2,3],
+    // =>  [4,5,6],
+    // =>  [7,8,9]]
+
+See `upad`, `dpad`, `lpad`, `rpad`.
+
+##### upad(grid, times, [value])
+
+Add padding to the upper side of the grid. Initialize the cells to the given `value`, else to `null`.
+
+    Array2D.upad([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 2, 'x');
+
+    // => [['x','x','x'],
+    // =>  ['x','x','x'],
+    // =>  [1,2,3],
+    // =>  [4,5,6],
+    // =>  [7,8,9]]
+
+##### dpad(grid, times, [value])
+
+Add padding to the bottom side of the grid. Initialize the cells to the given `value`, else to `null`.
+
+    Array2D.dpad([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 2, 'x');
+
+    // => [[1,2,3],
+    // =>  [4,5,6],
+    // =>  [7,8,9]],
+    // =>  ['x','x','x'],
+    // =>  ['x','x','x']]
+
+##### lpad(grid, times, [value])
+
+Add padding to the left side of the grid. Initialize the cells to the given `value`, else to `null`.
+
+    Array2D.lpad([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 2, 'x');
+
+    // => [['x','x',1,2,3],
+    // =>  ['x','x',4,5,6],
+    // =>  ['x','x',7,8,9]]
+
+##### rpad(grid, times, [value])
+
+Add padding to the right side of the grid. Initialize the cells to the given `value`, else to `null`.
+
+    Array2D.rpad([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 2, 'x');
+
+    // => [[1,2,3,'x','x'],
+    // =>  [4,5,6,'x','x'],
+    // =>  [7,8,9,'x','x']]
+
+##### trim(grid, side, [num])
+
+Return a new grid with the row or column of the given side trimmed off. If `num` is given, trim that many columns off of the given side, otherwise just trim one. If `num` exceeds the number of rows or columns, an empty grid is returned.
+
+    Array2D.trim([
+        [1,2,3,4],
+        [5,6,7,8],
+        [9,0,1,2],
+        [3,4,5,6]
+    ], Array2D.EDGES.TOP, 2);
+
+    // => [[9,0,1,2],
+    // =>  [3,4,5,6]]
+
+See `utrim`, `dtrim`, `rtrim`, `ltrim`.
+
+##### utrim(grid, [num])
+
+Trim a row off of the grid the given `num` times. If no `num` is given, trim just one.
+
+    Array2D.utrim([
+        [1,2,3,4],
+        [5,6,7,8],
+        [9,0,1,2],
+        [3,4,5,6]
+    ], 2);
+
+    // => [[9,0,1,2],
+    // =>  [3,4,5,6]]
+
+##### dtrim(grid, [num])
+
+Trim the row off of the grid the given `num` times. If no `num` is given, trim just one.
+
+    Array2D.dtrim([
+        [1,2,3,4],
+        [5,6,7,8],
+        [9,0,1,2],
+        [3,4,5,6]
+    ], 2);
+
+    // => [[1,2,3,4],
+    // =>  [5,6,7,8]]
+
+##### rtrim(grid, [num])
+
+Trim the row off of the grid the given `num` times. If no `num` is given, trim just one.
+
+    Array2D.rtrim([
+        [1,2,3,4],
+        [5,6,7,8],
+        [9,0,1,2],
+        [3,4,5,6]
+    ], 2);
+
+    // => [[1,2],
+    // =>  [5,6],
+    // =>  [9,0],
+    // =>  [3,4]]
+
+##### ltrim(grid, [num])
+
+Trim the row off of the grid the given `num` times. If no `num` is given, trim just one.
+
+    Array2D.ltrim([
+        [1,2,3,4],
+        [5,6,7,8],
+        [9,0,1,2],
+        [3,4,5,6]
+    ], 2);
+
+    // => [[3,4],
+    // =>  [7,8],
+    // =>  [1,2],
+    // =>  [5,6]]
+
+##### stitch(grid1, grid2, edge)
+
+Return a new grid with the first grid stitched to the second grid, along the given edge `edge`.
+
+    Array2D.stitch([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ],[
+        ['a','b','c'],
+        ['d','e','f'],
+        ['g','h','i']
+    ], Array2D.EDGES.TOP);
+
+    // => [['a','b','c'],
+    // =>  ['d','e','f'],
+    // =>  ['g','h','i'],
+    // =>  [1,2,3],
+    // =>  [4,5,6],
+    // =>  [7,8,9]]
+
+See `ustitch`, `dstitch`, `lstitch`, `rstitch`.
+
+##### ustitch(grid1, grid2)
+
+Stitch the second grid to the top of the first grid.
+
+    Array2D.ustitch([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ],[
+        ['a','b','c'],
+        ['d','e','f'],
+        ['g','h','i']
+    ]);
+
+    // => [['a','b','c'],
+    // =>  ['d','e','f'],
+    // =>  ['g','h','i'],
+    // =>  [1,2,3],
+    // =>  [4,5,6],
+    // =>  [7,8,9]]
+
+##### dstitch(grid1, grid2)
+
+Stitch the second grid to the bottom of the first grid.
+
+    Array2D.dstitch([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ],[
+        ['a','b','c'],
+        ['d','e','f'],
+        ['g','h','i']
+    ]);
+
+    // => [[1,2,3],
+    // =>  [4,5,6],
+    // =>  [7,8,9],
+    // =>  ['a','b','c'],
+    // =>  ['d','e','f'],
+    // =>  ['g','h','i']]
+
+##### lstitch(grid1, grid2)
+
+Stitch the second grid onto the left of the first grid.
+
+    Array2D.lstitch([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ],[
+        ['a','b','c'],
+        ['d','e','f'],
+        ['g','h','i']
+    ]);
+
+    // => [['a','b','c',1,2,3],
+    // =>  ['d','e','f',4,5,6],
+    // =>  ['g','h','i',7,8,9]]
+
+##### rstitch(grid1, grid2)
+
+Stitch the second grid onto the right of the first grid.
+
+    Array2D.rstitch([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ],[
+        ['a','b','c'],
+        ['d','e','f'],
+        ['g','h','i']
+    ]);
+
+    // => [[1,2,3,'a','b','c'],
+    // =>  [4,5,6,'d','e','f'],
+    // =>  [7,8,9,'g','h','i']]
+
+##### paste(grid1, grid2, r, c)
+
+Return a new grid with contents of the first grid pasted over the contents of the second, starting at the row-column coordinates `r`, `c`. If the pasted grid exceeds the bounds of the pasted-to grid, the out-of-bounds cells will be ignored.
+
+    Array2D.paste([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ],[
+      ['a','b','c'],
+      ['d','e','f'],
+      ['g','h','i']
+    ], 1, 1);
+
+    // => [[1,2,3],
+    // =>  [4,'a','b'],
+    // =>  [7,'d','e']]
+
+##### glue(grid1, grid2, r, c)
+
+Like `paste`, except overlapping cells are included in the returned new grid, with additional `null` cells added to pad the grid so that the output grid is rectangular.
+
+    Array2D.glue([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ],[
+      ['a','b','c'],
+      ['d','e','f'],
+      ['g','h','i']
+    ], 1, 1);
+
+    // => [[1,2,3,null],
+    // =>  [4,'a','b','c'],
+    // =>  [7,'d','e','f'],
+    // =>  [null,'g','h','i']
+
+##### shuffle(grid)
+
+Return a new grid with the cell elements shuffled (randomly rearranged).
+
+    Array2D.shuffle([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]);
+
+    // => [[3,2,8], // (For example)
+    // =>  [1,5,6],
+    // =>  [7,4,9]]
+
+##### tidy(grid)
+
+Return a tidied-up clone of the grid. Ragged rows are padded with `null` cells until they meet the length of the longest row, making the grid rectangular. `undefined` cells are replaced with `null` values. This operation starts at the leftmost element and pushes out to the right (i.e., rows are assumed to be left-aligned).
+
+    Array2D.tidy([
+        [1,2],
+        [3],
+        [7,undefined,9]
+    ]);
+
+    // => [[1,2,null],
+    // =>  [3,null,null],
+    // =>  [7,null,9]]
+
+### Construction / casting
 
 ##### clone(grid)
 
@@ -160,7 +793,35 @@ Return a new grid with the same dimensions as the original, but with all cell va
     // =>  [null,null,null],
     // =>  [null,null,null]]
 
-### Format
+##### integerize(grid)
+
+Return a new grid with the same dimensions as the original, but with all cell values converted to integers. (Note that `parseInt()` can return `NaN` for some expressions.)
+
+    Array2D.integerize([
+        ['1','2','3'],
+        ['4','5','6'],
+        ['7','8','9']
+    ]);
+
+    // => [[1,2,3],
+    // =>  [4,5,6],
+    // =>  [7,8,9]]
+
+##### stringize(grid)
+
+Return a new grid with the same dimensions as the original, but with all cell values cast to strings.
+
+    Array2D.stringize([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ]);
+
+    // => [['1','2','3'],
+    // =>  ['4','5','6'],
+    // =>  ['7','8','9']]
+
+### Inspection / comparison / analysis
 
 ##### check(o)
 
@@ -194,6 +855,25 @@ Opposite of `ragged`.
         [1,2,3],
         [4,5,6],
         [7,8,9]
+    ]);
+
+    // => true
+
+##### empty(grid)
+
+Returns `true` if the grid has no cells. Otherwise `false`. (Here, `[]` and `[[]]` would return `true`; `[[1]]` would return `false`.)
+
+    Array2D.empty([[]]);
+
+    // => true
+
+##### blank(grid)
+
+Returns `true` if all of the grid's cells are `null` or `undefined`, _or_ if the grid has no cells (using `empty`). Otherwise `false`.
+
+    Array2D.blank([
+        [null,null],
+        [null,null],
     ]);
 
     // => true
@@ -242,50 +922,6 @@ Opposite of `sparse`.
 
     // => true
 
-##### integerize(grid)
-
-Return a new grid with the same dimensions as the original, but with all cell values converted to integers. (Note that `parseInt()` can return `NaN` for some expressions.)
-
-    Array2D.integerize([
-        ['1','2','3'],
-        ['4','5','6'],
-        ['7','8','9']
-    ]);
-
-    // => [[1,2,3],
-    // =>  [4,5,6],
-    // =>  [7,8,9]]
-
-##### stringize(grid)
-
-Return a new grid with the same dimensions as the original, but with all cell values cast to strings.
-
-    Array2D.stringize([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ]);
-
-    // => [['1','2','3'],
-    // =>  ['4','5','6'],
-    // =>  ['7','8','9']]
-
-##### tidy(grid)
-
-Return a tidied-up clone of the grid. Ragged rows are padded with `null` cells until they meet the length of the longest row, making the grid rectangular. `undefined` cells are replaced with `null` values. This operation starts at the leftmost element and pushes out to the right (i.e., rows are assumed to be left-aligned).
-
-    Array2D.tidy([
-        [1,2],
-        [3],
-        [7,undefined,9]
-    ]);
-
-    // => [[1,2,null],
-    // =>  [3,null,null],
-    // =>  [7,null,9]]
-
-### Comparison
-
 ##### same(grid1, grid2)
 
 Return `true` if every cell value in the first grid is equal to the respective cell in the second grid. Otherwise `false`. The cell-comparison is done using the strict equality operator (`===`).
@@ -318,27 +954,6 @@ Opposite of `same`.
 
     // => true
 
-### Inclusion
-
-##### empty(grid)
-
-Returns `true` if the grid has no cells. Otherwise `false`. (Here, `[]` and `[[]]` would return `true`; `[[1]]` would return `false`.)
-
-    Array2D.empty([[]]);
-
-    // => true
-
-##### blank(grid)
-
-Returns `true` if all of the grid's cells are `null` or `undefined`, _or_ if the grid has no cells (using `empty`). Otherwise `false`.
-
-    Array2D.blank([
-        [null,null],
-        [null,null],
-    ]);
-
-    // => true
-
 ##### contains(grid, value)
 
 Returns `true` if any cell in the grid matches the value `value` using the strict equality operator (`===`). Otherwise `false`.
@@ -351,7 +966,62 @@ Returns `true` if any cell in the grid matches the value `value` using the stric
 
     // => true
 
-### Iteration
+##### includes(grid1, grid2)
+
+Returns `true` if the first grid contains the second grid.
+
+    Array2D.includes([
+        [1,2,3,4],
+        [5,6,7,8],
+        [9,0,1,2],
+        [3,4,5,6]
+    ],[
+        [6,7],
+        [0,1]
+    ]);
+
+    // => true
+
+##### symmetrical(grid, axis)
+
+Returns `true` if the passed grid is symmetrical when reflected about the axis `axis`.
+
+    Array2D.symmetrical([
+        [1,2,2,1]
+        [2,4,4,2]
+        [5,6,6,5]
+    ], Array2D.AXES.Y); // <~ Reflect about this axis
+
+    // => true
+
+See `hsymmetrical`, `vsymmetrical`.
+
+##### hsymmetrical(grid)
+
+Returns `true` if the grid is horizontally symmetrical (i.e., when reflected over the y-axis).
+
+    Array2D.hsymmetrical([
+        [1,2,2,1]
+        [2,4,4,2]
+        [5,6,6,5]
+    ]);
+
+    // => true
+
+##### vsymmetrical(grid)
+
+Returns `true` if the grid is vertically symmetrical (i.e., when reflected over the x-axis).
+
+    Array2D.vsymmetrical([
+        [1,2,3,4],
+        [5,6,7,8],
+        [5,6,7,8],
+        [1,2,3,4]
+    ]);
+
+    // => true
+
+### Iteration / collection
 
 ##### eachCell(grid, iterator)
 
@@ -448,36 +1118,99 @@ Iterate over every cell in the column for the given column-coordinate. Passes ea
         // ...
     });
 
-### Retrieval
+##### flatten(grid)
 
-##### crop(grid, r, c, width, height)
+Return a _flat array_ of all the grid's cell values, in row-major order.
 
-Return a subsection of the grid, going from the row-column coordinates `r`, `c` outward to the specified `width` and `height`. If the specified dimensions go outside of the grid's bounds, only the in-bounds part of the original grid will be returned.
-
-    Array2D.crop([
+    Array2D.flatten([
         [1,2,3],
         [4,5,6],
         [7,8,9]
-    ], 1, 1, 3, 3); // <~ Note out-of-bounds access
+    ]);
 
-    // => [[5,6],
-    // =>  [8,9]]
+    // => [1,2,3,4,5,6,7,8,9]
 
-##### harvest(grid, r, c, width, height)
+##### squash(grid)
 
-Similar to `crop`, except that if the selected region goes beyond the grid's bounds, the returned grid will be the full dimensions specified, padded with `null` cells to make up for any overlap. This function also supports negative row-column indices.
+Similar to _flatten_, except returning the values in column-major order.
 
-    Array2D.harvest([
+    Array2D.squash([
         [1,2,3],
         [4,5,6],
         [7,8,9]
-    ], 1, 1, 3, 3); // <~ Note out-of-bounds access
+    ]);
 
-    // => [[5,6,null],
-    // =>  [8,9,null],
-    // =>  [null,null,null]]
+    // => [1,4,7,2,5,8,3,6,9]
+
+##### map(grid, iterator)
+
+Return a new grid that is a cell-by-cell mapping of the original. The iterator signature is `iterator(value, r, c, grid)`, with `value` being the cell's value, and `r` and `c` being the row-column coordinates of that cell.
+
+    Array2D.map([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], function(cell, r, c, grid) {
+        return cell * 2;
+    });
+
+    // => [[2,4,6],
+    // =>  [8,10,12],
+    // =>  [14,16,18]]
+
+##### reduce(grid, iterator)
+
+Reduce the grid to a _flat array_ by reducing each row to a single value. Each row is passed to the `iterator`, with the return value of the iterator becoming the reduced value of the whole row. The iterator signature is `iterator(row, r, grid)`, with `row` being the row-array, and `r` being the row-index.
+
+    Array2D.reduce([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], function(row, r) {
+        return row[0] * r;
+    });
+
+    // => [0,4,14]
+
+##### boildown(grid, iterator)
+
+Similar to `reduce`, except iteration occurs in column-major order.
+
+    Array2D.squash([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], function(column, c) {
+        return column[0] * c;
+    });
+
+    // => [0,2,6]
 
 ### Rows / columns
+
+##### row(grid, r)
+
+Return the row-array at the row-coordinate.
+
+    Array2D.row([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1);
+
+    // => [4,5,6]
+
+##### column(grid, c)
+
+Return the column-array at the column-coordinate.
+
+    Array2D.column([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1);
+
+    // => [2,5,8]
 
 ##### top(grid)
 
@@ -575,6 +1308,116 @@ Return the shortest _column_ of the grid, or the first found column if all are t
 
     // => [3]
 
+##### setRow
+
+Set the row at the given row-coordinate to the given array.
+
+    Array2D.setRow([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1, ['x', 'x', 'x']);
+
+    // => [[1,2,3],
+    // =>  ['x','x','x'],
+    // =>  [7,8,9]]
+
+##### setColumn
+
+Set the column at the given column-coordinate to the given array.
+
+    Array2D.setColumn([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1, ['x', 'x', 'x']);
+
+    // => [[1,'x',3],
+    // =>  [4,'x',6],
+    // =>  [7,'x',9]]
+
+##### fillRow(grid, r, value)
+
+Fill the row at the given row-coordinate with the given value.
+
+    Array2D.fillRow([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1, 'x');
+
+    // => [[1,2,3],
+    // =>  ['x','x','x'],
+    // =>  [7,8,9]]
+
+##### fillColumn(grid, c, value)
+
+Fill the column at the given column-coordinate with the given value.
+
+    Array2D.fillColumn([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1, 'x');
+
+    // => [[1,'x',3],
+    // =>  [4,'x',6],
+    // =>  [7,'x',9]]
+
+##### spliceRow
+
+Insert a row-array at the given row-coordinate (index), pushing the other rows forward ahead.
+
+    Array2D.spliceRow([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1, ['x','x','x']);
+
+    // => [[1,2,3],
+    // =>  ['x','x','x'],
+    // =>  [4,5,6],
+    // =>  [7,8,9]]
+
+##### spliceColumn
+
+Insert a column-array at the given column-coordinate (index), pushing the other columns ahead.
+
+    Array2D.spliceColumn([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1, ['x','x','x']);
+
+    // => [[1,'x',2,3],
+    // =>  [4,'x',5,6],
+    // =>  [7,'x',8,9]]
+
+##### deleteRow
+
+Delete the row at the row-coordinate (index).
+
+    Array2D.deleteRow([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1);
+
+    // => [[1,2,3],
+    // =>  [7,8,9]]
+
+##### deleteColumn
+
+    Array2D.deleteColumn([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 1);
+
+    // => [[1,3],
+    // =>  [4,6],
+    // =>  [7,9]]
+
 ### Cells
 
 ##### exists(grid, r, c)
@@ -613,6 +1456,50 @@ Returns `true` if the cell  at row-column coordinates `r`, `c` is within the gri
 
     // => true
 
+##### copy(grid, r1, c1, r2, c2)
+
+Copy the cell value from the first row-column coordinate  to the second row-column coordinate, replacing the value at the second coordinate. (Reminder: This returns a new grid, and does not modify the original.)
+
+    Array2D.copy([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 2, 0, 0, 2);
+
+    // => [[1,2,7],
+    // =>  [4,5,6],
+    // =>  [7,8,9]]
+
+##### move(grid, r1, c1, r2, c2)
+
+Similar to _copy_, except sets the first cell value to `null`. (Reminder: This returns a new grid, and does not modify the original.)
+
+    Array2D.copy([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 2, 0, 0, 2);
+
+    // => [[1,2,7],
+    // =>  [4,5,6],
+    // =>  [null,8,9]]
+
+##### swap(grid, r1, c1, r2, c2)
+
+Swap the cell values at the given row-column coordinate pairs. (Reminder: This returns a new grid, and does not modify the original.)
+
+    Array2D.copy([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 2, 0, 0, 2);
+
+    // => [[1,2,7],
+    // =>  [4,5,6],
+    // =>  [3,8,9]]
+
+### Location / relationships
+
 ##### edge(grid, r, c)
 
 Returns `true` if the cell at row-column coordinates `r`, `c` is located on one or more edge of the grid. Otherwise `false`. (Note: To determine `edge`-ness, the grid is assumed to be rectangular. For ragged grids, you may want to use `boundary`.)
@@ -622,18 +1509,6 @@ Returns `true` if the cell at row-column coordinates `r`, `c` is located on one 
         [4,5,6],
         [7,8,9]
     ], 2, 1);
-
-    // => true
-
-##### corner(grid, r, c)
-
-Returns `true` if the cell at row-column coordinates `r`, `c` is located on one or more corner of the grid. Otherwise `false`. (Note: To determine `corner`-ness, the grid is assumed to be rectangular. For ragged grids, you may want to use `crook`.)
-
-    Array2D.corner([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ], 2, 2);
 
     // => true
 
@@ -648,6 +1523,18 @@ Returns the list of edges that the cell at row-column coordinates `r`, `c` is lo
     ], 2, 2);
 
     // => [Array2D.EDGES.RIGHT, Array2D.EDGES.BOTTOM]
+
+##### corner(grid, r, c)
+
+Returns `true` if the cell at row-column coordinates `r`, `c` is located on one or more corner of the grid. Otherwise `false`. (Note: To determine `corner`-ness, the grid is assumed to be rectangular. For ragged grids, you may want to use `crook`.)
+
+    Array2D.corner([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ], 2, 2);
+
+    // => true
 
 ##### corners(grid, r, c)
 
@@ -697,7 +1584,7 @@ Similar to `corner`, except for a ragged grid. Calculates with respect to indivi
 
     // => true
 
-#####  crooks(grid, r, c)
+##### crooks(grid, r, c)
 
 Similar to `corners`, except for a ragged grid. Calculates with respect to individual row-length instead of grid width.
 
@@ -822,48 +1709,6 @@ Example code:
     // =>  [0,1,2],
     // =>  [4,5,6]]
 
-##### copy(grid, r1, c1, r2, c2)
-
-Copy the cell value from the first row-column coordinate  to the second row-column coordinate, replacing the value at the second coordinate. (Reminder: This returns a new grid, and does not modify the original.)
-
-    Array2D.copy([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ], 2, 0, 0, 2);
-
-    // => [[1,2,7],
-    // =>  [4,5,6],
-    // =>  [7,8,9]]
-
-##### move(grid, r1, c1, r2, c2)
-
-Similar to _copy_, except sets the first cell value to `null`. (Reminder: This returns a new grid, and does not modify the original.)
-
-    Array2D.copy([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ], 2, 0, 0, 2);
-
-    // => [[1,2,7],
-    // =>  [4,5,6],
-    // =>  [null,8,9]]
-
-##### swap(grid, r1, c1, r2, c2)
-
-Swap the cell values at the given row-column coordinate pairs. (Reminder: This returns a new grid, and does not modify the original.)
-
-    Array2D.copy([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ], 2, 0, 0, 2);
-
-    // => [[1,2,7],
-    // =>  [4,5,6],
-    // =>  [3,8,9]]
-
 ##### euclidean(grid, r1, c1, r2, c2)
 
 Return the Euclidean distance between two row-column coordinates.
@@ -875,8 +1720,6 @@ Return the Euclidean distance between two row-column coordinates.
     ], 0, 0, 2, 2);
 
     // => 2.82...
-
-Note: Eventually this function may use the `grid` dimensions and/or content to determine distance or validity of the coordinates.
 
 ##### chebyshev(grid, r1, c1, r2, c2)
 
@@ -890,8 +1733,6 @@ Return the Chebyshev distance between two row-column coordinates.
 
     // => 2
 
-Note: Eventually this function may use the `grid` dimensions and/or content to determine distance or validity of the coordinates.
-
 ##### manhattan(grid, r1, c1, r2, c2)
 
 Return the Manhattan distance between two row-column coordinates. 
@@ -904,27 +1745,9 @@ Return the Manhattan distance between two row-column coordinates.
 
     // => 4
 
-Note: Eventually this function may use the `grid` dimensions and/or content to determine distance or validity of the coordinates.
-
-##### map(grid, iterator)
-
-Return a new grid that is a cell-by-cell mapping of the original. The iterator signature is `iterator(value, r, c, grid)`, with `value` being the cell's value, and `r` and `c` being the row-column coordinates of that cell.
-
-    Array2D.map([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ], function(cell, r, c, grid) {
-        return cell * 2;
-    });
-
-    // => [[2,4,6],
-    // =>  [8,10,12],
-    // =>  [14,16,18]]
-
 ### Coordinates
 
-Note: Coordinates are represented by an array `[r, c]`, where `r` is the row index and `c` is the column index.
+Note: Coordinate pairs are represented by an array `[r, c]`, where `r` is the row index and `c` is the column index.
 
 ##### find(grid, finder)
 
@@ -975,743 +1798,29 @@ Similar to `contiguous`, except groups are composed of cells that are orthogonal
         [0,0,1,1,0],
         [1,0,1,0,1],
         [1,0,1,1,0],
-        [0,1,0,0,1],
+        [0,0,0,0,1],
         [1,0,1,1,1]
     ], function(cell) {
         return cell === 1;
     });
 
-    [
-        [    ]
-    ]
-
-### Modification
-
-##### rotate(grid, direction)
-
-Return a new grid rotated one quarter-turn in the given direction `direction` (left or right). (See `lrotate` and `rrotate`.)
-
-##### lrotate(grid)
-
-Rotate the grid one quarter-turn to the left.
-
-    Array2D.lrotate([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ]);
-
-    // => [[3,6,9],
-    // =>  [2,5,8],
-    // =>  [1,4,7]]
-
-##### rrotate(grid)
-
-Rotate the grid one quarter-turn to the right.
-
-    Array2D.rrotate([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ]);
-
-    // => [[7,4,1],
-    // =>  [8,5,2],
-    // =>  [9,6,3]]
-
-##### flip(grid, axis)
-
-Return a new grid flipped over the given axis `axis`. (See `vflip` and `hflip`.)
-
-##### vflip(grid)
-
-Flip the grid vertically (over its horizontal axis).
-
-    Array2D.vflip([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ]);
-
-    // => [[7,8,9],
-    // =>  [4,5,6],
-    // =>  [1,2,3]]
-
-##### hflip(grid)
-
-Flip the grid horizontally (over its vertical axis).
-
-    Array2D.transpose([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ]);
-
-    // => [[3,2,1],
-    // =>  [6,5,4],
-    // =>  [9,8,7]]
-
-##### pan(grid, direction, [steps])
-
-Return a new grid, having "panned" over the given number of `steps` in the specified `direction`, and assuming that the edges of the grid should wrap around to the opposite side. That is, if we pan up one step, the bottom row of the grid would become the top row, pushing the remaining rows down. Likewise, if we panned left two steps, the leftmost columns would be replaced by the rightmost two, pushing the rest to the right. Note that the panning direction is the opposite of the direction that the rows/columns appear to move.
-
-See `upan`, `dpan`, `rpan`, and `lpan`.
-
-##### upan(grid, [steps])
-
-Pan up over the grid the given number of steps.
-
-    Array2D.upan([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ]);
-
-    // => [[7,8,9],
-    // =>  [1,2,3],
-    // =>  [4,5,6]]
-
-##### dpan(grid, [steps])
-
-Pan down over the grid the given number of steps.
-
-    Array2D.dpan([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ]);
-
-    // => [[4,5,6],
-    // =>  [7,8,9],
-    // =>  [1,2,3]]
-
-##### lpan(grid, [steps])
-
-Pan left over the grid the given number of steps.
-
-    Array2D.lpan([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ]);
-
-    // => [[3,1,2],
-    // =>  [6,4,5],
-    // =>  [9,7,8]]
-
-##### rpan(grid, [steps])
-
-Pan right over the grid the given number of steps.
-
-    Array2D.rpan([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ]);
-
-    // => [[3,2,1],
-    // =>  [5,6,4],
-    // =>  [8,9,7]]
-
-##### slide(grid, direction, [steps])
-
-Similar to `pan`, except opposite: the _contents_ appear to move in the given direction.
-
-See `uslide`, `dslide`, `rslide`, and `lslide`.
-
-##### uslide(grid, [steps])
-
-Slide the grid up the given number of steps.
-
-    Array2D.uslide([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ]);
-
-    // => [[4,5,6],
-    // =>  [7,8,9],
-    // =>  [1,2,3]]
-
-##### dslide(grid, [steps])
-
-Slide the grid down the given number of steps.
-
-    Array2D.dslide([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ]);
-
-    // => [[7,8,9],
-    // =>  [1,2,3],
-    // =>  [4,5,6]]
-
-##### lslide(grid, [steps])
-
-Slide the grid left the given number of steps.
-
-    Array2D.lslide([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ]);
-
-    // => [[3,2,1],
-    // =>  [5,6,4],
-    // =>  [8,9,7]]
-
-##### rslide(grid, [steps])
-
-Slide the grid right the given number of steps.
-
-    Array2D.rslide([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ]);
-
-    // => [[3,1,2],
-    // =>  [6,4,5],
-    // =>  [9,7,8]]
-
-##### transpose(grid)
-
-Return a new grid with the elements reflected over its _main diagonal_, i.e., with its rows written as its columns.
-
-    Array2D.transpose([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ]);
-
-    // => [[1,4,7],
-    // =>  [2,5,8],
-    // =>  [3,6,9]]
-
-##### antitranspose(grid)
-
-Return a new grid with the elements reflected over its _secondary diagonal_. (Note the difference from `transpose`.)
-
-    Array2D.antitranspose([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ]);
-
-    // => [[9,6,3],
-    // =>  [8,5,2],
-    // =>  [7,4,1]]
-
-##### pad(grid, side, times, [value])
-
-Return a new grid with a new row or column shifted in on the given side `side`, the given number of `times`. If a `value` is given, initialize the cells to that value. Otherwise, initialize to `null`.
-
-See `upad`, `dpad`, `lpad`, `rpad`.
-
-##### upad(grid, times, [value])
-
-Add padding to the upper side of the grid. Initialize the cells to the given `value`, else to `null`.
-
-    Array2D.upad([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ], 2, 'x');
-
-    // => [['x','x','x'],
-    // =>  ['x','x','x'],
-    // =>  [1,2,3],
-    // =>  [4,5,6],
-    // =>  [7,8,9]]
-
-##### dpad(grid, times, [value])
-
-Add padding to the bottom side of the grid. Initialize the cells to the given `value`, else to `null`.
-
-    Array2D.dpad([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ], 2, 'x');
-
-    // => [[1,2,3],
-    // =>  [4,5,6],
-    // =>  [7,8,9]],
-    // =>  ['x','x','x'],
-    // =>  ['x','x','x']]
-
-##### lpad(grid, times, [value])
-
-Add padding to the left side of the grid. Initialize the cells to the given `value`, else to `null`.
-
-    Array2D.lpad([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ], 2, 'x');
-
-    // => [['x','x',1,2,3],
-    // =>  ['x','x',4,5,6],
-    // =>  ['x','x',7,8,9]]
-
-##### rpad(grid, times, [value])
-
-Add padding to the right side of the grid. Initialize the cells to the given `value`, else to `null`.
-
-    Array2D.rpad([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ], 2, 'x');
-
-    // => [[1,2,3,'x','x'],
-    // =>  [4,5,6,'x','x'],
-    // =>  [7,8,9,'x','x']]
-
-##### trim(grid, side, [num])
-
-Return a new grid with the row or column of the given side trimmed off. If `num` is given, trim that many columns off of the given side, otherwise just trim one. If `num` exceeds the number of rows or columns, an empty grid is returned.
-
-See `utrim`, `dtrim`, `rtrim`, `ltrim`.
-
-##### utrim(grid, [num])
-
-Trim the row off of the grid the given `num` times. If no `num` is given, trim just one.
-
-    Array2D.utrim([
-        [1,2,3,4],
-        [5,6,7,8],
-        [9,0,1,2],
-        [3,4,5,6]
-    ], 2);
-
-    // => [[9,0,1,2],
-    // =>  [3,4,5,6]]
-
-##### dtrim(grid, [num])
-
-Trim the row off of the grid the given `num` times. If no `num` is given, trim just one.
-
-    Array2D.dtrim([
-        [1,2,3,4],
-        [5,6,7,8],
-        [9,0,1,2],
-        [3,4,5,6]
-    ], 2);
-
-    // => [[1,2,3,4],
-    // =>  [5,6,7,8]]
-
-##### rtrim(grid, [num])
-
-Trim the row off of the grid the given `num` times. If no `num` is given, trim just one.
-
-    Array2D.rtrim([
-        [1,2,3,4],
-        [5,6,7,8],
-        [9,0,1,2],
-        [3,4,5,6]
-    ], 2);
-
-    // => [[1,2],
-    // =>  [5,6],
-    // =>  [9,0],
-    // =>  [3,4]]
-
-##### ltrim(grid, [num])
-
-Trim the row off of the grid the given `num` times. If no `num` is given, trim just one.
-
-    Array2D.ltrim([
-        [1,2,3,4],
-        [5,6,7,8],
-        [9,0,1,2],
-        [3,4,5,6]
-    ], 2);
-
-    // => [[3,4],
-    // =>  [7,8],
-    // =>  [1,2],
-    // =>  [5,6]]
-
-##### fill(grid, value)
-
-Fill the entire grid with the given value.
-
-    Array2D.fill([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ], 'x');
-
-    // => [['x','x','x'],
-    // =>  ['x','x','x'],
-    // =>  ['x','x','x']]
-
-##### fillArea(grid, r, c, width, height, value)
-
-Fill an area of the grid, specified by the given starting coordinate and dimensinos, with the given value.
-
-    Array2D.fillArea([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ], 1, 1, 2, 2, 'x');
-
-    // => [[1,2,3],
-    // =>  [4,'x','x'],
-    // =>  [7,'x','x']]
-
-##### fillRow(grid, r, value)
-
-Fill the row at the given row-coordinate with the given value.
-
-    Array2D.fillRow([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ], 1, 'x');
-
-    // => [[1,2,3],
-    // =>  ['x','x','x'],
-    // =>  [7,8,9]]
-
-##### fillColumn(grid, c, value)
-
-Fill the column at the given column-coordinate with the given value.
-
-    Array2D.fillColumn([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ], 1, 'x');
-
-    // => [[1,'x',3],
-    // =>  [4,'x',6],
-    // =>  [7,'x',9]]
-
-##### setRow
-
-Set the row at the given row-coordinate to the given array.
-
-    Array2D.setRow([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ], 1, ['x', 'x', 'x']);
-
-    // => [[1,2,3],
-    // =>  ['x','x','x'],
-    // =>  [7,8,9]]
-
-##### setColumn
-
-Set the column at the given column-coordinate to the given array.
-
-    Array2D.setColumn([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ], 1, ['x', 'x', 'x']);
-
-    // => [[1,'x',3],
-    // =>  [4,'x',6],
-    // =>  [7,'x',9]]
-
-##### spliceRow
-
-Insert a row-array at the given row-coordinate (index), pushing the other rows forward ahead.
-
-    Array2D.spliceRow([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ], 1, ['x','x','x']);
-
-    // => [[1,2,3],
-    // =>  ['x','x','x'],
-    // =>  [4,5,6],
-    // =>  [7,8,9]]
-
-##### spliceColumn
-
-Insert a column-array at the given column-coordinate (index), pushing the other columns ahead.
-
-    Array2D.spliceColumn([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ], 1, ['x','x','x']);
-
-    // => [[1,'x',2,3],
-    // =>  [4,'x',5,6],
-    // =>  [7,'x',8,9]]
-
-##### deleteRow
-
-Delete the row at the row-coordinate (index).
-
-    Array2D.deleteRow([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ], 1);
-
-    // => [[1,2,3],
-    // =>  [7,8,9]]
-
-##### deleteColumn
-
-    Array2D.deleteColumn([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ], 1);
-
-    // => [[1,3],
-    // =>  [4,6],
-    // =>  [7,9]]
-
-##### paste(grid1, grid2, r, c)
-
-Return a new grid with contents of the first grid pasted over the contents of the second, starting at the row-column coordinates `r`, `c`. If the pasted grid exceeds the bounds of the pasted-to grid, the out-of-bounds cells will be ignored.
-
-    Array2D.paste([
-      [1,2,3],
-      [4,5,6],
-      [7,8,9]
-    ],[
-      ['a','b','c'],
-      ['d','e','f'],
-      ['g','h','i']
-    ], 1, 1);
-
-    // => [[1,2,3],
-    // =>  [4,'a','b'],
-    // =>  [7,'d','e']]
-
-##### glue(grid1, grid2, r, c)
-
-Like `paste`, except overlapping cells are included in the returned new grid, with additional `null` cells added to pad the grid so that the output grid is rectangular.
-
-    Array2D.glue([
-      [1,2,3],
-      [4,5,6],
-      [7,8,9]
-    ],[
-      ['a','b','c'],
-      ['d','e','f'],
-      ['g','h','i']
-    ], 1, 1);
-
-    // => [[1,2,3,null],
-    // =>  [4,'a','b','c'],
-    // =>  [7,'d','e','f'],
-    // =>  [null,'g','h','i']
-
-##### stitch(grid1, grid2, edge)
-
-Return a new grid with the first grid stitched to the second grid, along the given edge `edge`.
-
-See `ustitch`, `dstitch`, `lstitch`, `rstitch`.
-
-##### ustitch(grid1, grid2)
-
-Stitch the second grid to the top of the first grid.
-
-    Array2D.ustitch([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ],[
-        ['a','b','c'],
-        ['d','e','f'],
-        ['g','h','i']
-    ]);
-
-    // => [['a','b','c'],
-    // =>  ['d','e','f'],
-    // =>  ['g','h','i'],
-    // =>  [1,2,3],
-    // =>  [4,5,6],
-    // =>  [7,8,9]]
-
-##### dstitch(grid1, grid2)
-
-Stitch the second grid to the bottom of the first grid.
-
-    Array2D.dstitch([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ],[
-        ['a','b','c'],
-        ['d','e','f'],
-        ['g','h','i']
-    ]);
-
-    // => [[1,2,3],
-    // =>  [4,5,6],
-    // =>  [7,8,9],
-    // =>  ['a','b','c'],
-    // =>  ['d','e','f'],
-    // =>  ['g','h','i']]
-
-##### lstitch(grid1, grid2)
-
-Stitch the second grid onto the left of the first grid.
-
-    Array2D.lstitch([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ],[
-        ['a','b','c'],
-        ['d','e','f'],
-        ['g','h','i']
-    ]);
-
-    // => [['a','b','c',1,2,3],
-    // =>  ['d','e','f',4,5,6],
-    // =>  ['g','h','i',7,8,9]]
-
-##### rstitch(grid1, grid2)
-
-Stitch the second grid onto the right of the first grid.
-
-    Array2D.rstitch([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ],[
-        ['a','b','c'],
-        ['d','e','f'],
-        ['g','h','i']
-    ]);
-
-    // => [[1,2,3,'a','b','c'],
-    // =>  [4,5,6,'d','e','f'],
-    // =>  [7,8,9,'g','h','i']]
-
-##### shuffle(grid)
-
-Return a new grid with the cell elements shuffled (randomly rearranged).
-
-    Array2D.shuffle([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ]);
-
-    // => [[3,2,8], // (For example)
-    // =>  [1,5,6],
-    // =>  [7,4,9]]
-
-### Conversion / reduction
-
-##### flatten(grid)
-
-Return a _flat array_ of all the grid's cell values, in row-major order.
-
-    Array2D.flatten([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ]);
-
-    // => [1,2,3,4,5,6,7,8,9]
-
-##### squash(grid)
-
-Similar to _flatten_, except returning the values in column-major order.
-
-    Array2D.squash([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ]);
-
-    // => [1,4,7,2,5,8,3,6,9]
-
-##### reduce(grid, iterator)
-
-Reduce the grid to a _flat array_ by reducing each row to a single value. Each row is passed to the `iterator`, with the return value of the iterator becoming the reduced value of the whole row. The iterator signature is `iterator(row, r, grid)`, with `row` being the row-array, and `r` being the row-index.
-
-    Array2D.reduce([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ], function(row, r) {
-        return row[0] * r;
-    });
-
-    // => [0,4,14]
-
-##### boildown(grid, iterator)
-
-Similar to `reduce`, except iteration occurs in column-major order.
-
-    Array2D.squash([
-        [1,2,3],
-        [4,5,6],
-        [7,8,9]
-    ], function(column, c) {
-        return column[0] * c;
-    });
-
-    // => [0,2,6]
-
-### Analysis
-
-##### symmetrical(grid, axis)
-
-Returns `true` if the passed grid is symmetrical when reflected about the axis `axis`.
-
-See `hsymmetrical`, `vsymmetrical`.
-
-##### hsymmetrical(grid)
-
-Returns `true` if the grid is horizontally symmetrical (i.e., when reflected over the y-axis).
-
-    Array2D.hsymmetrical([
-        [1,2,2,1]
-        [2,4,4,2]
-        [5,6,6,5]
-    ]);
-
-    // => true
-
-##### vsymmetrical(grid)
-
-Returns `true` if the grid is vertically symmetrical (i.e., when reflected over the x-axis).
-
-    Array2D.vsymmetrical([
-        [1,2,3,4],
-        [5,6,7,8],
-        [5,6,7,8],
-        [1,2,3,4]
-    ]);
-
-    // => true
-
-##### includes(grid1, grid2)
-
-Returns `true` if the first grid contains the second grid.
-
-    Array2D.includes([
-        [1,2,3,4],
-        [5,6,7,8],
-        [9,0,1,2],
-        [3,4,5,6]
-    ],[
-        [6,7],
-        [0,1]
-    ]);
-
-    // => true
+    // => [
+    // =>     [  [0,2],[0,3],[1,2],[1,4],[2,2],[2,3],[3,4],[4,2],[4,3],[4,4]  ],
+    // =>     [  [1,0],[2,0] ],
+    // =>     [  [4,0] ]
+    // => ]
 
 ### Import / export
+
+##### fromArray(arr, width, height)
+
+Conver the given flat array into a grid of the specified `width` and `height`:
+
+    Array2D.fromArray([1,2,3,4,5,6,7,8,9], 3, 3);
+
+    // => [[1,2,3],
+    // =>  [4,5,6],
+    // =>  [7,8,9]]
 
 ##### fromCanvas(canvas) [browser-only]
 
@@ -1743,16 +1852,6 @@ Example code:
     );
 
 Note that this method has the side effect of modifying the canvas' content.
-
-##### fromArray(arr, width, height)
-
-Conver the given flat array into a grid of the specified `width` and `height`:
-
-    Array2D.fromArray([1,2,3,4,5,6,7,8,9], 3, 3);
-
-    // => [[1,2,3],
-    // =>  [4,5,6],
-    // =>  [7,8,9]]
 
 ### "Constants" / "enums"
 
@@ -1815,3 +1914,7 @@ The following constants / enums are provided for convenience and used throughout
 `Array2D.QUADRANTS.II`  = `2`  
 `Array2D.QUADRANTS.III` = `3`  
 `Array2D.QUADRANTS.IV`  = `4`  
+
+## Help / troubleshooting / bugs
+
+Please see [GitHub issues](https://github.com/matthewtoast/Array2D.js/issues).
