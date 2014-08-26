@@ -1097,6 +1097,41 @@
     return !Array2D.same(grid1, grid2);
   };
 
+  // Return the coordinates of cells that are different between
+  // the two grids.
+  Array2D.diff = function(grid1, grid2) {
+    var diffs = [];
+
+    var d1 = Array2D.dimensions(grid1);
+    var d2 = Array2D.dimensions(grid2);
+
+    var w = (d1[0] > d2[0]) ? d1[0] : d2[0];
+    var h = (d1[1] > d2[1]) ? d2[1] : d2[1];
+
+    for (var i = 0; i < h; i++) {
+      var row1 = grid1[i];
+      var row2 = grid2[i];
+      var row1isArray = isArray(row1);
+      var row2isArray = isArray(row2);
+
+      for (var j = 0; j < w; j++) {
+        if (row1isArray && row2isArray) {
+          var cell1 = row1[j];
+          var cell2 = row2[j];
+
+          if (cell1 !== cell2) {
+            diffs.push([i, j]);
+          }
+        }
+        else {
+          diffs.push([i, j]);
+        }
+      }
+    }
+
+    return diffs;
+  };
+
   // Return true if the grid contains the value.
   Array2D.contains = function(grid, value) {
     var contains = false;

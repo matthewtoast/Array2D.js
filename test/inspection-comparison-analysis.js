@@ -323,6 +323,24 @@ describe('#different', function() {
   });
 });
 
+describe('#diff', function() {
+  it('can find coordinates of differing cells', function() {
+    var result = Array2D.diff([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ],[
+        [9,8,7],
+        [6,5,4],
+        [3,2,1]
+    ]);
+
+    var expected = [[0,0],[0,1],[0,2],[1,0],[1,2],[2,0],[2,1],[2,2]];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+  });
+});
+
 describe('#contains', function() {
   it('can detect whether a grid contains a value', function() {
     var result = Array2D.contains([

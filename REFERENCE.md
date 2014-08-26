@@ -954,6 +954,22 @@ Opposite of `same`.
 
     // => true
 
+##### diff(grid1, grid2)
+
+Return an array of coordinates that are different between the two grids, starting at row-column coordinates `0`,`0` in both grids, and extending out to the edges of the larger of the two grids.
+
+    Array2D.diff([
+        [1,2,3],
+        [4,5,6],
+        [7,8,9]
+    ],[
+        [9,8,7],
+        [6,5,4],
+        [3,2,1]
+    ]);
+
+    // => [[0,0],[0,1],[0,2],[1,0],[1,2],[2,0],[2,1],[2,2]]
+
 ##### contains(grid, value)
 
 Returns `true` if any cell in the grid matches the value `value` using the strict equality operator (`===`). Otherwise `false`.
