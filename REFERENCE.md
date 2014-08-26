@@ -1826,6 +1826,20 @@ Similar to `contiguous`, except groups are composed of cells that are orthogonal
     // =>     [  [4,0] ]
     // => ]
 
+##### surrounds(grid, r, c, [allowOutOfBounds])
+
+Return the coordinates of all the cells that surround the cell at row-column coordinate `r`, `c`. (This function is in contrast to `neighbors`, which returns the _values_ of the surrounding cells.) Don't include coordinates of any cells that are out-of-bounds, unless `allowOutOfBounds` is specified.
+
+    Array2D.surrounds([
+        [1,2,3,4,5],
+        [6,7,8,9,0],
+        [1,2,3,4,5],
+        [6,7,8,9,0],
+        [1,2,3,4,5]
+    ], 2, 0);
+
+    // => [[1,0],[1,1],[2,1],[3,0],[3,1]]
+
 ### Import / export
 
 ##### fromArray(arr, width, height)

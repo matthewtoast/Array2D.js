@@ -2054,6 +2054,28 @@
     return checked[r] && checked[r][c] === true;
   }
 
+  // Return coordinates of all surrounding cells
+  Array2D.surrounds = function(grid, r, c, allowOutOfBounds) {
+    var surrounds = [];
+
+    var d = Array2D.dimensions(grid);
+    var w = d[0];
+    var h = d[1];
+    var right = w - 1;
+    var bottm = h - 1;
+
+    if ((r > 0 && c > 0)         || allowOutOfBounds) surrounds.push([r - 1, c - 1]); // nw
+    if ((r > 0)                  || allowOutOfBounds) surrounds.push([r - 1, c]); // n
+    if ((r > 0 && c < right)     || allowOutOfBounds) surrounds.push([r - 1, c + 1]); // ne
+    if ((c > 0)                  || allowOutOfBounds) surrounds.push([r, c - 1]); // w
+    if ((c < right)              || allowOutOfBounds) surrounds.push([r, c + 1]); // e
+    if ((r < bottm && c > 0)     || allowOutOfBounds) surrounds.push([r + 1, c - 1]); // sw
+    if ((r < bottm)              || allowOutOfBounds) surrounds.push([r + 1, c]); // s
+    if ((r < bottm && c < right) || allowOutOfBounds) surrounds.push([r + 1, c + 1]); // se
+
+    return surrounds;
+  };
+
   // Import / export
   // ===============
 
