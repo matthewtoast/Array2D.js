@@ -12,3 +12,7 @@ describe('#fromArray', function() {
     assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
   });
 });
+
+// TODO: A good test for #toCanvas
+
+// TODO: A good test for #fromCanvas

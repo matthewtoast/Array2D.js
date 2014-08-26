@@ -1,6 +1,136 @@
 var Array2D = require('./../Array2D');
 var assert = require('assert');
 
+describe('#crop', function() {
+  it('can crop an internal grid', function() {
+    var result = Array2D.crop([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], 1, 1, 2, 2);
+
+    var expected = [
+      [5,6],
+      [8,9]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+  });
+
+  it('does not crop out-of-bounds', function() {
+    var result = Array2D.crop([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], 1, 1, 3, 3);
+
+    var expected = [
+      [5,6],
+      [8,9]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], undefined);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], undefined);
+    assert.strictEqual(expected[2], undefined);
+  });
+
+  it('does not crop with negative indices', function() {
+    var result = Array2D.crop([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], -1, -1, 3, 3);
+
+    var expected = [
+      [1,2],
+      [4,5]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], undefined);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], undefined);
+    assert.strictEqual(expected[2], undefined);
+  });
+});
+
+describe('#harvest', function() {
+  it('can harvest an internal grid', function() {
+    var result = Array2D.harvest([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], 1, 1, 2, 2);
+
+    var expected = [
+      [5,6],
+      [8,9]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+  });
+
+  it('can harvest an out-of-bounds grid', function() {
+    var result = Array2D.harvest([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], 1, 1, 3, 3);
+
+    var expected = [
+      [5,6,null],
+      [8,9,null],
+      [null,null,null]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+
+  it('can harvest with negative indices', function() {
+    var result = Array2D.harvest([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], -1, -1, 3, 3);
+
+    var expected = [
+      [null,null,null],
+      [null,1,2],
+      [null,4,5]
+    ];
+
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
+  });
+});
+
 describe('#rotate', function() {
   it('can rotate in the left direction', function() {
     var result = Array2D.rotate([
@@ -885,147 +1015,39 @@ describe('#antitranspose', function() {
   });
 });
 
-describe('#paste', function() {
-  it('can paste a grid onto another', function() {
-    var result = Array2D.paste([
+describe('#fill', function() {
+  it('can fill a grid', function() {
+    var result = Array2D.fill([
       [1,2,3],
       [4,5,6],
       [7,8,9]
-    ],[
-      ['a','b','c'],
-      ['d','e','f'],
-      ['g','h','i']
-    ], 1, 1);
+    ], 'x');
 
     var expected = [
-      [1,2,3],
-      [4,'a','b'],
-      [7,'d','e']
-    ];
-
-    assert.strictEqual(expected[0][0], result[0][0]);
-    assert.strictEqual(expected[0][1], result[0][1]);
-    assert.strictEqual(expected[0][2], result[0][2]);
-    assert.strictEqual(expected[1][0], result[1][0]);
-    assert.strictEqual(expected[1][1], result[1][1]);
-    assert.strictEqual(expected[1][2], result[1][2]);
-    assert.strictEqual(expected[2][0], result[2][0]);
-    assert.strictEqual(expected[2][1], result[2][1]);
-    assert.strictEqual(expected[2][2], result[2][2]);
-  });
-
-  it('can paste a grid onto another with negative start coords', function() {
-    var result = Array2D.paste([
-      [1,2,3],
-      [4,5,6],
-      [7,8,9]
-    ],[
-      ['a','b','c'],
-      ['d','e','f'],
-      ['g','h','i']
-    ], -1, -1);
-
-    var expected = [
-      ['e','f',3],
-      ['h','i',6],
-      [7,8,9]
-    ];
-
-    assert.strictEqual(expected[0][0], result[0][0]);
-    assert.strictEqual(expected[0][1], result[0][1]);
-    assert.strictEqual(expected[0][2], result[0][2]);
-    assert.strictEqual(expected[1][0], result[1][0]);
-    assert.strictEqual(expected[1][1], result[1][1]);
-    assert.strictEqual(expected[1][2], result[1][2]);
-    assert.strictEqual(expected[2][0], result[2][0]);
-    assert.strictEqual(expected[2][1], result[2][1]);
-    assert.strictEqual(expected[2][2], result[2][2]);
-  });
-});
-
-describe('#glue', function() {
-  it('can glue a grid onto another', function() {
-    var result = Array2D.glue([
-      [1,2,3],
-      [4,5,6],
-      [7,8,9]
-    ],[
-      ['a','b','c'],
-      ['d','e','f'],
-      ['g','h','i']
-    ], -3, -3);
-
-    var expected = [
-      ['a','b','c',null,null,null],
-      ['d','e','f',null,null,null],
-      ['g','h','i',null,null,null],
-      [null,null,null,1,2,3],
-      [null,null,null,4,5,6],
-      [null,null,null,7,8,9]
-    ];
-
-    assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
-  });
-
-  it('can glue a grid onto another II', function() {
-    var result = Array2D.glue([
-      [1,2,3],
-      [4,5,6],
-      [7,8,9]
-    ],[
-      ['a','b','c'],
-      ['d','e','f'],
-      ['g','h','i']
-    ], -2, -2);
-
-    var expected = [
-      ['a','b','c',null,null],
-      ['d','e','f',null,null],
-      ['g','h','i',2,3],
-      [null,null,4,5,6],
-      [null,null,7,8,9]
-    ];
-
-    assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
-  });
-
-  it('can glue a grid onto another III', function() {
-    var result = Array2D.glue([
-      [1,2,3],
-      [4,5,6],
-      [7,8,9]
-    ],[
-      ['a','b','c'],
-      ['d','e','f'],
-      ['g','h','i']
-    ], 4, 4);
-
-    var expected = [
-      [1,2,3,null,null,null,null],
-      [4,5,6,null,null,null,null],
-      [7,8,9,null,null,null,null],
-      [null,null,null,null,null,null,null],
-      [null,null,null,null,'a','b','c'],
-      [null,null,null,null,'d','e','f'],
-      [null,null,null,null,'g','h','i'],
+      ['x','x','x'],
+      ['x','x','x'],
+      ['x','x','x']
     ];
 
     assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
   });
 });
 
-describe('#shuffle', function() {
-  it('can shuffle a grid', function() {
-    var result = Array2D.shuffle([
+describe('#fillArea', function() {
+  it('can fill an area', function() {
+    var result = Array2D.fillArea([
       [1,2,3],
       [4,5,6],
       [7,8,9]
-    ]);
+    ], 0, 0, 2, 2, 'x');
 
-    // Not a great check for validity, but...
-    assert.strictEqual(result[0].length, 3);
-    assert.strictEqual(result[0].length, 3);
-    assert.strictEqual(result[0].length, 3);
+    var expected = [
+      ['x','x',3],
+      ['x','x',6],
+      [7,8,9]
+    ];
+
+    assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
   });
 });
 
@@ -1047,6 +1069,7 @@ describe('#pad', function() {
 
     assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
   });
+
   it('can pad the bottom of a grid', function() {
     var result = Array2D.dpad([
       [1,2,3],
@@ -1064,6 +1087,7 @@ describe('#pad', function() {
 
     assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
   });
+
   it('can pad the left of a grid', function() {
     var result = Array2D.lpad([
       [1,2,3],
@@ -1079,6 +1103,7 @@ describe('#pad', function() {
 
     assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
   });
+
   it('can pad the right of a grid', function() {
     var result = Array2D.rpad([
       [1,2,3],
@@ -1169,6 +1194,140 @@ describe('#rpad', function() {
     ];
 
     assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
+  });
+});
+
+describe('#trim', function() {
+  it('can trim off the top side of the grid', function() {
+    var result = Array2D.trim([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], Array2D.EDGES.TOP);
+
+    var expected = [
+      [4,5,6],
+      [7,8,9]
+    ];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+  });
+
+  it('can trim off bottom the side of the grid', function() {
+    var result = Array2D.trim([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], Array2D.EDGES.BOTTOM);
+
+    var expected = [
+      [1,2,3],
+      [4,5,6]
+    ];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+  });
+
+  it('can trim off the left side of the grid', function() {
+    var result = Array2D.trim([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], Array2D.EDGES.LEFT);
+
+    var expected = [
+      [2,3],
+      [5,6],
+      [8,9]
+    ];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+  });
+
+  it('can trim off the right side of the grid', function() {
+    var result = Array2D.trim([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ], Array2D.EDGES.RIGHT);
+
+    var expected = [
+      [1,2],
+      [4,5],
+      [7,8]
+    ];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+  });
+});
+
+describe('#utrim', function() {
+  it('can trim off the top side of the grid', function() {
+    var result = Array2D.utrim([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ]);
+
+    var expected = [
+      [4,5,6],
+      [7,8,9]
+    ];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+  });
+});
+
+describe('#utrim', function() {
+  it('can trim off bottom the side of the grid', function() {
+    var result = Array2D.dtrim([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ]);
+
+    var expected = [
+      [1,2,3],
+      [4,5,6]
+    ];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+  });
+});
+
+describe('#ltrim', function() {
+  it('can trim off the left side of the grid', function() {
+    var result = Array2D.ltrim([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ]);
+
+    var expected = [
+      [2,3],
+      [5,6],
+      [8,9]
+    ];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+  });
+});
+
+describe('#rtrim', function() {
+  it('can trim off the right side of the grid', function() {
+    var result = Array2D.rtrim([
+      [1,2,3],
+      [4,5,6],
+      [7,8,9]
+    ]);
+
+    var expected = [
+      [1,2],
+      [4,5],
+      [7,8]
+    ];
+
+    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
   });
 });
 
@@ -1354,172 +1513,172 @@ describe('#rstitch', function() {
   });
 });
 
-describe('#trim', function() {
-  it('can trim off the top side of the grid', function() {
-    var result = Array2D.trim([
+describe('#paste', function() {
+  it('can paste a grid onto another', function() {
+    var result = Array2D.paste([
       [1,2,3],
       [4,5,6],
       [7,8,9]
-    ], Array2D.EDGES.TOP);
+    ],[
+      ['a','b','c'],
+      ['d','e','f'],
+      ['g','h','i']
+    ], 1, 1);
 
     var expected = [
-      [4,5,6],
-      [7,8,9]
+      [1,2,3],
+      [4,'a','b'],
+      [7,'d','e']
     ];
 
-    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
   });
 
-  it('can trim off bottom the side of the grid', function() {
-    var result = Array2D.trim([
+  it('can paste a grid onto another with negative start coords', function() {
+    var result = Array2D.paste([
       [1,2,3],
       [4,5,6],
       [7,8,9]
-    ], Array2D.EDGES.BOTTOM);
+    ],[
+      ['a','b','c'],
+      ['d','e','f'],
+      ['g','h','i']
+    ], -1, -1);
 
     var expected = [
-      [1,2,3],
-      [4,5,6]
-    ];
-
-    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
-  });
-
-  it('can trim off the left side of the grid', function() {
-    var result = Array2D.trim([
-      [1,2,3],
-      [4,5,6],
+      ['e','f',3],
+      ['h','i',6],
       [7,8,9]
-    ], Array2D.EDGES.LEFT);
-
-    var expected = [
-      [2,3],
-      [5,6],
-      [8,9]
     ];
 
-    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
-  });
-
-  it('can trim off the right side of the grid', function() {
-    var result = Array2D.trim([
-      [1,2,3],
-      [4,5,6],
-      [7,8,9]
-    ], Array2D.EDGES.RIGHT);
-
-    var expected = [
-      [1,2],
-      [4,5],
-      [7,8]
-    ];
-
-    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
   });
 });
 
-describe('#utrim', function() {
-  it('can trim off the top side of the grid', function() {
-    var result = Array2D.utrim([
+describe('#glue', function() {
+  it('can glue a grid onto another', function() {
+    var result = Array2D.glue([
       [1,2,3],
       [4,5,6],
       [7,8,9]
-    ]);
+    ],[
+      ['a','b','c'],
+      ['d','e','f'],
+      ['g','h','i']
+    ], -3, -3);
 
     var expected = [
-      [4,5,6],
-      [7,8,9]
+      ['a','b','c',null,null,null],
+      ['d','e','f',null,null,null],
+      ['g','h','i',null,null,null],
+      [null,null,null,1,2,3],
+      [null,null,null,4,5,6],
+      [null,null,null,7,8,9]
     ];
 
-    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+    assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
   });
-});
 
-describe('#utrim', function() {
-  it('can trim off bottom the side of the grid', function() {
-    var result = Array2D.dtrim([
+  it('can glue a grid onto another II', function() {
+    var result = Array2D.glue([
       [1,2,3],
       [4,5,6],
       [7,8,9]
-    ]);
+    ],[
+      ['a','b','c'],
+      ['d','e','f'],
+      ['g','h','i']
+    ], -2, -2);
 
     var expected = [
-      [1,2,3],
-      [4,5,6]
+      ['a','b','c',null,null],
+      ['d','e','f',null,null],
+      ['g','h','i',2,3],
+      [null,null,4,5,6],
+      [null,null,7,8,9]
     ];
 
-    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
+    assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
   });
-});
 
-describe('#utrim', function() {
-  it('can trim off the left side of the grid', function() {
-    var result = Array2D.ltrim([
+  it('can glue a grid onto another III', function() {
+    var result = Array2D.glue([
       [1,2,3],
       [4,5,6],
       [7,8,9]
-    ]);
+    ],[
+      ['a','b','c'],
+      ['d','e','f'],
+      ['g','h','i']
+    ], 4, 4);
 
     var expected = [
-      [2,3],
-      [5,6],
-      [8,9]
-    ];
-
-    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
-  });
-});
-
-describe('#utrim', function() {
-  it('can trim off the right side of the grid', function() {
-    var result = Array2D.rtrim([
-      [1,2,3],
-      [4,5,6],
-      [7,8,9]
-    ]);
-
-    var expected = [
-      [1,2],
-      [4,5],
-      [7,8]
-    ];
-
-    assert.strictEqual(JSON.stringify(result), JSON.stringify(expected));
-  });
-});
-
-describe('#fill', function() {
-  it('can fill a grid', function() {
-    var result = Array2D.fill([
-      [1,2,3],
-      [4,5,6],
-      [7,8,9]
-    ], 'x');
-
-    var expected = [
-      ['x','x','x'],
-      ['x','x','x'],
-      ['x','x','x']
+      [1,2,3,null,null,null,null],
+      [4,5,6,null,null,null,null],
+      [7,8,9,null,null,null,null],
+      [null,null,null,null,null,null,null],
+      [null,null,null,null,'a','b','c'],
+      [null,null,null,null,'d','e','f'],
+      [null,null,null,null,'g','h','i'],
     ];
 
     assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
   });
 });
 
-describe('#fillArea', function() {
-  it('can fill an area', function() {
-    var result = Array2D.fillArea([
+describe('#shuffle', function() {
+  it('can shuffle a grid', function() {
+    var result = Array2D.shuffle([
       [1,2,3],
       [4,5,6],
       [7,8,9]
-    ], 0, 0, 2, 2, 'x');
+    ]);
+
+    // Not a great check for validity, but...
+    assert.strictEqual(result[0].length, 3);
+    assert.strictEqual(result[0].length, 3);
+    assert.strictEqual(result[0].length, 3);
+  });
+});
+
+describe('#tidy', function() {
+  it('can tidy up a grid', function() {
+    var result = Array2D.tidy([
+      [1],
+      [1,2,3],
+      [1,undefined,null]
+    ]);
 
     var expected = [
-      ['x','x',3],
-      ['x','x',6],
-      [7,8,9]
+      [1,null,null],
+      [1,2,3],
+      [1,null,null]
     ];
 
-    assert.strictEqual(JSON.stringify(expected), JSON.stringify(result));
+    assert.strictEqual(expected[0][0], result[0][0]);
+    assert.strictEqual(expected[0][1], result[0][1]);
+    assert.strictEqual(expected[0][2], result[0][2]);
+    assert.strictEqual(expected[1][0], result[1][0]);
+    assert.strictEqual(expected[1][1], result[1][1]);
+    assert.strictEqual(expected[1][2], result[1][2]);
+    assert.strictEqual(expected[2][0], result[2][0]);
+    assert.strictEqual(expected[2][1], result[2][1]);
+    assert.strictEqual(expected[2][2], result[2][2]);
   });
 });
