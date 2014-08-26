@@ -78,7 +78,7 @@ Array2D.js provides the following functions. In general, each accepts an array o
 **dense:** T/F whether the grid has no missing (`undefined`) cells  
 **same:** Compare two grids cell by cell; T/F if they are the same  
 **different:** Compare two grids cell by cell; T/F if they are different  
-**diff:** Return the coordinates of cells that are different between two grids
+**diff:** Return the coordinates of cells that are different between two grids  
 **contains:** T/F whether the grid has any cell with the given value  
 **includes:** T/F/ whether the grid contains another grid  
 **symmetrical:** T/F whether the grid is symmetrical (also `hsymmetrical`, `vsymmetrical`)
