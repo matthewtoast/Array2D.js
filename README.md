@@ -154,7 +154,7 @@ Array2D.js provides the following functions. In general, each accepts an array o
 **find:** Get a list of the coordinates of all matching cells  
 **contiguous:** Get a list of groups of coordinates of contiguous cells  
 **touching:** Get a list of groups of coordinates of touching cells  
-**surrounds:** Get a list of coordinates of the surrounding cells  
+**surrounds:** Get a list of coordinates of a cell's surrounding cells  
 
 #### Import / export
 
