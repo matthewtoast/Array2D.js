@@ -1,21 +1,16 @@
-var Array2D = require('./../Array2D');
-var assert = require('assert');
+let Array2D = require("./../Array2D");
+let assert = require("assert");
 
-describe('#clone', function() {
-  it('can clone a grid', function() {
-    var result = Array2D.clone([
-      [1,2,3,4],
-      [5,6,7,8],
-      [9,0,1,2],
-      [3,4,5,6]
+describe("#clone", function() {
+  it("can clone a grid", function() {
+    const result = Array2D.clone([
+      [1, 2, 3, 4],
+      [5, 6, 7, 8],
+      [9, 0, 1, 2],
+      [3, 4, 5, 6]
     ]);
 
-    var expected = [
-      [1,2,3,4],
-      [5,6,7,8],
-      [9,0,1,2],
-      [3,4,5,6]
-    ];
+    const expected = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 0, 1, 2], [3, 4, 5, 6]];
 
     assert.strictEqual(expected[0][0], result[0][0]);
     assert.strictEqual(expected[0][1], result[0][1]);
@@ -36,15 +31,15 @@ describe('#clone', function() {
   });
 });
 
-describe('#build', function() {
-  it('can build an empty grid', function() {
-    var result = Array2D.build(4, 4);
+describe("#build", function() {
+  it("can build an empty grid", function() {
+    const result = Array2D.build(4, 4);
 
-    var expected = [
-      [null,null,null,null],
-      [null,null,null,null],
-      [null,null,null,null],
-      [null,null,null,null]
+    const expected = [
+      [null, null, null, null],
+      [null, null, null, null],
+      [null, null, null, null],
+      [null, null, null, null]
     ];
 
     assert.strictEqual(expected[0][0], result[0][0]);
@@ -65,15 +60,10 @@ describe('#build', function() {
     assert.strictEqual(expected[3][3], result[3][3]);
   });
 
-  it('can build a grid with a preset value', function() {
-    var result = Array2D.build(4, 4, 1);
+  it("can build a grid with a preset value", function() {
+    const result = Array2D.build(4, 4, 1);
 
-    var expected = [
-      [1,1,1,1],
-      [1,1,1,1],
-      [1,1,1,1],
-      [1,1,1,1]
-    ];
+    const expected = [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]];
 
     assert.strictEqual(expected[0][0], result[0][0]);
     assert.strictEqual(expected[0][1], result[0][1]);
@@ -94,18 +84,13 @@ describe('#build', function() {
   });
 });
 
-describe('#buildWith', function() {
-  it('can build a grid with a function', function() {
-    var result = Array2D.buildWith(4, 4, function(r, c) {
+describe("#buildWith", function() {
+  it("can build a grid with a function", function() {
+    const result = Array2D.buildWith(4, 4, function(r, c) {
       return r * c;
     });
 
-    var expected = [
-      [0,0,0,0],
-      [0,1,2,3],
-      [0,2,4,6],
-      [0,3,6,9]
-    ];
+    const expected = [[0, 0, 0, 0], [0, 1, 2, 3], [0, 2, 4, 6], [0, 3, 6, 9]];
 
     assert.strictEqual(expected[0][0], result[0][0]);
     assert.strictEqual(expected[0][1], result[0][1]);
@@ -126,32 +111,24 @@ describe('#buildWith', function() {
   });
 });
 
-describe('#serialize', function() {
-  it('can serialize a grid to a string', function() {
-    var result = Array2D.serialize([
-      [1,2,3],
-      [4,5,6],
-      [7,8,9]
-    ]);
+describe("#serialize", function() {
+  it("can serialize a grid to a string", function() {
+    const result = Array2D.serialize([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
 
-    var expected = "[[1,2,3],[4,5,6],[7,8,9]]"
+    const expected = "[[1,2,3],[4,5,6],[7,8,9]]";
 
     assert.strictEqual(expected, result);
   });
 });
 
-describe('#nullify', function() {
-  it('can convert all cells to null', function() {
-    var result = Array2D.nullify([
-      [1,2,3],
-      [4,5,6,7],
-      [7,8]
-    ]);
+describe("#nullify", function() {
+  it("can convert all cells to null", function() {
+    const result = Array2D.nullify([[1, 2, 3], [4, 5, 6, 7], [7, 8]]);
 
-    var expected = [
-      [null,null,null],
-      [null,null,null,null],
-      [null,null]
+    const expected = [
+      [null, null, null],
+      [null, null, null, null],
+      [null, null]
     ];
 
     assert.strictEqual(expected[0][0], result[0][0]);
@@ -169,17 +146,11 @@ describe('#nullify', function() {
   });
 });
 
-describe('#integerize', function() {
-  it('can integerize a grid', function() {
-    var result = Array2D.integerize([
-      [1,'2','3'],
-      ['4',5.5,'6']
-    ]);
+describe("#integerize", function() {
+  it("can integerize a grid", function() {
+    const result = Array2D.integerize([[1, "2", "3"], ["4", 5.5, "6"]]);
 
-    var expected = [
-      [1,2,3],
-      [4,5,6]
-    ];
+    const expected = [[1, 2, 3], [4, 5, 6]];
 
     assert.strictEqual(expected[0][0], result[0][0]);
     assert.strictEqual(expected[0][1], result[0][1]);
@@ -190,17 +161,11 @@ describe('#integerize', function() {
   });
 });
 
-describe('#stringize', function() {
-  it('can stringize a grid', function() {
-    var result = Array2D.stringize([
-      [1,2,3],
-      [4,5.5,null]
-    ]);
+describe("#stringize", function() {
+  it("can stringize a grid", function() {
+    const result = Array2D.stringize([[1, 2, 3], [4, 5.5, null]]);
 
-    var expected = [
-      ['1','2','3'],
-      ['4','5.5','null']
-    ];
+    const expected = [["1", "2", "3"], ["4", "5.5", "null"]];
 
     assert.strictEqual(expected[0][0], result[0][0]);
     assert.strictEqual(expected[0][1], result[0][1]);
