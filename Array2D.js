@@ -8,13 +8,13 @@
   // ==============
 
   // Establish the root object, `window` in the browser, or `exports` on the server.
-  var root = this;
+  let root = this;
 
-  // Save the previous value of the `Array2D` variable.
-  var previousArray2D = root.Array2D;
+  // Save the previous value of the `Array2D` letiable.
+  let previousArray2D = root.Array2D;
 
   // Create a safe reference to the Array2D object for use below.
-  var Array2D = function() {
+  let Array2D = function() {
     if (!(this instanceof Array2D)) return new Array2D();
   };
 
@@ -32,7 +32,7 @@
   // Current version.
   Array2D.VERSION = '0.0.5';
 
-  // Run Array2D.js in *noConflict* mode, returning the `Array2D` variable to its
+  // Run Array2D.js in *noConflict* mode, returning the `Array2D` letiable to its
   // previous owner. Returns a reference to the Array2D object.
   Array2D.noConflict = function() {
     root.Array2D = previousArray2D;
@@ -74,9 +74,9 @@
 
   // Clone the given (flat) array.
   function cloneArray(array) {
-    var clone = [];
+    let clone = [];
 
-    for (var i = 0, l = array.length; i < l; i++) {
+    for (let i = 0, l = array.length; i < l; i++) {
       clone[i] = array[i];
     }
 
@@ -158,7 +158,7 @@
 
   // Return a grid with the cell at (`r`,`c`) set to `value`.
   Array2D.set = function(grid, r, c, value) {
-    var clone = Array2D.clone(grid);
+    let clone = Array2D.clone(grid);
 
     if(!isArray(clone[r])) {
       clone[r] = [];
@@ -183,11 +183,11 @@
   // iterating over the grid in a single pass. Faster than
   // calling `width` and `height` individually.
   Array2D.dimensions = function(grid) {
-    var h = 0;
-    var w = 0;
+    let h = 0;
+    let w = 0;
 
-    for (var i = 0, rs = grid.length; i < rs; i++) {
-      var l = grid[i].length;
+    for (let i = 0, rs = grid.length; i < rs; i++) {
+      let l = grid[i].length;
 
       if (l > 0) h = i + 1; // The last row with any content is the longest
       if (l > w) w = l; // Check if the previous max width is beaten
@@ -198,21 +198,21 @@
 
   // Return the area of the grid.
   Array2D.area = function(grid) {
-    var width = Array2D.width(grid);
-    var height = Array2D.height(grid);
+    let width = Array2D.width(grid);
+    let height = Array2D.height(grid);
 
     return width * height;
   };
 
   // Return the number of present cells in the grid.
   Array2D.cells = function(grid) {
-    var count = 0;
+    let count = 0;
 
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
-      var row = grid[i];
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
+      let row = grid[i];
 
-      for (var j = 0, l2 = row.length; j < l2; j++) {
-        var cell = row[j];
+      for (let j = 0, l2 = row.length; j < l2; j++) {
+        let cell = row[j];
 
         if (isExistent(cell)) {
           count++
@@ -229,25 +229,25 @@
   // Crop a subgrid of the given dimensions from the grid, but exclude
   // anything that would fall outside of the grid's bounds.
   Array2D.crop = function(grid, r, c, w, h) {
-    var out = [];
+    let out = [];
 
-    var width = Array2D.width(grid);
-    var height = Array2D.height(grid);    
+    let width = Array2D.width(grid);
+    let height = Array2D.height(grid);    
 
-    for (var i = 0; i < h; i++) {
-      var ro = r + i; // Offset row
+    for (let i = 0; i < h; i++) {
+      let ro = r + i; // Offset row
 
       // Skip any out-of-bounds cells.
       if (ro < height && ro >= 0) {
         out.push([]);
 
-        for (var j = 0; j < w; j++) {
-          var co = c + j; // Offset column
+        for (let j = 0; j < w; j++) {
+          let co = c + j; // Offset column
 
           // Skip any out-of-bounds cells.
           if (co < width && co >= 0) {
-            var last = out[out.length - 1];
-            var cell = grid[ro][co];
+            let last = out[out.length - 1];
+            let cell = grid[ro][co];
             last.push(cell);
           }
         }
@@ -260,17 +260,17 @@
   // Harvest a subgrid of the given dimensions from the grid. If access
   // goes outside of the grid's bounds, set those overlap cells to `null`.
   Array2D.harvest = function(grid, r, c, w, h) {
-    var out = [];
+    let out = [];
 
-    var width = Array2D.width(grid);
-    var height = Array2D.height(grid);
+    let width = Array2D.width(grid);
+    let height = Array2D.height(grid);
 
-    for (var i = 0; i < h; i++) {
+    for (let i = 0; i < h; i++) {
       out[i] = [];
 
-      for (var j = 0; j < w; j++) {
-        var ro = r + i; // Offset row
-        var co = c + j; // Offset column
+      for (let j = 0; j < w; j++) {
+        let ro = r + i; // Offset row
+        let co = c + j; // Offset column
 
         // Set to `null` any out-of-bounds cell.
         if (ro >= height || ro < 0) {
@@ -281,7 +281,7 @@
           out[i][j] = null;
         }
         else {
-          var cell = grid[ro][co];
+          let cell = grid[ro][co];
           out[i][j] = cell;
         }
       }
@@ -299,14 +299,14 @@
 
   // Rotate the grid to the left one quarter-turn.
   Array2D.lrotate = function(grid) {
-    var transposed = Array2D.transpose(grid);
+    let transposed = Array2D.transpose(grid);
 
     return Array2D.vflip(transposed);
   };
 
   // Rotate the grid to the right one quarter-turn.
   Array2D.rrotate = function(grid) {
-    var transposed = Array2D.transpose(grid);
+    let transposed = Array2D.transpose(grid);
 
     return Array2D.hflip(transposed);
   };
@@ -320,10 +320,10 @@
 
   // Flip the grid vertically, i.e., about its x-axis.
   Array2D.vflip = function(grid) {
-    var out = [];
+    let out = [];
 
-    for (var i = 0, l = grid.length; i < l; i++) {
-      var opp = i - l + 1;
+    for (let i = 0, l = grid.length; i < l; i++) {
+      let opp = i - l + 1;
       out[i] = grid[Math.abs(opp)];
     }
 
@@ -332,14 +332,14 @@
 
   // Flip the grid horizontally, i.e., about its y-axis.
   Array2D.hflip = function(grid) {
-    var out = [];
+    let out = [];
 
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
       out[i] = [];
-      var row = grid[i];
+      let row = grid[i];
 
-      for (var j = 0, l2 = row.length; j < l2; j++) {
-        var opp = j - l2 + 1;
+      for (let j = 0, l2 = row.length; j < l2; j++) {
+        let opp = j - l2 + 1;
         out[i][j] = grid[i][Math.abs(opp)];
       }
     }
@@ -361,11 +361,11 @@
 
   // Pan the array up by the number of steps.
   Array2D.upan = function(grid, steps) {
-    var panned = Array2D.clone(grid);
+    let panned = Array2D.clone(grid);
 
     steps || (steps = 1);
     while (steps > 0) {
-      var last = panned.pop();
+      let last = panned.pop();
       panned.unshift(last);
       steps--;
     }
@@ -375,20 +375,20 @@
 
   // Pan the array left by the number of steps.
   Array2D.lpan = function(grid, steps) {
-    var transposed = Array2D.transpose(grid);
+    let transposed = Array2D.transpose(grid);
 
-    var shifted = Array2D.upan(transposed, steps);
+    let shifted = Array2D.upan(transposed, steps);
 
     return Array2D.transpose(shifted);
   };
 
   // Pan the array down by the number of steps.
   Array2D.dpan = function(grid, steps) {
-    var panned = Array2D.clone(grid);
+    let panned = Array2D.clone(grid);
 
     steps || (steps = 1);
     while (steps > 0) {
-      var first = panned.shift();
+      let first = panned.shift();
       panned.push(first);
       steps--;
     }
@@ -398,9 +398,9 @@
 
   // Pan the array right by the number of steps.
   Array2D.rpan = function(grid, steps) {
-    var transposed = Array2D.transpose(grid);
+    let transposed = Array2D.transpose(grid);
 
-    var shifted = Array2D.dpan(transposed, steps);
+    let shifted = Array2D.dpan(transposed, steps);
 
     return Array2D.transpose(shifted);
   };
@@ -440,12 +440,12 @@
   // Return a new grid with the elements transposed (flipped about
   // their main diagonal).
   Array2D.transpose = function(grid) {
-    var out = [];
+    let out = [];
 
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
-      var row = grid[i];
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
+      let row = grid[i];
 
-      for (var j = 0, l2 = row.length; j < l2; j++) {
+      for (let j = 0, l2 = row.length; j < l2; j++) {
         if (!out[j]) out[j] = [];
 
         out[j][i] = row[j];
@@ -458,20 +458,20 @@
   // Return a new grid with the elements transposed about their
   // *secondary* diagonal.
   Array2D.antitranspose = function(grid) {
-    var rotated = Array2D.rrotate(grid);
+    let rotated = Array2D.rrotate(grid);
 
     return Array2D.vflip(rotated);
   };
 
   // Fill the entire grid with a value.
   Array2D.fill = function(grid, value) {
-    var out = [];
+    let out = [];
 
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
-      var row = grid[i];
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
+      let row = grid[i];
       out[i] = [];
 
-      for (var j = 0, l2 = row.length; j < l2; j++) {
+      for (let j = 0, l2 = row.length; j < l2; j++) {
         out[i][j] = value;
       }
     }
@@ -481,7 +481,7 @@
 
   // Fill an area within the grid with a value.
   Array2D.fillArea = function(grid, r, c, w, h, value) {
-    var built = Array2D.build(w, h, value);
+    let built = Array2D.build(w, h, value);
 
     return Array2D.paste(grid, built, r, c);
   };
@@ -501,17 +501,17 @@
 
   // Add padding to the top of the grid.
   Array2D.upad = function(grid, times, value) {
-    var out = [];
+    let out = [];
 
-    var d = Array2D.dimensions(grid);
-    var w = d[0];
-    var h = d[1];
+    let d = Array2D.dimensions(grid);
+    let w = d[0];
+    let h = d[1];
 
-    for (var i = -times; i < h; i++) {
-      var r = i + times;
+    for (let i = -times; i < h; i++) {
+      let r = i + times;
       out[r] = [];
 
-      for (var j = 0; j < w; j++) {
+      for (let j = 0; j < w; j++) {
         // We're in the original grid.
         if (i > -1) {
           out[r][j] = grid[i][j];
@@ -533,16 +533,16 @@
 
   // Add padding to the bottom of the grid.
   Array2D.dpad = function(grid, times, value) {
-    var out = [];
+    let out = [];
 
-    var d = Array2D.dimensions(grid);
-    var w = d[0];
-    var h = d[1];
+    let d = Array2D.dimensions(grid);
+    let w = d[0];
+    let h = d[1];
 
-    for (var i = 0; i < h + times; i++) {
+    for (let i = 0; i < h + times; i++) {
       out[i] = [];
 
-      for (var j = 0; j < w; j++) {
+      for (let j = 0; j < w; j++) {
         // We're in the original grid.
         if (i < h) {
           out[i][j] = grid[i][j];
@@ -564,17 +564,17 @@
 
   // Add padding to the grid's left side
   Array2D.lpad = function(grid, times, value) {
-    var out = [];
+    let out = [];
 
-    var d = Array2D.dimensions(grid);
-    var w = d[0];
-    var h = d[1];
+    let d = Array2D.dimensions(grid);
+    let w = d[0];
+    let h = d[1];
 
-    for (var i = 0; i < h; i++) {
+    for (let i = 0; i < h; i++) {
       out[i] = [];
 
-      for (var j = -times; j < w; j++) {
-        var c = j + times;
+      for (let j = -times; j < w; j++) {
+        let c = j + times;
 
         // We're in the original grid.
         if (j > -1) {
@@ -597,16 +597,16 @@
 
   // Add padding to the grid's right side
   Array2D.rpad = function(grid, times, value) {
-    var out = [];
+    let out = [];
 
-    var d = Array2D.dimensions(grid);
-    var w = d[0];
-    var h = d[1];
+    let d = Array2D.dimensions(grid);
+    let w = d[0];
+    let h = d[1];
 
-    for (var i = 0; i < h; i++) {
+    for (let i = 0; i < h; i++) {
       out[i] = [];
 
-      for (var j = 0; j < w + times; j++) {
+      for (let j = 0; j < w + times; j++) {
         // We're in the original grid.
         if (j < w) {
           out[i][j] = grid[i][j];
@@ -640,11 +640,11 @@
 
   // Trim rows off the top of the grid.
   Array2D.utrim = function(grid, num) {
-    var out = [];
+    let out = [];
 
     num || (num = 1);
 
-    for (var i = num, l = grid.length; i < l; i++) {
+    for (let i = num, l = grid.length; i < l; i++) {
       out[i - num] = cloneArray(grid[i]);
     }
 
@@ -653,11 +653,11 @@
 
   // Trim rows off the bottom of the grid.
   Array2D.dtrim = function(grid, num) {
-    var out = [];
+    let out = [];
 
     num || (num = 1);
 
-    for (var i = 0, l = grid.length - num; i < l; i++) {
+    for (let i = 0, l = grid.length - num; i < l; i++) {
       out[i] = cloneArray(grid[i]);
     }
 
@@ -666,15 +666,15 @@
 
   // Trim columns off the left side of the grid.
   Array2D.ltrim = function(grid, num) {
-    var out = [];
+    let out = [];
 
     num || (num = 1);
 
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
       out[i] = [];
-      var row = grid[i];
+      let row = grid[i];
 
-      for (var j = num, l2 = row.length; j < l2; j++) {
+      for (let j = num, l2 = row.length; j < l2; j++) {
         out[i][j - num] = row[j];
       }
     }
@@ -684,15 +684,15 @@
 
   // Trim columns off the right side of the grid.
   Array2D.rtrim = function(grid, num) {
-    var out = [];
+    let out = [];
 
     num || (num = 1);
 
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
       out[i] = [];
-      var row = grid[i];
+      let row = grid[i];
 
-      for (var j = 0, l2 = row.length - num; j < l2; j++) {
+      for (let j = 0, l2 = row.length - num; j < l2; j++) {
         out[i][j] = row[j];
       }
     }
@@ -714,44 +714,44 @@
 
   // Stitch the second grid to the top of the first.
   Array2D.ustitch = function(grid1, grid2) {
-    var h = Array2D.dimensions(grid2)[1];
+    let h = Array2D.dimensions(grid2)[1];
 
     return Array2D.glue(grid1, grid2, -h, 0);
   };
 
   // Stitch the second grid to the bottom of the first.
   Array2D.dstitch = function(grid1, grid2) {
-    var h = Array2D.dimensions(grid1)[1];
+    let h = Array2D.dimensions(grid1)[1];
 
     return Array2D.glue(grid1, grid2, h, 0);
   };
 
   // Stitch the second grid to the left side of the first.
   Array2D.lstitch = function(grid1, grid2) {
-    var w = Array2D.dimensions(grid2)[0];
+    let w = Array2D.dimensions(grid2)[0];
 
     return Array2D.glue(grid1, grid2, 0, -w);
   };
 
   // Sticth the second grid to the right side of the first.
   Array2D.rstitch = function(grid1, grid2) {
-    var w = Array2D.dimensions(grid1)[0];
+    let w = Array2D.dimensions(grid1)[0];
 
     return Array2D.glue(grid1, grid2, 0, w);
   };
 
   // Paste the contents of the second grid onto the first.
   Array2D.paste = function(grid1, grid2, sr, sc) {
-    var out = [];
+    let out = [];
 
-    for (var i = 0, l1 = grid1.length; i < l1; i++) {
+    for (let i = 0, l1 = grid1.length; i < l1; i++) {
       out[i] = [];
 
-      var rlen = grid1[i].length;
-      var tr = i - sr;
+      let rlen = grid1[i].length;
+      let tr = i - sr;
 
-      for (var j = 0; j < rlen; j++) {
-        var tc = j - sc;
+      for (let j = 0; j < rlen; j++) {
+        let tc = j - sc;
 
         if (isArray(grid2[tr]) &&
             !isUndefined(grid2[tr][tc]) &&
@@ -775,24 +775,24 @@
   // but allow for overlap, and pad any extra cells with `null`
   // so the resulting grid is rectangular.
   Array2D.glue = function(grid1, grid2, r, c) {
-    var d1 = Array2D.dimensions(grid1);
-    var d2 = Array2D.dimensions(grid2);
+    let d1 = Array2D.dimensions(grid1);
+    let d2 = Array2D.dimensions(grid2);
 
-    var mw = (d1[0] > d2[0]) ? d1[0] : d2[0]; // Greater width
-    var mh = (d1[1] > d2[1]) ? d1[1] : d2[1]; // Greater height
+    let mw = (d1[0] > d2[0]) ? d1[0] : d2[0]; // Greater width
+    let mh = (d1[1] > d2[1]) ? d1[1] : d2[1]; // Greater height
 
-    var w = Math.abs(c) + mw; // Width of new grid
-    var h = Math.abs(r) + mh; // Height of new grid
+    let w = Math.abs(c) + mw; // Width of new grid
+    let h = Math.abs(r) + mh; // Height of new grid
 
-    var n = Array2D.build(w, h); // A blank array
+    let n = Array2D.build(w, h); // A blank array
 
-    var r1 = (r < 0) ? -r : 0;
-    var c1 = (c < 0) ? -c : 0;
-    var o = Array2D.paste(n, grid1, r1, c1);
+    let r1 = (r < 0) ? -r : 0;
+    let c1 = (c < 0) ? -c : 0;
+    let o = Array2D.paste(n, grid1, r1, c1);
 
-    var r2 = (r > 0) ? r : 0;
-    var c2 = (c > 0) ? c : 0;
-    var p = Array2D.paste(o, grid2, r2, c2);
+    let r2 = (r > 0) ? r : 0;
+    let c2 = (c > 0) ? c : 0;
+    let p = Array2D.paste(o, grid2, r2, c2);
 
     return p;
   };
@@ -800,25 +800,25 @@
   // Shuffle (randomize) the grid, preserving the dimensions.
   Array2D.shuffle = function(grid) {
     // Ensure the row-lengths are preserved
-    var rowLens = [];
-    for (var i = 0, l = grid.length; i < l; i++) {
+    let rowLens = [];
+    for (let i = 0, l = grid.length; i < l; i++) {
       rowLens.push(grid[i].length);
     }
 
     // Fisher-Yates shuffle
-    var shuffled = Array2D.flatten(grid);
-    for (var i = shuffled.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var t = shuffled[i];
+    let shuffled = Array2D.flatten(grid);
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      let t = shuffled[i];
       shuffled[i] = shuffled[j];
       shuffled[j] = t;
     }
 
     // Push the shuffled elements into a new grid
-    var out = []
-    for (var i = 0, l = rowLens.length; i < l; i++) {
-      var row = [];
-      var rowLen = rowLens[i];
+    let out = []
+    for (let i = 0, l = rowLens.length; i < l; i++) {
+      let row = [];
+      let rowLen = rowLens[i];
       while (rowLen--) {
         row.push(shuffled.pop());
       }
@@ -831,16 +831,16 @@
   // Return a tidied-up clone of the grid, that is, a rectangular
   // grid with no `undefined` cells.
   Array2D.tidy = function(grid) {
-    var out = [];
+    let out = [];
 
-    var width = Array2D.width(grid);
-    var height = Array2D.height(grid);
+    let width = Array2D.width(grid);
+    let height = Array2D.height(grid);
 
-    for (var i = 0, l1 = width; i < l1; i++) {
+    for (let i = 0, l1 = width; i < l1; i++) {
       out[i] = [];
 
-      for (var j = 0, l2 = height; j < l2; j++) {
-        var previous = Array2D.get(grid, i, j);
+      for (let j = 0, l2 = height; j < l2; j++) {
+        let previous = Array2D.get(grid, i, j);
 
         if (isUndefined(previous)) {
           out[i][j] = null;
@@ -859,14 +859,14 @@
 
   // Return a clone of the grid.
   Array2D.clone = function(grid) {
-    var out = [];
+    let out = [];
 
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
       out[i] = [];
-      var row = grid[i];
+      let row = grid[i];
 
-      for (var j = 0, l2 = row.length; j < l2; j++) {
-        var cell = row[j];
+      for (let j = 0, l2 = row.length; j < l2; j++) {
+        let cell = row[j];
 
         out[i][j] = cell;
       }
@@ -877,16 +877,16 @@
 
   // Initialize a new grid of the given dimensions (w,h)
   Array2D.build = function(w, h, value) {
-    var out = [];
+    let out = [];
 
     if (isUndefined(value)) {
       value = null;
     }
 
-    for (var i = 0, l1 = h; i < l1; i++) {
+    for (let i = 0, l1 = h; i < l1; i++) {
       out[i] = [];
 
-      for (var j = 0, l2 = w; j < l2; j++) {
+      for (let j = 0, l2 = w; j < l2; j++) {
         out[i][j] = value;
       }
     }
@@ -897,12 +897,12 @@
   // Initialize a new grid of the given dimensions (w,h),
   // using the passed function to initialize each cell.
   Array2D.buildWith = function(w, h, fn) {
-    var out = [];
+    let out = [];
 
-    for (var i = 0, l1 = h; i < l1; i++) {
+    for (let i = 0, l1 = h; i < l1; i++) {
       out[i] = [];
 
-      for (var j = 0, l2 = w; j < l2; j++) {
+      for (let j = 0, l2 = w; j < l2; j++) {
         if (fn) {
           out[i][j] = fn(i, j, out);
         }
@@ -922,14 +922,14 @@
 
   // Convert all the cells of the grid to `null`.
   Array2D.nullify = function(grid) {
-    var out = [];
+    let out = [];
 
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
       out[i] = [];
-      var row = grid[i];
+      let row = grid[i];
 
-      for (var j = 0, l2 = row.length; j < l2; j++) {
-        var cell = row[j];
+      for (let j = 0, l2 = row.length; j < l2; j++) {
+        let cell = row[j];
 
         if (isExistent(cell)) {
           out[i][j] = null;
@@ -943,14 +943,14 @@
   // Return a new grid with the cells converted to integers,
   // using `parseInt`.
   Array2D.integerize = function(grid) {
-    var out = []
+    let out = []
 
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
       out[i] = [];
-      var row = grid[i];
+      let row = grid[i];
 
-      for (var j = 0, l2 = row.length; j < l2; j++) {
-        var cell = row[j];
+      for (let j = 0, l2 = row.length; j < l2; j++) {
+        let cell = row[j];
 
         out[i][j] = parseInt(cell);
       }
@@ -962,14 +962,14 @@
   // Return a new grid with the cells converted to strings, using
   // the `String` constructor.
   Array2D.stringize = function(grid) {
-    var out = [];
+    let out = [];
 
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
       out[i] = [];
-      var row = grid[i];
+      let row = grid[i];
 
-      for (var j = 0, l2 = row.length; j < l2; j++) {
-        var cell = row[j];
+      for (let j = 0, l2 = row.length; j < l2; j++) {
+        let cell = row[j];
 
         out[i][j] = String(cell);
       }
@@ -991,8 +991,8 @@
   // Determine whether the grid is ragged (has rows of
   // differing lengths).
   Array2D.ragged = function(grid) {
-    var widest = Array2D.widest(grid);
-    var thinnest = Array2D.thinnest(grid);
+    let widest = Array2D.widest(grid);
+    let thinnest = Array2D.thinnest(grid);
 
     return widest.length !== thinnest.length;
   };
@@ -1012,16 +1012,16 @@
 
   // Return true if all of the grid's cells are `null` or `undefined`.
   Array2D.blank = function(grid) {
-    var blank = true;
+    let blank = true;
 
-    var empty = Array2D.empty(grid);
+    let empty = Array2D.empty(grid);
     if (empty) return true;
 
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
-      var row = grid[i];
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
+      let row = grid[i];
 
-      for (var j = 0, l2 = row.length; j < l2; j++) {
-        var cell = row[j];
+      for (let j = 0, l2 = row.length; j < l2; j++) {
+        let cell = row[j];
 
         if (!isBlank(cell)) {
           blank = false;
@@ -1034,8 +1034,8 @@
 
   // Determine whether the grid has only one cell.
   Array2D.singular = function(grid) {
-    var width = Array2D.width(grid);
-    var height = Array2D.height(grid);
+    let width = Array2D.width(grid);
+    let height = Array2D.height(grid);
 
     return width === 1 && height === 1;
   };
@@ -1047,13 +1047,13 @@
 
   // Determine whether the grid has any `null` or `undefined` cells.
   Array2D.sparse = function(grid) {
-    var sparse = false;
+    let sparse = false;
 
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
-      var row = grid[i];
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
+      let row = grid[i];
 
-      for (var j = 0, l2 = row.length; j < l2; j++) {
-        var cell = row[j];
+      for (let j = 0, l2 = row.length; j < l2; j++) {
+        let cell = row[j];
 
         if (isBlank(cell)) {
           sparse = true;
@@ -1072,17 +1072,17 @@
 
   // Determine whether both grids' cells are all strictly equal.
   Array2D.same = function(grid1, grid2) {
-    var w1 = Array2D.width(grid1);
-    var h1 = Array2D.height(grid1);
+    let w1 = Array2D.width(grid1);
+    let h1 = Array2D.height(grid1);
 
-    var w2 = Array2D.width(grid2);
-    var h2 = Array2D.height(grid2);
+    let w2 = Array2D.width(grid2);
+    let h2 = Array2D.height(grid2);
 
     if (w1 !== w2) return false;
     if (h1 !== h2) return false;
 
-    for (var i = 0; i < w1; i++) {
-      for (var j = 0; j < w2; j++) {
+    for (let i = 0; i < w1; i++) {
+      for (let j = 0; j < w2; j++) {
         if (grid1[i][j] !== grid2[i][j]) {
           return false;
         }
@@ -1100,24 +1100,24 @@
   // Return the coordinates of cells that are different between
   // the two grids.
   Array2D.diff = function(grid1, grid2) {
-    var diffs = [];
+    let diffs = [];
 
-    var d1 = Array2D.dimensions(grid1);
-    var d2 = Array2D.dimensions(grid2);
+    let d1 = Array2D.dimensions(grid1);
+    let d2 = Array2D.dimensions(grid2);
 
-    var w = (d1[0] > d2[0]) ? d1[0] : d2[0];
-    var h = (d1[1] > d2[1]) ? d2[1] : d2[1];
+    let w = (d1[0] > d2[0]) ? d1[0] : d2[0];
+    let h = (d1[1] > d2[1]) ? d2[1] : d2[1];
 
-    for (var i = 0; i < h; i++) {
-      var row1 = grid1[i];
-      var row2 = grid2[i];
-      var row1isArray = isArray(row1);
-      var row2isArray = isArray(row2);
+    for (let i = 0; i < h; i++) {
+      let row1 = grid1[i];
+      let row2 = grid2[i];
+      let row1isArray = isArray(row1);
+      let row2isArray = isArray(row2);
 
-      for (var j = 0; j < w; j++) {
+      for (let j = 0; j < w; j++) {
         if (row1isArray && row2isArray) {
-          var cell1 = row1[j];
-          var cell2 = row2[j];
+          let cell1 = row1[j];
+          let cell2 = row2[j];
 
           if (cell1 !== cell2) {
             diffs.push([i, j]);
@@ -1134,13 +1134,13 @@
 
   // Return true if the grid contains the value.
   Array2D.contains = function(grid, value) {
-    var contains = false;
+    let contains = false;
 
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
-      var row = grid[i];
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
+      let row = grid[i];
 
-      for (var j = 0, l2 = row.length; j < l2; j++) {
-        var cell = row[j];
+      for (let j = 0, l2 = row.length; j < l2; j++) {
+        let cell = row[j];
 
         if (cell === value) {
           contains = true;
@@ -1154,12 +1154,12 @@
   // Detect whether the first grid contains the second grid.
   Array2D.includes = function(grid1, grid2) {
     // Dimensions cache.
-    var d1 = Array2D.dimensions(grid1);
-    var d2 = Array2D.dimensions(grid2);
-    var w1 = d1[0];
-    var h1 = d1[1];
-    var w2 = d2[0];
-    var h2 = d2[1];
+    let d1 = Array2D.dimensions(grid1);
+    let d2 = Array2D.dimensions(grid2);
+    let w1 = d1[0];
+    let h1 = d1[1];
+    let w2 = d2[0];
+    let h2 = d2[1];
 
     // Size conditions under which we don't bother checking.
     if (w2 < 1) return false;
@@ -1167,13 +1167,13 @@
     if (w2 > w1) return false;
     if (h2 > h1) return false;
 
-    var first = grid2[0][0];
-    var starters = [];
+    let first = grid2[0][0];
+    let starters = [];
 
     // Start by checking each cell of the outer grid.
-    for (var i = 0; i < grid1.length; i++) {
-      for (var j = 0; j < grid1[i].length; j++) {
-        var cell1 = grid1[i][j];
+    for (let i = 0; i < grid1.length; i++) {
+      for (let j = 0; j < grid1[i].length; j++) {
+        let cell1 = grid1[i][j];
 
         // If the first cell is a match, proceed.
         if (cell1 === first) {
@@ -1183,30 +1183,30 @@
     }
 
     // If no initial matches, no point checking the rest.
-    var startersLen = starters.length;
+    let startersLen = starters.length;
     if (startersLen < 1) return false;
 
     // Check whether the comparee is present in the grid.
-    for (var x = 0; x < startersLen; x++) {
+    for (let x = 0; x < startersLen; x++) {
       // Starting coordinates in the *outer* grid.
-      var sr = starters[x][0];
-      var sc = starters[x][1];
+      let sr = starters[x][0];
+      let sc = starters[x][1];
 
       // Assume a match for this starting point, then invalidate.
-      var match = true;
+      let match = true;
 
       // Loop over the inner grid, comparing each cell.
-      for (var i = 0; i < grid2.length; i++) {
-        var row1 = grid1[i + sr];
-        var row2 = grid2[i];
+      for (let i = 0; i < grid2.length; i++) {
+        let row1 = grid1[i + sr];
+        let row2 = grid2[i];
 
         // Fail early if we've already overstepped the bounds.
         if (!isArray(row1)) break;
         if (!isArray(row2)) break;
 
-        for (var j = 0; j < grid2[i].length; j++) {
-          var cell1 = row1[j + sc];
-          var cell2 = row2[j];
+        for (let j = 0; j < grid2[i].length; j++) {
+          let cell1 = row1[j + sc];
+          let cell2 = row2[j];
 
           if (cell1 !== cell2) match = false;
         }
@@ -1235,12 +1235,12 @@
 
   // Determine whether the grid is horizontally symmetrical
   Array2D.hsymmetrical = function(grid) {
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
-      var row = grid[i];
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
+      let row = grid[i];
 
-      for (var j = 0, l2 = row.length; j < l2; j++) {
-        var cell = row[j];
-        var opposite = row[l2 - 1 - j];
+      for (let j = 0, l2 = row.length; j < l2; j++) {
+        let cell = row[j];
+        let opposite = row[l2 - 1 - j];
 
         if (cell !== opposite) {
           return false;
@@ -1253,7 +1253,7 @@
 
   // Determine whether the grid is vertically symmetrical
   Array2D.vsymmetrical = function(grid) {
-    var transposed = Array2D.transpose(grid);
+    let transposed = Array2D.transpose(grid);
 
     return Array2D.hsymmetrical(transposed);
   };
@@ -1264,11 +1264,11 @@
   // Iterate over each cell in the grid, passing the cell to the
   // iterator function.
   Array2D.eachCell = function(grid, iterator) {
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
-      var row = grid[i];
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
+      let row = grid[i];
 
-      for (var j = 0, l2 = row.length; j < l2; j++) {
-        var cell = row[j];
+      for (let j = 0, l2 = row.length; j < l2; j++) {
+        let cell = row[j];
 
         iterator(cell, i, j, grid);
       }
@@ -1277,16 +1277,16 @@
 
   // Iterate over every nth cell in the grid.
   Array2D.nthCell = function(grid, n, s, iterator) {
-    var x = 0;
+    let x = 0;
 
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
-      var row = grid[i];
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
+      let row = grid[i];
 
-      for (var j = 0, l2 = row.length; j < l2; j++) {
-        var cell = row[j];
+      for (let j = 0, l2 = row.length; j < l2; j++) {
+        let cell = row[j];
 
-        var isPastStart = x >= s;
-        var isAtNth = ((x - s) % n) === 0
+        let isPastStart = x >= s;
+        let isAtNth = ((x - s) % n) === 0
 
         if (isPastStart && isAtNth) {
           iterator(cell, i, j, grid);
@@ -1300,8 +1300,8 @@
   // Iterate over each row in the grid, passing the row-array to
   // the iterator function.
   Array2D.eachRow = function(grid, iterator) {
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
-      var row = grid[i];
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
+      let row = grid[i];
 
       iterator(cloneArray(row), i, grid);
     }
@@ -1310,10 +1310,10 @@
   // Iterate over each column in the grid, passing the column-array
   // to the iterator function.
   Array2D.eachColumn = function(grid, iterator) {
-    var transposed = Array2D.transpose(grid);
+    let transposed = Array2D.transpose(grid);
 
-    for (var i = 0, l1 = transposed.length; i < l1; i++) {
-      var row = transposed[i];
+    for (let i = 0, l1 = transposed.length; i < l1; i++) {
+      let row = transposed[i];
 
       iterator(cloneArray(row), i, grid);
     }
@@ -1321,13 +1321,13 @@
 
   // Iterate over every cell in the given area.
   Array2D.forArea = function(grid, r, c, w, h, iterator) {
-    var cropped = Array2D.crop(grid, r, c, w, h);
+    let cropped = Array2D.crop(grid, r, c, w, h);
 
-    for (var i = 0, l1 = cropped.length; i < l1; i++) {
-      var row = cropped[i];
+    for (let i = 0, l1 = cropped.length; i < l1; i++) {
+      let row = cropped[i];
 
-      for (var j = 0, l2 = row.length; j < l2; j++) {
-        var cell = row[j];
+      for (let j = 0, l2 = row.length; j < l2; j++) {
+        let cell = row[j];
 
         iterator(cell, i, j, grid);
       }
@@ -1336,30 +1336,30 @@
 
   // Iterate over every cell in the given row.
   Array2D.forRow = function(grid, r, iterator) {
-    var row = Array2D.row(grid, r);
+    let row = Array2D.row(grid, r);
 
-    for (var i = 0, l = row.length; i < l; i++) {
+    for (let i = 0, l = row.length; i < l; i++) {
       iterator(row[i], r, i, grid);
     }
   };
 
   // Iterate over every cell in the given column.
   Array2D.forColumn = function(grid, c, iterator) {
-    var column = Array2D.column(grid, c);
+    let column = Array2D.column(grid, c);
 
-    for (var i = 0, l = column.length; i < l; i++) {
+    for (let i = 0, l = column.length; i < l; i++) {
       iterator(column[i], i, c, grid);
     }
   };
 
   // Flatten the grid to an array in row-major order.
   Array2D.flatten = function(grid) {
-    var flattened = [];
+    let flattened = [];
 
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
-      var row = grid[i];
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
+      let row = grid[i];
 
-      for (var j = 0, l2 = row.length; j < l2; j++) {
+      for (let j = 0, l2 = row.length; j < l2; j++) {
         flattened.push(row[j]);
       }
     }
@@ -1369,23 +1369,23 @@
 
   // Same as flatten, but in column-major order.
   Array2D.squash = function(grid) {
-    var transposed = Array2D.transpose(grid);
+    let transposed = Array2D.transpose(grid);
 
     return Array2D.flatten(transposed);
   };
 
   // Remap the grid to a new grid by returning a new value for each cell.
   Array2D.map = function(grid, iterator) {
-    var out = [];
+    let out = [];
 
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
       out[i] = [];
-      var row = grid[i];
+      let row = grid[i];
 
-      for (var j = 0, l2 = row.length; j < l2; j++) {
-        var cell = row[j];
+      for (let j = 0, l2 = row.length; j < l2; j++) {
+        let cell = row[j];
 
-        var result;
+        let result;
         if (iterator) {
           result = iterator(cell, i, j, grid);
         }
@@ -1403,9 +1403,9 @@
   // Reduce the grid to a flat array by reducing each
   // row to a single value.
   Array2D.reduce = function(grid, iterator) {
-    var reduced = [];
+    let reduced = [];
 
-    for (var i = 0, l = grid.length; i < l; i++) {
+    for (let i = 0, l = grid.length; i < l; i++) {
       reduced[i] = iterator(grid[i], i, grid);
     }
 
@@ -1414,7 +1414,7 @@
 
   // Similar to reduce, but column-by-column.
   Array2D.boildown = function(grid, iterator) {
-    var transposed = Array2D.transpose(grid);
+    let transposed = Array2D.transpose(grid);
 
     return Array2D.reduce(transposed, iterator);
   };
@@ -1429,7 +1429,7 @@
 
   // Return the column of the given column-coordinate.
   Array2D.column = function(grid, c) {
-    var transposed = Array2D.transpose(grid);
+    let transposed = Array2D.transpose(grid);
 
     return Array2D.row(transposed, c);
   };
@@ -1446,24 +1446,24 @@
 
   // Return the left column of the grid.
   Array2D.left = function(grid) {
-    var transposed = Array2D.transpose(grid);
+    let transposed = Array2D.transpose(grid);
 
     return Array2D.top(grid);
   };
 
   // Return the right column of the grid.
   Array2D.right = function(grid) {
-    var transposed = Array2D.transpose(grid);
+    let transposed = Array2D.transpose(grid);
 
     return Array2D.bottom(grid);
   };
 
   // Return the longest row of the grid.
   Array2D.widest = function(grid) {
-    var widest = grid[0];
+    let widest = grid[0];
 
-    for (var i = 0, l = grid.length; i < l; i++) {
-      var row = grid[i];
+    for (let i = 0, l = grid.length; i < l; i++) {
+      let row = grid[i];
 
       if (row.length > widest.length) {
         widest = row;
@@ -1475,10 +1475,10 @@
 
   // Return the shortest row of the grid.
   Array2D.thinnest = function(grid) {
-    var thinnest = grid[0];
+    let thinnest = grid[0];
 
-    for (var i = 0, l = grid.length; i < l; i++) {
-      var row = grid[i];
+    for (let i = 0, l = grid.length; i < l; i++) {
+      let row = grid[i];
 
       if (row.length < thinnest.length) {
         thinnest = row;
@@ -1490,23 +1490,23 @@
 
   // Return the tallest column of the grid.
   Array2D.tallest = function(grid) {
-    var transposed = Array2D.transpose(grid);
+    let transposed = Array2D.transpose(grid);
 
     return Array2D.widest(transposed);
   };
 
   // Return the shortest column of the grid.
   Array2D.shortest = function(grid) {
-    var transposed = Array2D.transpose(grid);
+    let transposed = Array2D.transpose(grid);
 
     return Array2D.thinnest(transposed);
   };
 
   // Set a row to the given array.
   Array2D.setRow = function(grid, r, array) {
-    var out = [];
+    let out = [];
 
-    for (var i = 0, l = grid.length; i < l; i++) {
+    for (let i = 0, l = grid.length; i < l; i++) {
       if (i === r) {
         out[i] = cloneArray(array);
       }
@@ -1520,13 +1520,13 @@
 
   // Set a column to the given array.
   Array2D.setColumn = function(grid, c, array) {
-    var out = [];
+    let out = [];
 
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
-      var row = grid[i];
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
+      let row = grid[i];
       out[i] = [];
 
-      for (var j = 0, l2 = row.length; j < l2; j++) {
+      for (let j = 0, l2 = row.length; j < l2; j++) {
         if (j === c) {
           out[i][j] = array[j];
         }
@@ -1541,13 +1541,13 @@
 
   // Fill a row with the given value.
   Array2D.fillRow = function(grid, r, value) {
-    var out = [];
+    let out = [];
 
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
-      var row = grid[i];
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
+      let row = grid[i];
       out[i] = [];
 
-      for (var j = 0, l2 = row.length; j < l2; j++) {
+      for (let j = 0, l2 = row.length; j < l2; j++) {
         if (i === r) {
           out[i][j] = value;
         }
@@ -1562,13 +1562,13 @@
 
   // Fill a column with the given value.
   Array2D.fillColumn = function(grid, c, value) {
-    var out = [];
+    let out = [];
 
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
-      var row = grid[i];
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
+      let row = grid[i];
       out[i] = [];
 
-      for (var j = 0, l2 = row.length; j < l2; j++) {
+      for (let j = 0, l2 = row.length; j < l2; j++) {
         if (j === c) {
           out[i][j] = value;
         }
@@ -1583,9 +1583,9 @@
 
   // Insert a row (array).
   Array2D.spliceRow = function(grid, r, array) {
-    var out = [];
+    let out = [];
 
-    for (var i = 0, l = grid.length; i < l; i++) {
+    for (let i = 0, l = grid.length; i < l; i++) {
       if (i === r) {
         out.push(array);
       }
@@ -1598,13 +1598,13 @@
 
   // Insert a column (array).
   Array2D.spliceColumn = function(grid, c, array) {
-    var out = [];
+    let out = [];
 
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
-      var row = grid[i];
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
+      let row = grid[i];
       out[i] = [];
 
-      for (var j = 0, l2 = row.length; j < l2; j++) {
+      for (let j = 0, l2 = row.length; j < l2; j++) {
         if (j === c) {
           out[i].push(array[j]);
         }
@@ -1618,9 +1618,9 @@
 
   // Delete a row.
   Array2D.deleteRow = function(grid, r) {
-    var out = [];
+    let out = [];
 
-    for (var i = 0, l = grid.length; i < l; i++) {
+    for (let i = 0, l = grid.length; i < l; i++) {
       if (i !== r) {
         out.push(grid[i]);
       }
@@ -1631,13 +1631,13 @@
 
   // Delete a column.
   Array2D.deleteColumn = function(grid, c) {
-    var out = [];
+    let out = [];
 
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
-      var row = grid[i];
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
+      let row = grid[i];
       out[i] = [];
 
-      for (var j = 0, l2 = row.length; j < l2; j++) {
+      for (let j = 0, l2 = row.length; j < l2; j++) {
         if (j !== c) {
           out[i].push(row[j]);
         }
@@ -1672,22 +1672,22 @@
 
   // Copy one cell value over another coordinate.
   Array2D.copy = function(grid, r1, c1, r2, c2) {
-    var cell = Array2D.get(grid, r1, c1);
+    let cell = Array2D.get(grid, r1, c1);
     return Array2D.set(grid, r2, c2, cell);
   };
 
   // Move one cell value to another coordinate, nullifying the first.
   Array2D.move = function(grid, r1, c1, r2, c2) {
-    var cell = Array2D.get(grid, r1, c1);
-    var copied = Array2D.set(grid, r2, c2, cell);
+    let cell = Array2D.get(grid, r1, c1);
+    let copied = Array2D.set(grid, r2, c2, cell);
     return Array2D.set(copied, r1, c1, null);
   };
 
   // Swap the contents of two cells.
   Array2D.swap = function(grid, r1, c1, r2, c2) {
-    var cell1 = Array2D.get(grid, r1, c1);
-    var cell2 = Array2D.get(grid, r2, c2);
-    var first = Array2D.set(grid, r2, c2, cell1);
+    let cell1 = Array2D.get(grid, r1, c1);
+    let cell2 = Array2D.get(grid, r2, c2);
+    let first = Array2D.set(grid, r2, c2, cell1);
     return Array2D.set(first, r1, c1, cell2);
   };
 
@@ -1699,8 +1699,8 @@
     if (r === 0) return true;
     if (c === 0) return true;
 
-    var width = Array2D.width(grid);
-    var height = Array2D.height(grid);
+    let width = Array2D.width(grid);
+    let height = Array2D.height(grid);
 
     if (r === height - 1) return true;
     if (c === width - 1) return true;
@@ -1710,13 +1710,13 @@
 
   // Return the list of edges that the coordinate is on.
   Array2D.edges = function(grid, r, c) {
-    var edges = [];
+    let edges = [];
 
     if (r === 0) edges.push(Array2D.EDGES.TOP);
     if (c === 0) edges.push(Array2D.EDGES.LEFT);
 
-    var width = Array2D.width(grid);
-    var height = Array2D.height(grid);
+    let width = Array2D.width(grid);
+    let height = Array2D.height(grid);
 
     if (r === height - 1) edges.push(Array2D.EDGES.BOTTOM);
     if (c === width - 1) edges.push(Array2D.EDGES.RIGHT);
@@ -1728,8 +1728,8 @@
   Array2D.corner = function(grid, r, c) {
     if (r === 0 && c === 0) return true;
 
-    var width = Array2D.width(grid);
-    var height = Array2D.height(grid);
+    let width = Array2D.width(grid);
+    let height = Array2D.height(grid);
 
     if (r === 0 && c === width - 1) return true;
     if (r === height - 1 && c === width - 1) return true;
@@ -1740,12 +1740,12 @@
 
   // Return the list of corners that the coordinate is on.
   Array2D.corners = function(grid, r, c) {
-    var corners = [];
+    let corners = [];
 
     if (r === 0 && c === 0) corners.push(Array2D.CORNERS.TOP_LEFT);
 
-    var width = Array2D.width(grid);
-    var height = Array2D.height(grid);
+    let width = Array2D.width(grid);
+    let height = Array2D.height(grid);
 
     if (r === 0 && c === width - 1) corners.push(Array2D.CORNERS.TOP_RIGHT);
     if (r === height - 1 && c === width - 1) corners.push(Array2D.CORNERS.BOTTOM_RIGHT);
@@ -1761,12 +1761,12 @@
     if (r === 0) return true;
     if (c === 0) return true;
 
-    var row = Array2D.row(grid, r);
-    var right = row.length - 1;
+    let row = Array2D.row(grid, r);
+    let right = row.length - 1;
     if (c === right) return true;
 
-    var col = Array2D.column(grid, c);
-    var bottom = col.length - 1;
+    let col = Array2D.column(grid, c);
+    let bottom = col.length - 1;
     if (r === bottom) return true;
 
     return false;
@@ -1775,17 +1775,17 @@
   // Return a list of boundaries that the cell is on. If you need to
   // detect edges of a cell in a ragged grid, prefer this function.
   Array2D.boundaries = function(grid, r, c) {
-    var boundaries = [];
+    let boundaries = [];
 
     if (r === 0) boundaries.push(Array2D.BOUNDARIES.UPPER);
     if (c === 0) boundaries.push(Array2D.BOUNDARIES.LEFT);
 
-    var row = Array2D.row(grid, r);
-    var right = row.length - 1;
+    let row = Array2D.row(grid, r);
+    let right = row.length - 1;
     if (c === right) boundaries.push(Array2D.BOUNDARIES.RIGHT);
 
-    var col = Array2D.column(grid, c);
-    var bottom = col.length - 1;
+    let col = Array2D.column(grid, c);
+    let bottom = col.length - 1;
     if (r === bottom) boundaries.push(Array2D.BOUNDARIES.LOWER);
 
     return boundaries;
@@ -1797,10 +1797,10 @@
   Array2D.crook = function(grid, r, c) {
     if (r === 0 && c === 0) return true;
 
-    var row = Array2D.row(grid, r);
-    var right = row.length - 1;
-    var col = Array2D.column(grid, c);
-    var bottom = col.length - 1;
+    let row = Array2D.row(grid, r);
+    let right = row.length - 1;
+    let col = Array2D.column(grid, c);
+    let bottom = col.length - 1;
 
     if (r === 0 && c === bottom) return true;
     if (r === right && c === 0) return true;
@@ -1812,12 +1812,12 @@
   // Return a list of 'crooks' that the cell is on. If you need to
   // detect corners of a cell in a ragged grid, prefer this function.
   Array2D.crooks = function(grid, r, c) {
-    var crooks = [];
+    let crooks = [];
 
-    var row = Array2D.row(grid, r);
-    var right = row.length - 1;
-    var col = Array2D.column(grid, c);
-    var bottom = col.length - 1;
+    let row = Array2D.row(grid, r);
+    let right = row.length - 1;
+    let col = Array2D.column(grid, c);
+    let bottom = col.length - 1;
 
     if (r === 0 && c === 0) crooks.push(Array2D.CROOKS.UPPER_LEFT);
     if (r === 0 && c === bottom) crooks.push(Array2D.CROOKS.LOWER_LEFt);
@@ -1829,8 +1829,8 @@
 
   // Determine whether the given coordinate is at the grid's center.
   Array2D.center = function(grid, r, c) {
-    var width = Array2D.width(grid);
-    var height = Array2D.height(grid);
+    let width = Array2D.width(grid);
+    let height = Array2D.height(grid);
 
     if (width % 2 === 0) return false;
     if (height % 2 === 0) return false;
@@ -1847,8 +1847,8 @@
     if (r === 0) return false;
     if (c === 0) return false;
 
-    var width = Array2D.width(grid);
-    var height = Array2D.height(grid);
+    let width = Array2D.width(grid);
+    let height = Array2D.height(grid);
 
     if (width < 3) return false; // 2xH grids have no interior
     if (height < 3) return false; // Wx2 grids have no interior
@@ -1861,13 +1861,13 @@
 
   // Return a list of all the quadrants the given cell is in.
   Array2D.quadrants = function(grid, r, c) {
-    var quadrants = [];
+    let quadrants = [];
 
-    var width = Array2D.width(grid);
-    var height = Array2D.height(grid);
+    let width = Array2D.width(grid);
+    let height = Array2D.height(grid);
 
-    var midcolumn = Math.floor(width / 2);
-    var midrow = Math.floor(height / 2);
+    let midcolumn = Math.floor(width / 2);
+    let midrow = Math.floor(height / 2);
 
     if (r <= midrow && c > midcolumn) quadrants.push(Array2D.QUADRANTS.I);
     if (r <= midrow && c <= midcolumn) quadrants.push(Array2D.QUADRANTS.II);
@@ -1879,7 +1879,7 @@
 
   // Return an array of all orthogonal cells to the coordinate.
   Array2D.orthogonals = function(grid, r, c) {
-    var orthogonals = [];
+    let orthogonals = [];
 
     orthogonals[0] = Array2D.get(grid, r - 1, c); // North
     orthogonals[1] = Array2D.get(grid, r, c - 1); // West
@@ -1891,7 +1891,7 @@
 
   // Return an array of all diagonal cells to the coordinate.
   Array2D.diagonals = function(grid, r, c) {
-    var diagonals = [];
+    let diagonals = [];
 
     diagonals[0] = Array2D.get(grid, r - 1, c - 1); // Northwest
     diagonals[1] = Array2D.get(grid, r - 1, c + 1); // Northeast
@@ -1903,10 +1903,10 @@
 
   // Return an array of all orthogonal and diagonal neighbors of the cell.
   Array2D.neighbors = function(grid, r, c) {
-    var orthogonals = Array2D.orthogonals(grid, r, c);
-    var diagonals = Array2D.diagonals(grid, r, c);
+    let orthogonals = Array2D.orthogonals(grid, r, c);
+    let diagonals = Array2D.diagonals(grid, r, c);
 
-    var neighbors = [];
+    let neighbors = [];
     neighbors[0] = diagonals[0]; // Northwest
     neighbors[1] = orthogonals[0]; // North
     neighbors[2] = diagonals[1]; // Northeast
@@ -1922,8 +1922,8 @@
   // Return a subgrid representing all cells in the neighborhood of
   // the given row-column coordinate.
   Array2D.neighborhood = function(grid, r, c) {
-    var cell = Array2D.get(grid, r, c);
-    var neighbors = Array2D.neighbors(grid, r, c);
+    let cell = Array2D.get(grid, r, c);
+    let neighbors = Array2D.neighbors(grid, r, c);
 
     return [
       [neighbors[0], neighbors[1], neighbors[2]],
@@ -1939,8 +1939,8 @@
 
   // Return the Chebyshev distance bewteen the two cell coordinates.
   Array2D.chebyshev = function(grid, r1, c1, r2, c2) {
-    var v = Math.abs(r2 - r1);
-    var h = Math.abs(c2 - c1);
+    let v = Math.abs(r2 - r1);
+    let h = Math.abs(c2 - c1);
     return (v > h) ? v : h;
   };
 
@@ -1955,13 +1955,13 @@
   // Return the coordinates of every cell that the `finder` function
   // returns truthy.
   Array2D.find = function(grid, finder) {
-    var found = [];
+    let found = [];
 
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
-      var row = grid[i];
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
+      let row = grid[i];
 
-      for (var j = 0, l2 = row.length; j < l2; j++) {
-        var cell = row[j];
+      for (let j = 0, l2 = row.length; j < l2; j++) {
+        let cell = row[j];
 
         if (finder(cell, i, j, grid)) {
           found.push([i, j]);
@@ -1976,17 +1976,17 @@
   // all _orthogonally_ adjacent cells that return truthy for the `finder`
   // function.
   Array2D.contiguous = function(grid, finder, countDiagonals) {
-    var contiguous = [];
-    var checked = [];
+    let contiguous = [];
+    let checked = [];
 
     // Dimensions are used for bounds-checking below.
-    var dimensions = Array2D.dimensions(grid);
-    var w = dimensions[0];
-    var h = dimensions[1];
+    let dimensions = Array2D.dimensions(grid);
+    let w = dimensions[0];
+    let h = dimensions[1];
 
     // Iterate over the whole grid, checking for contiguous groups.
-    for (var i = 0; i < h; i++) {
-      for (var j = 0; j < w; j++) {
+    for (let i = 0; i < h; i++) {
+      for (let j = 0; j < w; j++) {
         _findContiguous(grid[i][j], i, j, grid, w, h, contiguous, checked, finder, countDiagonals);
       }
     }
@@ -2018,10 +2018,10 @@
           group.push([r, c]);
 
           // Direction cache
-          var up = r - 1;
-          var down = r + 1;
-          var left = c - 1;
-          var right = c + 1;
+          let up = r - 1;
+          let down = r + 1;
+          let left = c - 1;
+          let right = c + 1;
 
           // Orthogonal neighbors
           if (up > -1 && up < h)       _findContiguous(grid[up][c], up, c, grid, w, h, contiguous, checked, finder, countDiagonals, group);
@@ -2056,13 +2056,13 @@
 
   // Return coordinates of all surrounding cells
   Array2D.surrounds = function(grid, r, c, allowOutOfBounds) {
-    var surrounds = [];
+    let surrounds = [];
 
-    var d = Array2D.dimensions(grid);
-    var w = d[0];
-    var h = d[1];
-    var right = w - 1;
-    var bottm = h - 1;
+    let d = Array2D.dimensions(grid);
+    let w = d[0];
+    let h = d[1];
+    let right = w - 1;
+    let bottm = h - 1;
 
     if ((r > 0 && c > 0)         || allowOutOfBounds) surrounds.push([r - 1, c - 1]); // nw
     if ((r > 0)                  || allowOutOfBounds) surrounds.push([r - 1, c]); // n
@@ -2081,12 +2081,12 @@
 
   // Convert the given array (flat) into the standard grid format.
   Array2D.fromArray = function(arr, rows, columns) {
-    var out = [];
+    let out = [];
 
-    for (var i = 0; i < rows; i++) {
+    for (let i = 0; i < rows; i++) {
       out[i] = [];
 
-      for (var j = 0; j < columns; j++) {
+      for (let j = 0; j < columns; j++) {
         out[i][j] = arr[i * columns + j];
       }
     }
@@ -2096,22 +2096,22 @@
 
   // Convert the canvas pixel data into an Array2D-formatted grid.
   Array2D.fromCanvas = function(canvas) {
-    var context = canvas.getContext('2d');
-    var image = context.getImageData(0, 0, canvas.width, canvas.width);
+    let context = canvas.getContext('2d');
+    let image = context.getImageData(0, 0, canvas.width, canvas.width);
 
-    var width = image.width;
-    var height = image.height;
-    var data = image.data;
+    let width = image.width;
+    let height = image.height;
+    let data = image.data;
 
-    var colors = [];
+    let colors = [];
 
-    for (var i = 0, l = data.length; i < l; i += 4) {
-      var r = data[i]
-      var g = data[i+1];
-      var b = data[i+2];
-      var a = data[i+3];
+    for (let i = 0, l = data.length; i < l; i += 4) {
+      let r = data[i]
+      let g = data[i+1];
+      let b = data[i+2];
+      let a = data[i+3];
 
-      var color = [r,g,b,a];
+      let color = [r,g,b,a];
 
       colors.push(color);
     }
@@ -2124,22 +2124,22 @@
   // That is, on output, every cell needs to look something like this:
   // `[255,255,255,255]`
   Array2D.toCanvas = function(grid, canvas, converter) {
-    var context = canvas.getContext('2d');
-    var width = canvas.width;
-    var height = canvas.height;
-    var image = context.createImageData(width, height);
-    var data = image.data;
-    var colors;
+    let context = canvas.getContext('2d');
+    let width = canvas.width;
+    let height = canvas.height;
+    let image = context.createImageData(width, height);
+    let data = image.data;
+    let colors;
 
-    for (var i = 0, l1 = grid.length; i < l1; i++) {
-      var row = grid[i];
+    for (let i = 0, l1 = grid.length; i < l1; i++) {
+      let row = grid[i];
 
-      for (var j = 0, l2 = row.length; j < l2; j++) {
-        var cell = row[j];
+      for (let j = 0, l2 = row.length; j < l2; j++) {
+        let cell = row[j];
 
         colors = (converter) ? converter(cell, i, j, grid) : cell;
 
-        var idx = (i * width + j) * 4;
+        let idx = (i * width + j) * 4;
 
         data[idx + 0] = colors[0];
         data[idx + 1] = colors[1];
