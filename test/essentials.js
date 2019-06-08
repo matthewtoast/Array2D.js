@@ -191,7 +191,7 @@ describe("#flip", function() {
   it("can flip a grid about the horizontal axis", function() {
     const result = Array2D.flip(
       [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
-      Array2D.AXES.X
+      Array2D.AXIS.X
     );
 
     const expected = [[7, 8, 9], [4, 5, 6], [1, 2, 3]];
@@ -210,7 +210,7 @@ describe("#flip", function() {
   it("can flip a grid about the vertical axis", function() {
     const result = Array2D.flip(
       [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
-      Array2D.AXES.Y
+      Array2D.AXIS.Y
     );
 
     const expected = [[3, 2, 1], [6, 5, 4], [9, 8, 7]];

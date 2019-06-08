@@ -175,7 +175,7 @@ Return a new grid flipped over the given axis `axis`. (See `vflip` and `hflip`.)
         [1,2,3],
         [4,5,6],
         [7,8,9]
-    ], Array2D.AXES.X); // <~ Flip over this axis
+    ], Array2D.AXIS.X); // <~ Flip over this axis
 
     // => [[7,8,9],
     // =>  [4,5,6],
@@ -1006,7 +1006,7 @@ Returns `true` if the passed grid is symmetrical when reflected about the axis `
         [1,2,2,1]
         [2,4,4,2]
         [5,6,6,5]
-    ], Array2D.AXES.Y); // <~ Reflect about this axis
+    ], Array2D.AXIS.Y); // <~ Reflect about this axis
 
     // => true
 
@@ -1450,7 +1450,7 @@ Returns `true` if the cell at row-column coordinates `r`, `c` exists, i.e. is no
 
 ##### occupied(grid, r, c)
 
-Returns `true` if the cell  at row-column coordinates `r`, `c` is occupied, i.e. has any value other than `null` or `undefined`. Otherwise returns `false`. Note that cells with the value `[]`, `""`, `{}`, `0`, or `false` would all be considered "occupied" and return `true`.
+Returns `true` if the cell at row-column coordinates `r`, `c` is occupied, i.e. has any value other than `null` or `undefined`. Otherwise returns `false`. Note that cells with the value `[]`, `""`, `{}`, `0`, or `false` would all be considered "occupied" and return `true`.
 
     Array2D.occupied([
         [1,2,3],
@@ -1462,7 +1462,7 @@ Returns `true` if the cell  at row-column coordinates `r`, `c` is occupied, i.e.
 
 ##### inBounds(grid, r, c)
 
-Returns `true` if the cell  at row-column coordinates `r`, `c` is within the grid's area.
+Returns `true` if the cell at row-column coordinates `r`, `c` is within the grid's area.
 
     Array2D.inBounds([
         [1,2,3],
@@ -1474,7 +1474,7 @@ Returns `true` if the cell  at row-column coordinates `r`, `c` is within the gri
 
 ##### copy(grid, r1, c1, r2, c2)
 
-Copy the cell value from the first row-column coordinate  to the second row-column coordinate, replacing the value at the second coordinate. (Reminder: This returns a new grid, and does not modify the original.)
+Copy the cell value from the first row-column coordinate to the second row-column coordinate, replacing the value at the second coordinate. (Reminder: This returns a new grid, and does not modify the original.)
 
     Array2D.copy([
         [1,2,3],
@@ -1751,7 +1751,7 @@ Return the Chebyshev distance between two row-column coordinates.
 
 ##### manhattan(grid, r1, c1, r2, c2)
 
-Return the Manhattan distance between two row-column coordinates. 
+Return the Manhattan distance between two row-column coordinates.
 
     Array2D.manhattan([
         [1,2,3],
@@ -1844,7 +1844,7 @@ Return the coordinates of all the cells that surround the cell at row-column coo
 
 ##### fromArray(arr, width, height)
 
-Conver the given flat array into a grid of the specified `width` and `height`:
+Convert the given flat array into a grid of the specified `width` and `height`:
 
     Array2D.fromArray([1,2,3,4,5,6,7,8,9], 3, 3);
 
@@ -1887,63 +1887,63 @@ Note that this method has the side effect of modifying the canvas' content.
 
 The following constants / enums are provided for convenience and used throughout the library internally:
 
-#### Axes
+#### Axis
 
-`Array2D.AXES.X` = `1`  
-`Array2D.AXES.Y` = `2`  
+`Array2D.AXIS.X` = `1`  
+`Array2D.AXIS.Y` = `2`
 
 #### Bearings
 
-`Array2D.BEARINGS.NORTH`     = `1`  
+`Array2D.BEARINGS.NORTH` = `1`  
 `Array2D.BEARINGS.NORTHWEST` = `2`  
 `Array2D.BEARINGS.NORTHEAST` = `3`  
-`Array2D.BEARINGS.SOUTH`     = `4`  
+`Array2D.BEARINGS.SOUTH` = `4`  
 `Array2D.BEARINGS.SOUTHWEST` = `5`  
 `Array2D.BEARINGS.SOUTHEAST` = `6`  
-`Array2D.BEARINGS.EAST`      = `7`  
-`Array2D.BEARINGS.WEST`      = `8`  
+`Array2D.BEARINGS.EAST` = `7`  
+`Array2D.BEARINGS.WEST` = `8`
 
 #### Boundaries
 
 `Array2D.BOUNDARIES.UPPER` = `1`  
 `Array2D.BOUNDARIES.LOWER` = `2`  
-`Array2D.BOUNDARIES.LEFT`  = `3`  
-`Array2D.BOUNDARIES.RIGHT` = `4`  
+`Array2D.BOUNDARIES.LEFT` = `3`  
+`Array2D.BOUNDARIES.RIGHT` = `4`
 
 #### Corners
 
-`Array2D.CORNERS.TOP_LEFT`     = `1`  
-`Array2D.CORNERS.TOP_RIGHT`    = `2`  
-`Array2D.CORNERS.BOTTOM_LEFT`  = `3`  
-`Array2D.CORNERS.BOTTOM_RIGHT` = `4`  
+`Array2D.CORNERS.TOP_LEFT` = `1`  
+`Array2D.CORNERS.TOP_RIGHT` = `2`  
+`Array2D.CORNERS.BOTTOM_LEFT` = `3`  
+`Array2D.CORNERS.BOTTOM_RIGHT` = `4`
 
 #### Crooks
 
-`Array2D.CROOKS.UPPER_LEFT`  = `1`  
+`Array2D.CROOKS.UPPER_LEFT` = `1`  
 `Array2D.CROOKS.UPPER_RIGHT` = `2`  
-`Array2D.CROOKS.LOWER_LEFT`  = `3`  
-`Array2D.CROOKS.LOWER_RIGHT` = `4`  
+`Array2D.CROOKS.LOWER_LEFT` = `3`  
+`Array2D.CROOKS.LOWER_RIGHT` = `4`
 
 #### Directions
 
-`Array2D.DIRECTIONS.UP`    = `1`  
-`Array2D.DIRECTIONS.DOWN`  = `2`  
-`Array2D.DIRECTIONS.LEFT`  = `3`  
-`Array2D.DIRECTIONS.RIGHT` = `4`  
+`Array2D.DIRECTIONS.UP` = `1`  
+`Array2D.DIRECTIONS.DOWN` = `2`  
+`Array2D.DIRECTIONS.LEFT` = `3`  
+`Array2D.DIRECTIONS.RIGHT` = `4`
 
 #### Edges
 
-`Array2D.EDGES.TOP`    = `1`  
+`Array2D.EDGES.TOP` = `1`  
 `Array2D.EDGES.BOTTOM` = `2`  
-`Array2D.EDGES.LEFT`   = `3`  
-`Array2D.EDGES.RIGHT`  = `4`  
+`Array2D.EDGES.LEFT` = `3`  
+`Array2D.EDGES.RIGHT` = `4`
 
 #### Quadrants
 
-`Array2D.QUADRANTS.I`   = `1`  
-`Array2D.QUADRANTS.II`  = `2`  
+`Array2D.QUADRANTS.I` = `1`  
+`Array2D.QUADRANTS.II` = `2`  
 `Array2D.QUADRANTS.III` = `3`  
-`Array2D.QUADRANTS.IV`  = `4`  
+`Array2D.QUADRANTS.IV` = `4`
 
 ## Help / troubleshooting / bugs
 

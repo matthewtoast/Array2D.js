@@ -437,7 +437,7 @@ describe("#symmetrical", function() {
         [4, 6, 4, 4, 6, 4],
         [5, 5, 5, 5, 5, 5]
       ],
-      Array2D.AXES.Y
+      Array2D.AXIS.Y
     );
 
     const expected = true;
@@ -455,7 +455,7 @@ describe("#symmetrical", function() {
         [1, 2, 0, 7, 0, 3],
         [1, 1, 5, 6, 0, 4]
       ],
-      Array2D.AXES.X
+      Array2D.AXIS.X
     );
 
     const expected = true;

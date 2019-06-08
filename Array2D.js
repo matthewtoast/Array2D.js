@@ -85,7 +85,7 @@
   // Constants / enums
   // =================
 
-  Array2D.AXES = {
+  Array2D.AXIS = {
     X: 1,
     Y: 2
   };
@@ -311,8 +311,8 @@
 
   // Flip the grid about the given axis `axis`.
   Array2D.flip = function(grid, axis) {
-    if (axis === Array2D.AXES.X) return Array2D.vflip(grid);
-    if (axis === Array2D.AXES.Y) return Array2D.hflip(grid);
+    if (axis === Array2D.AXIS.X) return Array2D.vflip(grid);
+    if (axis === Array2D.AXIS.Y) return Array2D.hflip(grid);
     throw "Array2D.js: Invalid axis provided for `flip`";
   };
 
@@ -1237,9 +1237,9 @@
   // around the given axis.
   Array2D.symmetrical = function(grid, axis) {
     switch (axis) {
-      case Array2D.AXES.Y:
+      case Array2D.AXIS.Y:
         return Array2D.hsymmetrical(grid);
-      case Array2D.AXES.X:
+      case Array2D.AXIS.X:
         return Array2D.vsymmetrical(grid);
       default:
         throw "Array2D.js: Invalid axis given for `symmetrical`";
