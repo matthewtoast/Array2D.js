@@ -3,7 +3,6 @@
 // Array2D.js may be freely distributed under the MIT license.
 
 (function() {
-
   // Baseline setup
   // ==============
 
@@ -20,8 +19,8 @@
 
   // Export the Array2D object for Node.js, with backwards-compatibility for the
   // old `require()` API. If we're in the browser, add `Array2D` as a global object.
-  if (typeof exports !== 'undefined') {
-    if (typeof module !== 'undefined' && module.exports) {
+  if (typeof exports !== "undefined") {
+    if (typeof module !== "undefined" && module.exports) {
       exports = module.exports = Array2D;
     }
     exports.Array2D = Array2D;
@@ -30,21 +29,21 @@
   }
 
   // Current version.
-  Array2D.VERSION = '0.0.5';
+  Array2D.VERSION = "0.0.5";
 
   // Run Array2D.js in *noConflict* mode, returning the `Array2D` letiable to its
   // previous owner. Returns a reference to the Array2D object.
   Array2D.noConflict = function() {
     root.Array2D = previousArray2D;
     return this;
-  };  
+  };
 
   // Private utilities
   // =================
 
   // Return T/F if the passed `thing` is an array.
   function isArray(thing) {
-    return Object.prototype.toString.call(thing) === '[object Array]';
+    return Object.prototype.toString.call(thing) === "[object Array]";
   }
 
   // Return T/F if the passed `thing` is `null`.
@@ -160,7 +159,7 @@
   Array2D.set = function(grid, r, c, value) {
     let clone = Array2D.clone(grid);
 
-    if(!isArray(clone[r])) {
+    if (!isArray(clone[r])) {
       clone[r] = [];
     }
 
@@ -194,7 +193,7 @@
     }
 
     return [w, h];
-  }
+  };
 
   // Return the area of the grid.
   Array2D.area = function(grid) {
@@ -215,7 +214,7 @@
         let cell = row[j];
 
         if (isExistent(cell)) {
-          count++
+          count++;
         }
       }
     }
@@ -232,7 +231,7 @@
     let out = [];
 
     let width = Array2D.width(grid);
-    let height = Array2D.height(grid);    
+    let height = Array2D.height(grid);
 
     for (let i = 0; i < h; i++) {
       let ro = r + i; // Offset row
@@ -279,8 +278,7 @@
         // Set to `null` any out-of-bounds cell.
         else if (co >= width || co < 0) {
           out[i][j] = null;
-        }
-        else {
+        } else {
           let cell = grid[ro][co];
           out[i][j] = cell;
         }
@@ -294,7 +292,7 @@
   Array2D.rotate = function(grid, direction) {
     if (direction === Array2D.DIRECTIONS.LEFT) return Array2D.lrotate(grid);
     if (direction === Array2D.DIRECTIONS.RIGHT) return Array2D.rrotate(grid);
-    throw("Array2D.js: Invalid direction provided for `rotate`");
+    throw "Array2D.js: Invalid direction provided for `rotate`";
   };
 
   // Rotate the grid to the left one quarter-turn.
@@ -315,7 +313,7 @@
   Array2D.flip = function(grid, axis) {
     if (axis === Array2D.AXES.X) return Array2D.vflip(grid);
     if (axis === Array2D.AXES.Y) return Array2D.hflip(grid);
-    throw("Array2D.js: Invalid axis provided for `flip`");
+    throw "Array2D.js: Invalid axis provided for `flip`";
   };
 
   // Flip the grid vertically, i.e., about its x-axis.
@@ -350,12 +348,16 @@
   // Pan the array in the given direction, the given number of steps.
   Array2D.pan = function(grid, direction, steps) {
     switch (direction) {
-      case Array2D.DIRECTIONS.LEFT: return Array2D.lpan(grid, steps);
-      case Array2D.DIRECTIONS.RIGHT: return Array2D.rpan(grid, steps);
-      case Array2D.DIRECTIONS.UP: return Array2D.upan(grid, steps);
-      case Array2D.DIRECTIONS.DOWN: return Array2D.dpan(grid, steps);
+      case Array2D.DIRECTIONS.LEFT:
+        return Array2D.lpan(grid, steps);
+      case Array2D.DIRECTIONS.RIGHT:
+        return Array2D.rpan(grid, steps);
+      case Array2D.DIRECTIONS.UP:
+        return Array2D.upan(grid, steps);
+      case Array2D.DIRECTIONS.DOWN:
+        return Array2D.dpan(grid, steps);
       default:
-        throw("Array2D.js: Invalid direction provided for `pan`");
+        throw "Array2D.js: Invalid direction provided for `pan`";
     }
   };
 
@@ -408,12 +410,16 @@
   // Slide performs a pan, but in the reverse direction specified.
   Array2D.slide = function(grid, direction, steps) {
     switch (direction) {
-      case Array2D.DIRECTIONS.LEFT: return Array2D.lslide(grid, steps);
-      case Array2D.DIRECTIONS.RIGHT: return Array2D.rslide(grid, steps);
-      case Array2D.DIRECTIONS.UP: return Array2D.uslide(grid, steps);
-      case Array2D.DIRECTIONS.DOWN: return Array2D.dslide(grid, steps);
+      case Array2D.DIRECTIONS.LEFT:
+        return Array2D.lslide(grid, steps);
+      case Array2D.DIRECTIONS.RIGHT:
+        return Array2D.rslide(grid, steps);
+      case Array2D.DIRECTIONS.UP:
+        return Array2D.uslide(grid, steps);
+      case Array2D.DIRECTIONS.DOWN:
+        return Array2D.dslide(grid, steps);
       default:
-        throw("Array2D.js: Invalid direction provided for `slide`");
+        throw "Array2D.js: Invalid direction provided for `slide`";
     }
   };
 
@@ -490,12 +496,16 @@
   // number of `times`.
   Array2D.pad = function(grid, side, times, value) {
     switch (side) {
-      case Array2D.EDGES.TOP: return Array2D.upad(grid, times, value);
-      case Array2D.EDGES.BOTTOM: return Array2D.dpad(grid, times, value);
-      case Array2D.EDGES.LEFT: return Array2D.lpad(grid, times, value);
-      case Array2D.EDGES.RIGHT: return Array2D.rpad(grid, times, value);
+      case Array2D.EDGES.TOP:
+        return Array2D.upad(grid, times, value);
+      case Array2D.EDGES.BOTTOM:
+        return Array2D.dpad(grid, times, value);
+      case Array2D.EDGES.LEFT:
+        return Array2D.lpad(grid, times, value);
+      case Array2D.EDGES.RIGHT:
+        return Array2D.rpad(grid, times, value);
       default:
-        throw("Array2D.js: Invalid side provided for `pad`");
+        throw "Array2D.js: Invalid side provided for `pad`";
     }
   };
 
@@ -520,8 +530,7 @@
         else {
           if (!isUndefined(value)) {
             out[r][j] = value;
-          }
-          else {
+          } else {
             out[r][j] = null;
           }
         }
@@ -551,8 +560,7 @@
         else {
           if (!isUndefined(value)) {
             out[i][j] = value;
-          }
-          else {
+          } else {
             out[i][j] = null;
           }
         }
@@ -584,8 +592,7 @@
         else {
           if (!isUndefined(value)) {
             out[i][c] = value;
-          }
-          else {
+          } else {
             out[i][c] = null;
           }
         }
@@ -615,8 +622,7 @@
         else {
           if (!isUndefined(value)) {
             out[i][j] = value;
-          }
-          else {
+          } else {
             out[i][j] = null;
           }
         }
@@ -629,12 +635,16 @@
   // Trim rows/columns off the specified side of the grid.
   Array2D.trim = function(grid, side, num) {
     switch (side) {
-      case Array2D.EDGES.TOP: return Array2D.utrim(grid, num);
-      case Array2D.EDGES.BOTTOM: return Array2D.dtrim(grid, num);
-      case Array2D.EDGES.LEFT: return Array2D.ltrim(grid, num);
-      case Array2D.EDGES.RIGHT: return Array2D.rtrim(grid, num);
+      case Array2D.EDGES.TOP:
+        return Array2D.utrim(grid, num);
+      case Array2D.EDGES.BOTTOM:
+        return Array2D.dtrim(grid, num);
+      case Array2D.EDGES.LEFT:
+        return Array2D.ltrim(grid, num);
+      case Array2D.EDGES.RIGHT:
+        return Array2D.rtrim(grid, num);
       default:
-        throw("Array2D.js: Invalid edge provided for `trim`");
+        throw "Array2D.js: Invalid edge provided for `trim`";
     }
   };
 
@@ -703,12 +713,16 @@
   // Stitch the second grid to the given edge of the first.
   Array2D.stitch = function(grid1, grid2, edge) {
     switch (edge) {
-      case Array2D.EDGES.TOP: return Array2D.ustitch(grid1, grid2);
-      case Array2D.EDGES.BOTTOM: return Array2D.dstitch(grid1, grid2);
-      case Array2D.EDGES.LEFT: return Array2D.lstitch(grid1, grid2);
-      case Array2D.EDGES.RIGHT: return Array2D.rstitch(grid1, grid2);
+      case Array2D.EDGES.TOP:
+        return Array2D.ustitch(grid1, grid2);
+      case Array2D.EDGES.BOTTOM:
+        return Array2D.dstitch(grid1, grid2);
+      case Array2D.EDGES.LEFT:
+        return Array2D.lstitch(grid1, grid2);
+      case Array2D.EDGES.RIGHT:
+        return Array2D.rstitch(grid1, grid2);
       default:
-        throw("Array2D.js: Invalid edge provided for `stitch`");
+        throw "Array2D.js: Invalid edge provided for `stitch`";
     }
   };
 
@@ -753,16 +767,16 @@
       for (let j = 0; j < rlen; j++) {
         let tc = j - sc;
 
-        if (isArray(grid2[tr]) &&
-            !isUndefined(grid2[tr][tc]) &&
-            i >= sr &&
-            j >= sc &&
-            tr < l1 &&
-            tc < rlen) {
-
+        if (
+          isArray(grid2[tr]) &&
+          !isUndefined(grid2[tr][tc]) &&
+          i >= sr &&
+          j >= sc &&
+          tr < l1 &&
+          tc < rlen
+        ) {
           out[i][j] = grid2[tr][tc];
-        }
-        else {
+        } else {
           out[i][j] = grid1[i][j];
         }
       }
@@ -778,20 +792,20 @@
     let d1 = Array2D.dimensions(grid1);
     let d2 = Array2D.dimensions(grid2);
 
-    let mw = (d1[0] > d2[0]) ? d1[0] : d2[0]; // Greater width
-    let mh = (d1[1] > d2[1]) ? d1[1] : d2[1]; // Greater height
+    let mw = d1[0] > d2[0] ? d1[0] : d2[0]; // Greater width
+    let mh = d1[1] > d2[1] ? d1[1] : d2[1]; // Greater height
 
     let w = Math.abs(c) + mw; // Width of new grid
     let h = Math.abs(r) + mh; // Height of new grid
 
     let n = Array2D.build(w, h); // A blank array
 
-    let r1 = (r < 0) ? -r : 0;
-    let c1 = (c < 0) ? -c : 0;
+    let r1 = r < 0 ? -r : 0;
+    let c1 = c < 0 ? -c : 0;
     let o = Array2D.paste(n, grid1, r1, c1);
 
-    let r2 = (r > 0) ? r : 0;
-    let c2 = (c > 0) ? c : 0;
+    let r2 = r > 0 ? r : 0;
+    let c2 = c > 0 ? c : 0;
     let p = Array2D.paste(o, grid2, r2, c2);
 
     return p;
@@ -815,7 +829,7 @@
     }
 
     // Push the shuffled elements into a new grid
-    let out = []
+    let out = [];
     for (let i = 0, l = rowLens.length; i < l; i++) {
       let row = [];
       let rowLen = rowLens[i];
@@ -844,8 +858,7 @@
 
         if (isUndefined(previous)) {
           out[i][j] = null;
-        }
-        else {
+        } else {
           out[i][j] = previous;
         }
       }
@@ -905,8 +918,7 @@
       for (let j = 0, l2 = w; j < l2; j++) {
         if (fn) {
           out[i][j] = fn(i, j, out);
-        }
-        else {
+        } else {
           out[i][j] = null;
         }
       }
@@ -943,7 +955,7 @@
   // Return a new grid with the cells converted to integers,
   // using `parseInt`.
   Array2D.integerize = function(grid) {
-    let out = []
+    let out = [];
 
     for (let i = 0, l1 = grid.length; i < l1; i++) {
       out[i] = [];
@@ -1105,8 +1117,8 @@
     let d1 = Array2D.dimensions(grid1);
     let d2 = Array2D.dimensions(grid2);
 
-    let w = (d1[0] > d2[0]) ? d1[0] : d2[0];
-    let h = (d1[1] > d2[1]) ? d2[1] : d2[1];
+    let w = d1[0] > d2[0] ? d1[0] : d2[0];
+    let h = d1[1] > d2[1] ? d2[1] : d2[1];
 
     for (let i = 0; i < h; i++) {
       let row1 = grid1[i];
@@ -1122,8 +1134,7 @@
           if (cell1 !== cell2) {
             diffs.push([i, j]);
           }
-        }
-        else {
+        } else {
           diffs.push([i, j]);
         }
       }
@@ -1226,10 +1237,12 @@
   // around the given axis.
   Array2D.symmetrical = function(grid, axis) {
     switch (axis) {
-      case Array2D.AXES.Y: return Array2D.hsymmetrical(grid);
-      case Array2D.AXES.X: return Array2D.vsymmetrical(grid);
+      case Array2D.AXES.Y:
+        return Array2D.hsymmetrical(grid);
+      case Array2D.AXES.X:
+        return Array2D.vsymmetrical(grid);
       default:
-        throw("Array2D.js: Invalid axis given for `symmetrical`");
+        throw "Array2D.js: Invalid axis given for `symmetrical`";
     }
   };
 
@@ -1286,7 +1299,7 @@
         let cell = row[j];
 
         let isPastStart = x >= s;
-        let isAtNth = ((x - s) % n) === 0
+        let isAtNth = (x - s) % n === 0;
 
         if (isPastStart && isAtNth) {
           iterator(cell, i, j, grid);
@@ -1388,8 +1401,7 @@
         let result;
         if (iterator) {
           result = iterator(cell, i, j, grid);
-        }
-        else {
+        } else {
           result = cell;
         }
 
@@ -1509,8 +1521,7 @@
     for (let i = 0, l = grid.length; i < l; i++) {
       if (i === r) {
         out[i] = cloneArray(array);
-      }
-      else {
+      } else {
         out[i] = cloneArray(grid[i]);
       }
     }
@@ -1529,8 +1540,7 @@
       for (let j = 0, l2 = row.length; j < l2; j++) {
         if (j === c) {
           out[i][j] = array[j];
-        }
-        else {
+        } else {
           out[i][j] = row[j];
         }
       }
@@ -1550,8 +1560,7 @@
       for (let j = 0, l2 = row.length; j < l2; j++) {
         if (i === r) {
           out[i][j] = value;
-        }
-        else {
+        } else {
           out[i][j] = row[j];
         }
       }
@@ -1571,8 +1580,7 @@
       for (let j = 0, l2 = row.length; j < l2; j++) {
         if (j === c) {
           out[i][j] = value;
-        }
-        else {
+        } else {
           out[i][j] = row[j];
         }
       }
@@ -1656,7 +1664,7 @@
     return !isUndefined(Array2D.get(grid, r, c));
   };
 
-  // Determine whether the coordinate is occupied (not `null` or 
+  // Determine whether the coordinate is occupied (not `null` or
   // `undefined`).
   Array2D.occupied = function(grid, r, c) {
     return isPresent(Array2D.get(grid, r, c));
@@ -1748,7 +1756,8 @@
     let height = Array2D.height(grid);
 
     if (r === 0 && c === width - 1) corners.push(Array2D.CORNERS.TOP_RIGHT);
-    if (r === height - 1 && c === width - 1) corners.push(Array2D.CORNERS.BOTTOM_RIGHT);
+    if (r === height - 1 && c === width - 1)
+      corners.push(Array2D.CORNERS.BOTTOM_RIGHT);
     if (r === height - 1 && c === 0) corners.push(Array2D.CORNERS.BOTTOM_LEFT);
 
     return corners;
@@ -1941,7 +1950,7 @@
   Array2D.chebyshev = function(grid, r1, c1, r2, c2) {
     let v = Math.abs(r2 - r1);
     let h = Math.abs(c2 - c1);
-    return (v > h) ? v : h;
+    return v > h ? v : h;
   };
 
   // Return the Manhattan distance bewteen the two cell coordinates.
@@ -1987,7 +1996,18 @@
     // Iterate over the whole grid, checking for contiguous groups.
     for (let i = 0; i < h; i++) {
       for (let j = 0; j < w; j++) {
-        _findContiguous(grid[i][j], i, j, grid, w, h, contiguous, checked, finder, countDiagonals);
+        _findContiguous(
+          grid[i][j],
+          i,
+          j,
+          grid,
+          w,
+          h,
+          contiguous,
+          checked,
+          finder,
+          countDiagonals
+        );
       }
     }
 
@@ -1995,17 +2015,27 @@
   };
 
   // PRIVATE - RECURSIVE check for contiguous cells
-  function _findContiguous(cell, r, c, grid, w, h, contiguous, checked, finder, countDiagonals, group) {
+  function _findContiguous(
+    cell,
+    r,
+    c,
+    grid,
+    w,
+    h,
+    contiguous,
+    checked,
+    finder,
+    countDiagonals,
+    group
+  ) {
     if (!_hasChecked(checked, r, c)) {
       checked[r] || (checked[r] = []);
       checked[r][c] = true; // Avoid repeat checks
 
       // No need to check out-of-bounds cells
       if (c > -1 && c < w && r > -1 && r < h) {
-
         // A truthy return value is a match
         if (finder(cell, r, c, grid)) {
-
           // Spawn a new group
           if (!group) {
             group = [];
@@ -2024,22 +2054,131 @@
           let right = c + 1;
 
           // Orthogonal neighbors
-          if (up > -1 && up < h)       _findContiguous(grid[up][c], up, c, grid, w, h, contiguous, checked, finder, countDiagonals, group);
-          if (down > -1 && down < h)   _findContiguous(grid[down][c], down, c, grid, w, h, contiguous, checked, finder, countDiagonals, group);
-          if (left > -1 && left < w)   _findContiguous(grid[r][left], r, left, grid, w, h, contiguous, checked, finder, countDiagonals, group);
-          if (right > -1 && right < w) _findContiguous(grid[r][right], r, right, grid, w, h, contiguous, checked, finder, countDiagonals, group);
+          if (up > -1 && up < h)
+            _findContiguous(
+              grid[up][c],
+              up,
+              c,
+              grid,
+              w,
+              h,
+              contiguous,
+              checked,
+              finder,
+              countDiagonals,
+              group
+            );
+          if (down > -1 && down < h)
+            _findContiguous(
+              grid[down][c],
+              down,
+              c,
+              grid,
+              w,
+              h,
+              contiguous,
+              checked,
+              finder,
+              countDiagonals,
+              group
+            );
+          if (left > -1 && left < w)
+            _findContiguous(
+              grid[r][left],
+              r,
+              left,
+              grid,
+              w,
+              h,
+              contiguous,
+              checked,
+              finder,
+              countDiagonals,
+              group
+            );
+          if (right > -1 && right < w)
+            _findContiguous(
+              grid[r][right],
+              r,
+              right,
+              grid,
+              w,
+              h,
+              contiguous,
+              checked,
+              finder,
+              countDiagonals,
+              group
+            );
 
           // Diagonal neighbors (if desired)
           if (countDiagonals) {
-            if (up > -1 && up < h && left > -1 && left < w)       _findContiguous(grid[up][left], up, left, grid, w, h, contiguous, checked, finder, countDiagonals, group);
-            if (up > -1 && up < h && right > -1 && right < w)     _findContiguous(grid[up][right], up, right, grid, w, h, contiguous, checked, finder, countDiagonals, group);
-            if (down > -1 && down < h && left > -1 && left < w)   _findContiguous(grid[down][left], down, left, grid, w, h, contiguous, checked, finder, countDiagonals, group);
-            if (down > -1 && down < h && right > -1 && right < w) _findContiguous(grid[down][right], down, right, grid, w, h, contiguous, checked, finder, countDiagonals, group);
+            if (up > -1 && up < h && left > -1 && left < w)
+              _findContiguous(
+                grid[up][left],
+                up,
+                left,
+                grid,
+                w,
+                h,
+                contiguous,
+                checked,
+                finder,
+                countDiagonals,
+                group
+              );
+            if (up > -1 && up < h && right > -1 && right < w)
+              _findContiguous(
+                grid[up][right],
+                up,
+                right,
+                grid,
+                w,
+                h,
+                contiguous,
+                checked,
+                finder,
+                countDiagonals,
+                group
+              );
+            if (down > -1 && down < h && left > -1 && left < w)
+              _findContiguous(
+                grid[down][left],
+                down,
+                left,
+                grid,
+                w,
+                h,
+                contiguous,
+                checked,
+                finder,
+                countDiagonals,
+                group
+              );
+            if (down > -1 && down < h && right > -1 && right < w)
+              _findContiguous(
+                grid[down][right],
+                down,
+                right,
+                grid,
+                w,
+                h,
+                contiguous,
+                checked,
+                finder,
+                countDiagonals,
+                group
+              );
           }
-
-        } else { /* The cell did not match; skip. */ }
-      } else { /* The cell was out-of-bounds; skip. */ }
-    } else { /* The cell was already checked; skip. */ }
+        } else {
+          /* The cell did not match; skip. */
+        }
+      } else {
+        /* The cell was out-of-bounds; skip. */
+      }
+    } else {
+      /* The cell was already checked; skip. */
+    }
   }
 
   // Return groups of coordinates, where groups are coordinates of
@@ -2064,14 +2203,17 @@
     let right = w - 1;
     let bottm = h - 1;
 
-    if ((r > 0 && c > 0)         || allowOutOfBounds) surrounds.push([r - 1, c - 1]); // nw
-    if ((r > 0)                  || allowOutOfBounds) surrounds.push([r - 1, c]); // n
-    if ((r > 0 && c < right)     || allowOutOfBounds) surrounds.push([r - 1, c + 1]); // ne
-    if ((c > 0)                  || allowOutOfBounds) surrounds.push([r, c - 1]); // w
-    if ((c < right)              || allowOutOfBounds) surrounds.push([r, c + 1]); // e
-    if ((r < bottm && c > 0)     || allowOutOfBounds) surrounds.push([r + 1, c - 1]); // sw
-    if ((r < bottm)              || allowOutOfBounds) surrounds.push([r + 1, c]); // s
-    if ((r < bottm && c < right) || allowOutOfBounds) surrounds.push([r + 1, c + 1]); // se
+    if ((r > 0 && c > 0) || allowOutOfBounds) surrounds.push([r - 1, c - 1]); // nw
+    if (r > 0 || allowOutOfBounds) surrounds.push([r - 1, c]); // n
+    if ((r > 0 && c < right) || allowOutOfBounds)
+      surrounds.push([r - 1, c + 1]); // ne
+    if (c > 0 || allowOutOfBounds) surrounds.push([r, c - 1]); // w
+    if (c < right || allowOutOfBounds) surrounds.push([r, c + 1]); // e
+    if ((r < bottm && c > 0) || allowOutOfBounds)
+      surrounds.push([r + 1, c - 1]); // sw
+    if (r < bottm || allowOutOfBounds) surrounds.push([r + 1, c]); // s
+    if ((r < bottm && c < right) || allowOutOfBounds)
+      surrounds.push([r + 1, c + 1]); // se
 
     return surrounds;
   };
@@ -2096,7 +2238,7 @@
 
   // Convert the canvas pixel data into an Array2D-formatted grid.
   Array2D.fromCanvas = function(canvas) {
-    let context = canvas.getContext('2d');
+    let context = canvas.getContext("2d");
     let image = context.getImageData(0, 0, canvas.width, canvas.width);
 
     let width = image.width;
@@ -2106,12 +2248,12 @@
     let colors = [];
 
     for (let i = 0, l = data.length; i < l; i += 4) {
-      let r = data[i]
-      let g = data[i+1];
-      let b = data[i+2];
-      let a = data[i+3];
+      let r = data[i];
+      let g = data[i + 1];
+      let b = data[i + 2];
+      let a = data[i + 3];
 
-      let color = [r,g,b,a];
+      let color = [r, g, b, a];
 
       colors.push(color);
     }
@@ -2124,7 +2266,7 @@
   // That is, on output, every cell needs to look something like this:
   // `[255,255,255,255]`
   Array2D.toCanvas = function(grid, canvas, converter) {
-    let context = canvas.getContext('2d');
+    let context = canvas.getContext("2d");
     let width = canvas.width;
     let height = canvas.height;
     let image = context.createImageData(width, height);
@@ -2137,7 +2279,7 @@
       for (let j = 0, l2 = row.length; j < l2; j++) {
         let cell = row[j];
 
-        colors = (converter) ? converter(cell, i, j, grid) : cell;
+        colors = converter ? converter(cell, i, j, grid) : cell;
 
         let idx = (i * width + j) * 4;
 
@@ -2150,5 +2292,4 @@
 
     context.putImageData(image, 0, 0);
   };
-
 }.call(this));

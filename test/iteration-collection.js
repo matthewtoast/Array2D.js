@@ -1,16 +1,12 @@
-var Array2D = require('./../Array2D');
-var assert = require('assert');
+let Array2D = require("./../Array2D");
+let assert = require("assert");
 
-describe('#eachCell', function() {
-  it('can iterate over each cell', function() {
-    var grid = [
-      [1,2,3],
-      [4,5,6],
-      [7,8,9]
-    ];
+describe("#eachCell", function() {
+  it("can iterate over each cell", function() {
+    const grid = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
 
-    var expected = [1,2,3,4,5,6,7,8,9];
-    var result = [];
+    const expected = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const result = [];
 
     Array2D.eachCell(grid, function(cell, r, c) {
       result.push(cell);
@@ -20,16 +16,12 @@ describe('#eachCell', function() {
   });
 });
 
-describe('#nthCell', function() {
-  it('can iterate over every nth cell', function() {
-    var grid = [
-      [1,2,3],
-      [4,5,6],
-      [7,8,9]
-    ];
+describe("#nthCell", function() {
+  it("can iterate over every nth cell", function() {
+    const grid = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
 
-    var expected = [2,4,6,8];
-    var result = [];
+    const expected = [2, 4, 6, 8];
+    const result = [];
 
     Array2D.nthCell(grid, 2, 1, function(cell, r, c) {
       result.push(cell);
@@ -39,13 +31,9 @@ describe('#nthCell', function() {
   });
 });
 
-describe('#eachRow', function() {
-  it('can iterate over each row', function() {
-    var grid = [
-      [1,2,3],
-      [4,5,6],
-      [7,8,9]
-    ];
+describe("#eachRow", function() {
+  it("can iterate over each row", function() {
+    const grid = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
 
     Array2D.eachRow(grid, function(row, r) {
       assert.strictEqual(grid[r][0], row[0]);
@@ -55,13 +43,9 @@ describe('#eachRow', function() {
   });
 });
 
-describe('#eachColumn', function() {
-  it('can iterate over each column', function() {
-    var grid = [
-      [1,2,3],
-      [4,5,6],
-      [7,8,9]
-    ];
+describe("#eachColumn", function() {
+  it("can iterate over each column", function() {
+    const grid = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
 
     Array2D.eachColumn(grid, function(column, c) {
       assert.strictEqual(column[0], grid[0][c]);
@@ -71,16 +55,12 @@ describe('#eachColumn', function() {
   });
 });
 
-describe('#forArea', function() {
-  it('can iterate over an area', function() {
-    var grid = [
-      [1,2,3],
-      [4,5,6],
-      [7,8,9]
-    ];
+describe("#forArea", function() {
+  it("can iterate over an area", function() {
+    const grid = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
 
-    var expected = [1,2,4,5];
-    var result = [];
+    const expected = [1, 2, 4, 5];
+    const result = [];
 
     Array2D.forArea(grid, 0, 0, 2, 2, function(cell, r, c) {
       result.push(cell);
@@ -90,16 +70,12 @@ describe('#forArea', function() {
   });
 });
 
-describe('#forRow', function() {
-  it('can iterate over a row', function() {
-    var grid = [
-      [1,2,3],
-      [4,5,6],
-      [7,8,9]
-    ];
+describe("#forRow", function() {
+  it("can iterate over a row", function() {
+    const grid = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
 
-    var expected = [4,5,6];
-    var result = [];
+    const expected = [4, 5, 6];
+    const result = [];
 
     Array2D.forRow(grid, 1, function(cell, r, c) {
       result.push(cell);
@@ -109,16 +85,12 @@ describe('#forRow', function() {
   });
 });
 
-describe('#forColumn', function() {
-  it('can iterate over a column', function() {
-    var grid = [
-      [1,2,3],
-      [4,5,6],
-      [7,8,9]
-    ];
+describe("#forColumn", function() {
+  it("can iterate over a column", function() {
+    const grid = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
 
-    var expected = [2,5,8];
-    var result = [];
+    const expected = [2, 5, 8];
+    const result = [];
 
     Array2D.forColumn(grid, 1, function(cell, r, c) {
       result.push(cell);
@@ -128,15 +100,11 @@ describe('#forColumn', function() {
   });
 });
 
-describe('#flatten', function(){
-  it('can flatten a grid', function() {
-    var result = Array2D.flatten([
-      [1,2,3],
-      [4,5,6],
-      [7,8,9]
-    ]);
+describe("#flatten", function() {
+  it("can flatten a grid", function() {
+    const result = Array2D.flatten([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
 
-    var expected = [1,2,3,4,5,6,7,8,9];
+    const expected = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
     assert.strictEqual(expected[0], result[0]);
     assert.strictEqual(expected[1], result[1]);
@@ -150,15 +118,11 @@ describe('#flatten', function(){
   });
 });
 
-describe('#squash', function(){
-  it('can squash a grid', function() {
-    var result = Array2D.squash([
-      [1,2,3],
-      [4,5,6],
-      [7,8,9]
-    ]);
+describe("#squash", function() {
+  it("can squash a grid", function() {
+    const result = Array2D.squash([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
 
-    var expected = [1,4,7,2,5,8,3,6,9];
+    const expected = [1, 4, 7, 2, 5, 8, 3, 6, 9];
 
     assert.strictEqual(expected[0], result[0]);
     assert.strictEqual(expected[1], result[1]);
@@ -172,21 +136,18 @@ describe('#squash', function(){
   });
 });
 
-describe('#map', function() {
-  it('can map a grid into another', function() {
-    var result = Array2D.map([
-      [1,2,3],
-      [4,5,6],
-      [7,8,9]
-    ], function(cell, r, c, grid) {
+describe("#map", function() {
+  it("can map a grid into another", function() {
+    const result = Array2D.map([[1, 2, 3], [4, 5, 6], [7, 8, 9]], function(
+      cell,
+      r,
+      c,
+      grid
+    ) {
       return cell * 2;
     });
 
-    var expected = [
-      [2,4,6],
-      [8,10,12],
-      [14,16,18]
-    ];
+    const expected = [[2, 4, 6], [8, 10, 12], [14, 16, 18]];
 
     assert.strictEqual(expected[0][0], result[0][0]);
     assert.strictEqual(expected[0][1], result[0][1]);
@@ -200,17 +161,15 @@ describe('#map', function() {
   });
 });
 
-describe('#reduce', function(){
-  it('can reduce a grid', function() {
-    var result = Array2D.reduce([
-      [1,2,3],
-      [4,5,6],
-      [7,8,9]
-    ], function(row) {
+describe("#reduce", function() {
+  it("can reduce a grid", function() {
+    const result = Array2D.reduce([[1, 2, 3], [4, 5, 6], [7, 8, 9]], function(
+      row
+    ) {
       return row[0] + row[1] + row[2];
     });
 
-    var expected = [6,15,24];
+    const expected = [6, 15, 24];
 
     assert.strictEqual(expected[0][0], result[0][0]);
     assert.strictEqual(expected[0][1], result[0][1]);
@@ -224,17 +183,15 @@ describe('#reduce', function(){
   });
 });
 
-describe('#boildown', function(){
-  it('can boildown a grid', function() {
-    var result = Array2D.boildown([
-      [1,2,3],
-      [4,5,6],
-      [7,8,9]
-    ], function(column) {
+describe("#boildown", function() {
+  it("can boildown a grid", function() {
+    const result = Array2D.boildown([[1, 2, 3], [4, 5, 6], [7, 8, 9]], function(
+      column
+    ) {
       return column[0] + column[1] + column[2];
     });
 
-    var expected = [12,15,18];
+    const expected = [12, 15, 18];
 
     assert.strictEqual(expected[0][0], result[0][0]);
     assert.strictEqual(expected[0][1], result[0][1]);
